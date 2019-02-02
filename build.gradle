@@ -16,7 +16,7 @@ apply plugin: 'io.spring.dependency-management'
 
 group = 'ee.ituk'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '1.8	'
 
 repositories {
 	mavenCentral()
@@ -28,7 +28,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 	implementation 'com.graphql-java: graphql-spring-boot-starter: 5.0.2'
 	implementation 'com.graphql-java: graphql-java-tools: 5.2.4'
-	compile group: 'postgresql', name: 'postgresql', version: '9.1-901-1.jdbc4'
+	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 	compileOnly 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
