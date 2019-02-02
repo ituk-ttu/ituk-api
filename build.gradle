@@ -7,16 +7,23 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
 	}
+}
+
+plugins {
+	id 'nu.studer.jooq' version '3.0.2'
 }
 
 apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+def props = new Properties()
+file("src/main/resources/application.properties").withInputStream { props.load(it) }
 group = 'ee.ituk'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8	'
+sourceCompatibility = '1.8'
 
 repositories {
 	mavenCentral()
@@ -26,9 +33,68 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-data-rest'
 	implementation 'org.springframework.boot:spring-boot-starter-jooq'
-	implementation 'com.graphql-java: graphql-spring-boot-starter: 5.0.2'
-	implementation 'com.graphql-java: graphql-java-tools: 5.2.4'
+	compile group: 'com.graphql-java', name: 'graphql-spring-boot-starter', version: '5.0.2'
+	compile group: 'com.graphql-java', name: 'graphql-java-tools', version: '5.2.4'
 	compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+	compile 'org.jooq:jooq'
 	compileOnly 'org.projectlombok:lombok'
+	jooqRuntime 'org.postgresql:postgresql:42.2.5'
+	jooqRuntime group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.1'
+	jooqRuntime group: 'com.sun.activation', name: 'javax.activation', version: '1.2.0'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+jooq {
+	version = '3.11.2'
+	edition = 'OSS'
+	sample(sourceSets.main) {
+		jdbc {
+			driver = props.getProperty("spring.datasource.driver-class-name")
+			url = props.getProperty("spring.datasource.url")
+			user = props.getProperty("spring.datasource.username")
+			password = props.getProperty("spring.datasource.password")
+//			properties {
+//				property {
+//					key = 'ssl'
+//					value = 'true'
+//				}
+//			}
+		}
+		generator {
+			name = 'org.jooq.codegen.DefaultGenerator'
+			strategy {
+				name = 'org.jooq.codegen.DefaultGeneratorStrategy'
+				// ...
+			}
+			database {
+				name = 'org.jooq.meta.postgres.PostgresDatabase'
+				inputSchema = 'public'
+				forcedTypes {
+					forcedType {
+						name = 'varchar'
+						expression = '.*'
+						types = 'JSONB?'
+					}
+					forcedType {
+						name = 'varchar'
+						expression = '.*'
+						types = 'INET'
+					}
+				}
+				// ...
+			}
+			generate {
+				relations = true
+				deprecated = false
+				records = true
+				immutablePojos = true
+				fluentSetters = true
+				// ...
+			}
+			target {
+				packageName = 'ee.ituk'
+				// directory = ...
+			}
+		}
+	}
 }
