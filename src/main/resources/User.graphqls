@@ -1,0 +1,16 @@
+Type User {
+    id: ID!
+    firstname: String!
+    lastname: String!
+    email: String!
+    cardnumber: String
+    telegram: String
+    password: String!
+    studentcode: String!
+    status: UserStatus
+    curriculum: String!
+    iban: String
+    mentor: Mentor
+    admin: Boolean
+    archived: Boolean
+}

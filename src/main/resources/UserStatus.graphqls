@@ -1,0 +1,10 @@
+Type UserStatus {
+    statusId: ID!
+    statusName: Status!
+    description: String
+}
+
+enum Status {
+    NOORLIIGE
+    TÄISLIIGE
+}
