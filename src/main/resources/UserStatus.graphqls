@@ -5,6 +5,8 @@ Type UserStatus {
 }
 
 enum Status {
+    UUSLIIGE
     NOORLIIGE
     TÄISLIIGE
+    JUHATUS
 }

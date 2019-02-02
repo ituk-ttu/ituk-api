@@ -14,3 +14,18 @@ Type User {
     admin: Boolean
     archived: Boolean
 }
+
+type Query {
+    getUser(id: Integer!): User!
+    getUsersbyStatus(statusId: Integer): [User]!
+    getActiveUsers(): [User]!
+
+}
+
+type Mutation {
+    newUser(user: User): User!
+    changeStatus(id: Integer!, status: UserStatus!): User!
+    updateUser(user: User): User!
+    deleteUser(userId: Integer): Boolean
+
+}
