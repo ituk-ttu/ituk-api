@@ -1,4 +1,4 @@
-Type User {
+type User {
     id: ID!
     firstname: String!
     lastname: String!
@@ -7,25 +7,25 @@ Type User {
     telegram: String
     password: String!
     studentcode: String!
-    status: UserStatus
+    status: Userstatus
     curriculum: String!
     iban: String
-    mentor: Mentor
+#    mentor: Mentor
     admin: Boolean
     archived: Boolean
 }
 
 type Query {
-    getUser(id: Integer!): User!
-    getUsersbyStatus(statusId: Integer): [User]!
-    getActiveUsers(): [User]!
-
+    getUser(id: Int!): User!
+    allUsers: [User]
+    getUsersByStatus(statusId: Int!): [User]
+    getActiveUsers: [User]
 }
 
-type Mutation {
-    newUser(user: User): User!
-    changeStatus(id: Integer!, status: UserStatus!): User!
-    updateUser(user: User): User!
-    deleteUser(userId: Integer): Boolean
 
-}
+#type Mutation {
+#    newUser(user: User): User!
+#    changeStatus(id: Integer!, status: UserStatus!): User!
+#    updateUser(user: User): User!
+#    deleteUser(userId: Integer): Boolean
+#}

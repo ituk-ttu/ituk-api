@@ -1,12 +1,13 @@
-Type UserStatus {
-    statusId: ID!
-    statusName: Status!
+type Userstatus {
+    statusid: ID!
+#    statusname: Status!
+    statusname: String!
     description: String
 }
 
-enum Status {
-    UUSLIIGE
-    NOORLIIGE
-    TÄISLIIGE
-    JUHATUS
-}
+#enum Status {
+#    UUSLIIGE
+#    NOORLIIGE
+#    TAISLIIGE
+#    JUHATUS
+#}
