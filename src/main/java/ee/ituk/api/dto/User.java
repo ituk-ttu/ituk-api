@@ -1,16 +1,30 @@
 package ee.ituk.api.dto;
 
+import ee.ituk.tables.pojos.Mentor;
 import ee.ituk.tables.pojos.Userstatus;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-public class User extends ee.ituk.tables.pojos.User {
+import java.time.LocalDateTime;
 
+@Data
+public class User {
+
+    private Integer id;
+    private String firstname;
+    private String lastname;
+    private String email;
+    private String cardnumber;
+    private String telegram;
+    private String password;
+    private String studentcode;
+    private Integer statusid;
+    private String curriculum;
+    private String iban;
+    private Integer mentorid;
+    private Boolean admin;
+    private Boolean archived;
+    private LocalDateTime createdat;
+    private LocalDateTime updatedat;
     private Userstatus userstatus;
-
-    public User(ee.ituk.tables.pojos.User value) {
-        super(value);
-    }
+    private Mentor mentor;
 }

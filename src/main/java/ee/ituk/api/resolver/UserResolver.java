@@ -8,18 +8,18 @@ import ee.ituk.tables.pojos.User;
 import ee.ituk.tables.pojos.Userstatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@RequiredArgsConstructor
-@SuppressWarnings("unused")
+@Component
 public class UserResolver implements GraphQLResolver<User> {
 
     @Autowired
     StatusRepository statusRepository;
 
     public Userstatus getUserstatus(User user) {
-        return statusRepository.getUserStatus(user.getStatus());
+        return statusRepository.getUserStatus(user.getStatusid());
     }
 
 }

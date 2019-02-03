@@ -1,0 +1,8 @@
+type Mentor {
+    userid: ID!
+    curriculum: String
+    text: String
+    gif: String
+    quote: String
+    enabled: Boolean
+}
