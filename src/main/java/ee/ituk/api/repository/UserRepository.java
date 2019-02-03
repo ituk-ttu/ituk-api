@@ -2,7 +2,7 @@ package ee.ituk.api.repository;
 
 import ee.ituk.api.dto.User;
 import ee.ituk.api.dto.UserInput;
-import ee.ituk.tables.Mentor;
+import ee.ituk.tables.pojos.Mentor;
 import ee.ituk.tables.pojos.Userstatus;
 import ee.ituk.tables.records.UserRecord;
 import org.jooq.DSLContext;
@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 import static ee.ituk.tables.Mentor.MENTOR;
 import static ee.ituk.tables.User.USER;
@@ -51,8 +50,8 @@ public class UserRepository {
     private RecordMapper<Record, User> userRecordMapper = record -> {
         UserRecord userRecord = record.into(USER);
         User user = userRecord.into(User.class);
-        user.setUserstatus(record.into(USERSTATUS).into(ee.ituk.tables.pojos.Userstatus.class));
-        user.setMentor(record.into(MENTOR).into(ee.ituk.tables.pojos.Mentor.class));
+        user.setUserstatus(record.into(USERSTATUS).into(Userstatus.class));
+        user.setMentor(record.into(MENTOR).into(Mentor.class));
         return user;
     };
 
@@ -77,6 +76,14 @@ public class UserRepository {
 //                    .map(ee.ituk.tables.pojos.Mentor::getUserid)
 //                    .orElse(null));
         userRecord.store();
-        return userRecord.into(User.class);
+        return getUser(userRecord.getId());
+    }
+
+    public User changeStatus(int id, int statusId) {
+        dsl.update(USER)
+                .set(USER.STATUSID, statusId)
+                .where(USER.ID.eq(id))
+                .execute();
+        return getUser(id);
     }
 }

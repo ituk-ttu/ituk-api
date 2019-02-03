@@ -28,7 +28,7 @@ type User {
 
 type UserMutations {
     newUser(user: UserInput): User!
-#    changeStatus(id: Integer!, status: UserStatus!): User!
+    changeStatus(id: Int!, statusId: Int!): User!
 #    updateUser(user: User): User!
 #    deleteUser(userId: Integer): Boolean
 }
