@@ -5,6 +5,7 @@ import ee.ituk.api.dto.UserInput;
 import ee.ituk.tables.pojos.Mentor;
 import ee.ituk.tables.pojos.Userstatus;
 import ee.ituk.tables.records.UserRecord;
+import org.jetbrains.annotations.NotNull;
 import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,14 +67,7 @@ public class UserRepository {
 
     public User addUser(UserInput user) {
         UserRecord userRecord = dsl.newRecord(USER, user);
-//                .with(USER.STATUSID, Optional.of(user)
-//                    .map(User::getUserstatus)
-//                    .map(Userstatus::getStatusid)
-//                    .orElse(null))
-//                .with(USER.MENTORID, Optional.of(user)
-//                    .map(User::getMentor)
-//                    .map(ee.ituk.tables.pojos.Mentor::getUserid)
-//                    .orElse(null));
+
         userRecord.store();
         return getUser(userRecord.getId());
     }
@@ -88,10 +82,15 @@ public class UserRepository {
 
     public User updateUser(UserInput userInput) {
         UserRecord userRecord = dsl.newRecord(USER, userInput);
-        List<Field<?>> notNullfields = Arrays.stream(userRecord.fields())
-                .filter(field -> field.get(userRecord) != null)
-                .collect(Collectors.toList());
-        userRecord.update(notNullfields);
+        userRecord.update(JooqHelper.getNotNullFields(userRecord));
         return getUser(userRecord.getId());
+    }
+
+
+
+    public void deleteUser(int id) {
+        dsl.delete(USER)
+                .where(USER.ID.eq(id))
+                .execute();
     }
 }

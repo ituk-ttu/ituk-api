@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@SuppressWarnings("unused")
 public class UserMutations implements GraphQLMutationResolver {
 
     @Autowired
@@ -24,5 +25,9 @@ public class UserMutations implements GraphQLMutationResolver {
 
     public User updateUser(UserInput userInput) {
         return userRepository.updateUser(userInput);
+    }
+
+    public void deleteUser(int id) {
+        userRepository.deleteUser(id);
     }
 }
