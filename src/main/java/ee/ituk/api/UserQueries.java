@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class Query implements GraphQLQueryResolver {
+public class UserQueries implements GraphQLQueryResolver {
 
     @Autowired
     private UserRepository userRepository;
@@ -22,9 +22,11 @@ public class Query implements GraphQLQueryResolver {
     public List<User> getUsersByStatus(Integer statusId) {
         return userRepository.getUsersByStatus(statusId);
     }
+
     public List<User> getActiveUsers() {
         return userRepository.getActiveUsers();
     }
+
     public List<User> allUsers() {
         return userRepository.getAllUsers();
     }

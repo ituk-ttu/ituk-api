@@ -1,3 +1,12 @@
+type UserQueries {
+    getUser(id: Int!): User!
+    allUsers: [User]
+    getUsersByStatus(statusId: Int!): [User]
+    getActiveUsers: [User]
+}
+schema {
+    query: UserQueries
+}
 type User {
     id: ID!
     firstname: String!
@@ -13,13 +22,6 @@ type User {
     mentor: Mentor
     admin: Boolean
     archived: Boolean
-}
-
-type Query {
-    getUser(id: Int!): User!
-    allUsers: [User]
-    getUsersByStatus(statusId: Int!): [User]
-    getActiveUsers: [User]
 }
 
 
