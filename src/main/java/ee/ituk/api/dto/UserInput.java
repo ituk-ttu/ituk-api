@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserInput {
+    private Integer id;
     private String firstname;
     private String lastname;
     private String email;

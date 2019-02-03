@@ -21,4 +21,8 @@ public class UserMutations implements GraphQLMutationResolver {
     public User changeStatus(int id, int statusId) {
         return userRepository.changeStatus(id, statusId);
     }
+
+    public User updateUser(UserInput userInput) {
+        return userRepository.updateUser(userInput);
+    }
 }

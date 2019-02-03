@@ -1,5 +1,5 @@
 type Mentor {
-    userid: ID!
+    userid: ID
     curriculum: String
     text: String
     gif: String

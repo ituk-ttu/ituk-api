@@ -5,14 +5,13 @@ import ee.ituk.api.dto.UserInput;
 import ee.ituk.tables.pojos.Mentor;
 import ee.ituk.tables.pojos.Userstatus;
 import ee.ituk.tables.records.UserRecord;
-import org.jooq.DSLContext;
-import org.jooq.Record;
-import org.jooq.RecordMapper;
-import org.jooq.SelectOnConditionStep;
+import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static ee.ituk.tables.Mentor.MENTOR;
 import static ee.ituk.tables.User.USER;
@@ -60,7 +59,7 @@ public class UserRepository {
                 .from(USER)
                 .join(USERSTATUS)
                 .on(USERSTATUS.STATUSID.eq(USER.STATUSID))
-                .join(MENTOR)
+                .leftJoin(MENTOR)
                 .on(MENTOR.USERID.eq(USER.MENTORID))
                 ;
     }
@@ -85,5 +84,14 @@ public class UserRepository {
                 .where(USER.ID.eq(id))
                 .execute();
         return getUser(id);
+    }
+
+    public User updateUser(UserInput userInput) {
+        UserRecord userRecord = dsl.newRecord(USER, userInput);
+        List<Field<?>> notNullfields = Arrays.stream(userRecord.fields())
+                .filter(field -> field.get(userRecord) != null)
+                .collect(Collectors.toList());
+        userRecord.update(notNullfields);
+        return getUser(userRecord.getId());
     }
 }
