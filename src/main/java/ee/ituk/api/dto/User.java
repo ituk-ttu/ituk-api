@@ -2,6 +2,11 @@ package ee.ituk.api.dto;
 
 import ee.ituk.tables.pojos.Mentor;
 import ee.ituk.tables.pojos.Userstatus;
+import graphql.schema.GraphQLInputType;
+import graphql.schema.GraphQLType;
+import graphql.schema.GraphQLTypeVisitor;
+import graphql.util.TraversalControl;
+import graphql.util.TraverserContext;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -20,11 +25,11 @@ public class User {
     private Integer statusid;
     private String curriculum;
     private String iban;
-    private Integer mentorid;
     private Boolean admin;
     private Boolean archived;
     private LocalDateTime createdat;
     private LocalDateTime updatedat;
     private Userstatus userstatus;
     private Mentor mentor;
+
 }

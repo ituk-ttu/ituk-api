@@ -1,4 +1,4 @@
-package ee.ituk.api;
+package ee.ituk.api.query;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import ee.ituk.api.repository.UserRepository;

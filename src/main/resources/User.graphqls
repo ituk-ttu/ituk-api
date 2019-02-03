@@ -6,6 +6,7 @@ type UserQueries {
 }
 schema {
     query: UserQueries
+    mutation: UserMutations
 }
 type User {
     id: ID!
@@ -25,9 +26,25 @@ type User {
 }
 
 
-#type Mutation {
-#    newUser(user: User): User!
+type UserMutations {
+    newUser(user: UserInput): User!
 #    changeStatus(id: Integer!, status: UserStatus!): User!
 #    updateUser(user: User): User!
 #    deleteUser(userId: Integer): Boolean
-#}
+}
+
+input UserInput {
+    firstname: String!
+    lastname: String!
+    email: String!
+    cardnumber: String
+    telegram: String
+    password: String
+    studentcode: String!
+    statusid: Int!
+    curriculum: String!
+    iban: String
+    mentorid: Int
+    admin: Boolean
+    archived: Boolean
+}

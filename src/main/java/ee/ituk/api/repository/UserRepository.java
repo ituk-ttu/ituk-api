@@ -1,7 +1,9 @@
 package ee.ituk.api.repository;
 
 import ee.ituk.api.dto.User;
+import ee.ituk.api.dto.UserInput;
 import ee.ituk.tables.Mentor;
+import ee.ituk.tables.pojos.Userstatus;
 import ee.ituk.tables.records.UserRecord;
 import org.jooq.DSLContext;
 import org.jooq.Record;
@@ -11,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ee.ituk.tables.Mentor.MENTOR;
 import static ee.ituk.tables.User.USER;
@@ -61,5 +64,19 @@ public class UserRepository {
                 .join(MENTOR)
                 .on(MENTOR.USERID.eq(USER.MENTORID))
                 ;
+    }
+
+    public User addUser(UserInput user) {
+        UserRecord userRecord = dsl.newRecord(USER, user);
+//                .with(USER.STATUSID, Optional.of(user)
+//                    .map(User::getUserstatus)
+//                    .map(Userstatus::getStatusid)
+//                    .orElse(null))
+//                .with(USER.MENTORID, Optional.of(user)
+//                    .map(User::getMentor)
+//                    .map(ee.ituk.tables.pojos.Mentor::getUserid)
+//                    .orElse(null));
+        userRecord.store();
+        return userRecord.into(User.class);
     }
 }
