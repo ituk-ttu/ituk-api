@@ -1,14 +1,17 @@
 package ee.ituk.api.dto;
 
-import ee.ituk.tables.pojos.Mentor;
-import ee.ituk.tables.pojos.Userstatus;
+
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
+@Entity
 public class User {
 
+    @Id
     private Integer id;
     private String firstname;
     private String lastname;
@@ -24,7 +27,7 @@ public class User {
     private Boolean archived;
     private LocalDateTime createdat;
     private LocalDateTime updatedat;
-    private Userstatus userstatus;
+    private UserStatus userstatus;
     private Mentor mentor;
 
 }
