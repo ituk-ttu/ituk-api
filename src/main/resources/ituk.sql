@@ -9,21 +9,21 @@ create table resources
     name       varchar(255),
     comment    text,
     url        varchar(255),
-    created_at timestamp                                            not null,
-    updated_at timestamp                                            not null,
+    created_at timestamp not null,
+    updated_at timestamp not null,
     author_id  integer
 );
 
 create table user_status
 (
-    status_id   serial      not null,
+    status_id   serial       not null,
     status_name varchar(255) not null,
     description varchar(255)
 );
 
 create table "user"
 (
-    id           serial   primary key,
+    id           serial primary key,
     first_name   varchar(255),
     last_name    varchar(255),
     email        varchar(255),
@@ -38,10 +38,10 @@ create table "user"
     curriculum   varchar(255),
     iban         varchar(35),
     mentor_id    integer,
-    admin        boolean   default false                            not null,
-    archived     boolean   default false                            not null,
-    created_at   timestamp default LOCALTIMESTAMP                   not null,
-    updated_at   timestamp default LOCALTIMESTAMP                   not null
+    admin        boolean   default false          not null,
+    archived     boolean   default false          not null,
+    created_at   timestamp default LOCALTIMESTAMP not null,
+    updated_at   timestamp default LOCALTIMESTAMP not null
 );
 
 create table mentor
@@ -63,7 +63,7 @@ create unique index mentors_userid_uindex
 
 create table applications
 (
-    id                    serial   primary key,
+    id                    serial primary key,
     first_name            varchar(255),
     last_name             varchar(255),
     personal_code         varchar(255),
@@ -71,8 +71,8 @@ create table applications
     student_code          varchar(255),
     curriculum            varchar(255),
     mentor_selection_code varchar(255),
-    created_at            timestamp default LOCALTIMESTAMP                          not null,
-    updated_at            timestamp default LOCALTIMESTAMP                          not null,
+    created_at            timestamp default LOCALTIMESTAMP not null,
+    updated_at            timestamp default LOCALTIMESTAMP not null,
     processed_by_id       integer
         constraint processed_by_id
             unique
@@ -112,7 +112,7 @@ create table door_permission_log_entry
 
 create table recovery_keys
 (
-    id         serial   primary key,
+    id         serial primary key,
     key        varchar(255),
     created_at timestamp not null,
     updated_at timestamp not null,
