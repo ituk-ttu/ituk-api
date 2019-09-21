@@ -1,9 +1,7 @@
 package ee.ituk.api.mutation;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import ee.ituk.api.dto.User;
-import ee.ituk.api.dto.UserInput;
 import ee.ituk.api.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

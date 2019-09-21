@@ -1,18 +1,14 @@
 package ee.ituk.api.repository;
 
 import ee.ituk.api.dto.User;
-import ee.ituk.api.dto.UserInput;
 import ee.ituk.tables.pojos.Mentor;
 import ee.ituk.tables.pojos.Userstatus;
 import ee.ituk.tables.records.UserRecord;
-import org.jetbrains.annotations.NotNull;
 import org.jooq.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static ee.ituk.tables.Mentor.MENTOR;
 import static ee.ituk.tables.User.USER;
@@ -65,7 +61,7 @@ public class UserRepository {
                 ;
     }
 
-    public User addUser(UserInput user) {
+    public User addUser(User user) {
         UserRecord userRecord = dsl.newRecord(USER, user);
 
         userRecord.store();
@@ -80,7 +76,7 @@ public class UserRepository {
         return getUser(id);
     }
 
-    public User updateUser(UserInput userInput) {
+    public User updateUser(User userInput) {
         UserRecord userRecord = dsl.newRecord(USER, userInput);
         userRecord.update(JooqHelper.getNotNullFields(userRecord));
         return getUser(userRecord.getId());
