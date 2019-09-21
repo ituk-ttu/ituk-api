@@ -111,7 +111,7 @@ create table general_meeting
     updated_at timestamptz default LOCALTIMESTAMP not null
 );
 
-create table meeting_participant
+create table meeting_participation
 (
     user_id      integer references "user" (id),
     meeting_id   integer references general_meeting (id),
