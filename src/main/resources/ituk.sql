@@ -1,221 +1,162 @@
-create sequence seq_user_id
-  as integer
-  maxvalue 2147483647;
-
-
-create sequence seq_doorpermissions_id
-  as integer
-  maxvalue 2147483647;
-
-
-create sequence seq_doorpermissions_log_id
-  as integer
-  maxvalue 2147483647;
-
-
-create sequence seq_application_id
-  as integer
-  maxvalue 2147483647;
-
-
-create sequence seq_recoverykeys_id
-  as integer
-  maxvalue 2147483647;
-
-
-create sequence seq_resource_id
-  as integer
-  maxvalue 2147483647;
-
-
 create table door
 (
-  code varchar(255) not null
-    constraint door_pkey
-      primary key
+    code varchar(255) primary key
 );
 
-
-create table resources
+create table resource
 (
-  id        integer default nextval('seq_resource_id'::regclass) not null
-    constraint resources_pkey
-      primary key,
-  name      varchar(255),
-  comment   text,
-  url       varchar(255),
-  createdat timestamp                                            not null,
-  updatedat timestamp                                            not null,
-  authorid  integer
-    constraint authorid
-      unique
+    id         serial primary key,
+    name       varchar(255),
+    comment    text,
+    url        varchar(255),
+    created_at timestamptz default LOCALTIMESTAMP not null,
+    updated_at timestamptz default LOCALTIMESTAMP not null,
+    author_id  integer
 );
 
-
-create table userstatus
+create table user_status
 (
-  statusid    integer      not null
-    constraint userstatus_pkey
-      primary key,
-  statusname  varchar(255) not null,
-  description varchar(255)
+    id          serial       not null,
+    status_name varchar(255) not null,
+    description varchar(255)
 );
-
 
 create table "user"
 (
-  id          integer   default nextval('seq_user_id'::regclass) not null
-    constraint users_pkey
-      primary key,
-  firstname   varchar(255),
-  lastname    varchar(255),
-  email       varchar(255),
-  cardnumber  varchar(255),
-  telegram    varchar(255),
-  password    varchar(255),
-  studentcode varchar(255),
-  statusid    integer
-    constraint users_userstatus_statusid_fk
-      references userstatus
-      on update cascade on delete set null,
-  curriculum  varchar(255),
-  iban        varchar(35),
-  mentorid    integer,
-  admin       boolean   default false                            not null,
-  archived    boolean   default false                            not null,
-  createdat   timestamp default LOCALTIMESTAMP                   not null,
-  updatedat   timestamp default LOCALTIMESTAMP                   not null
+    id           serial primary key,
+    first_name   varchar(255),
+    last_name    varchar(255),
+    email        varchar(255),
+    card_number  varchar(255),
+    telegram     varchar(255),
+    password     varchar(255),
+    student_code varchar(255),
+    status_id    integer                            references user_status (id)
+                                                        on update cascade on delete set null,
+    curriculum   varchar(255),
+    iban         varchar(35),
+    mentor_id    integer,
+    admin        boolean     default false          not null,
+    archived     boolean     default false          not null,
+    created_at   timestamptz default LOCALTIMESTAMP not null,
+    updated_at   timestamptz default LOCALTIMESTAMP not null
 );
-
 
 create table mentor
 (
-  userid     integer                          not null
-    constraint mentors_users_id_fk
-      references "user",
-  curriculum varchar(255),
-  text       text,
-  gif        varchar(255),
-  quote      text,
-  enabled    boolean,
-  createdat  timestamp default LOCALTIMESTAMP not null,
-  updatedat  timestamp default LOCALTIMESTAMP not null
+    user_id      integer                            not null references "user" (id),
+    curriculum   varchar(255),
+    text         text,
+    gif          varchar(255),
+    quote        text,
+    enabled      boolean,
+    picture_name varchar(1000),
+    created_at   timestamptz default LOCALTIMESTAMP not null,
+    updated_at   timestamptz default LOCALTIMESTAMP not null
 );
-
 
 create unique index mentors_userid_uindex
-  on mentor (userid);
+    on mentor (user_id);
 
-create table applications
+create table application
 (
-  id                  integer   default nextval('seq_application_id'::regclass) not null
-    constraint applications_pkey
-      primary key,
-  firstname           varchar(255),
-  lastname            varchar(255),
-  personalcode        varchar(255),
-  email               varchar(255),
-  studentcode         varchar(255),
-  curriculum          varchar(255),
-  mentorselectioncode varchar(255),
-  createdat           timestamp default LOCALTIMESTAMP                          not null,
-  updatedat           timestamp default LOCALTIMESTAMP                          not null,
-  processedbyid       integer
-    constraint processedbyid
-      unique
-    constraint applications_users_id_fk
-      references "user",
-  mentorid            integer
-    constraint mentorid
-      unique
-    constraint applications_mentors_userid_fk
-      references mentor (userid)
+    id                    serial primary key,
+    first_name            varchar(255),
+    last_name             varchar(255),
+    personal_code         varchar(255),
+    email                 varchar(255),
+    student_code          varchar(255),
+    curriculum            varchar(255),
+    mentor_selection_code varchar(255),
+    created_at            timestamptz default LOCALTIMESTAMP not null,
+    updated_at            timestamptz default LOCALTIMESTAMP not null,
+    processed_by_id       integer references "user" (id) on update cascade,
+    mentor_id             integer references mentor (user_id) on update cascade
 );
 
 
-create table doorpermissions
+create table door_permission
 (
-  id       integer default nextval('seq_doorpermissions_id'::regclass) not null
-    constraint doorpermissions_pkey
-      primary key,
-  doorcode varchar(255)
-    constraint doorpermissions_door_code_fk
-      references door,
-  userid   integer
-    constraint doorpermissions_users_id_fk
-      references "user"
+    id        serial primary key,
+    door_code varchar(255) references door (code),
+    user_id   integer references "user" (id)
 );
 
 
-create table doorpermissionlogentry
+create table door_permission_log_entry
 (
-  id         integer default nextval('seq_doorpermissions_log_id'::regclass) not null
-    constraint doorpermissionslog_pkey
-      primary key,
-  updatedat  timestamp,
-  change     text,
-  modifiedby integer
-    constraint doorpermissionlogentry_user_id_fk
-      references "user"
+    id          serial primary key,
+    updated_at  timestamp,
+    change      text,
+    modified_by integer references "user" (id)
 );
 
 
-create table recoverykeys
+
+create table recovery_key
 (
-  id        integer default nextval('seq_recoverykeys_id'::regclass) not null
-    constraint recoverykeys_pkey
-      primary key,
-  key       varchar(255),
-  createdat timestamp                                                not null,
-  updatedat timestamp                                                not null,
-  userid    integer
-    constraint userid
-      unique
-    constraint recoverykeys_users_id_fk
-      references "user"
-      on update cascade
+    id         serial primary key,
+    key        varchar(255),
+    created_at timestamptz default LOCALTIMESTAMP not null,
+    updated_at timestamptz default LOCALTIMESTAMP not null,
+    user_id    integer unique references "user" (id) on update cascade
 );
 
+create table general_meeting
+(
+    id         serial primary key,
+    name       varchar(255),
+    date       timestamp,
+    created_at timestamptz default LOCALTIMESTAMP not null,
+    updated_at timestamptz default LOCALTIMESTAMP not null
+);
+
+create table meeting_participation
+(
+    user_id      integer references "user" (id),
+    meeting_id   integer references general_meeting (id),
+    participated boolean default false,
+    mandatory    boolean default false
+);
 
 create function trigger_set_timestamp() returns trigger
-  language plpgsql
+    language plpgsql
 as
 $$
 BEGIN
-  NEW.updatedat = NOW();
-  RETURN NEW;
+    NEW.updated_at = NOW();
+    RETURN NEW;
 END;
 $$;
 
-
-create trigger updatedat
-  before update
-  on "user"
-  for each row
+create trigger updated_at
+    before update
+    on "user"
+    for each row
 execute procedure trigger_set_timestamp();
 
-create trigger updatedat
-  before update
-  on mentor
-  for each row
+create trigger updated_at
+    before update
+    on mentor
+    for each row
 execute procedure trigger_set_timestamp();
 
-create trigger updatedat
-  before update
-  on applications
-  for each row
+create trigger updated_at
+    before update
+    on application
+    for each row
 execute procedure trigger_set_timestamp();
 
-create trigger updatedat
-  before update
-  on doorpermissionlogentry
-  for each row
+create trigger updated_at
+    before update
+    on door_permission_log_entry
+    for each row
 execute procedure trigger_set_timestamp();
 
-create trigger updatedat
-  before update
-  on recoverykeys
-  for each row
+create trigger updated_at
+    before update
+    on recovery_key
+    for each row
 execute procedure trigger_set_timestamp();
 
 
