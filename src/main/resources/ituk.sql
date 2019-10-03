@@ -86,8 +86,8 @@ create table door_permission
 create table door_permission_log_entry
 (
     id          serial primary key,
-    updated_at  timestamp,
     change      text,
+    updated_at  timestamp,
     modified_by integer references "user" (id)
 );
 
@@ -158,5 +158,3 @@ create trigger updated_at
     on recovery_key
     for each row
 execute procedure trigger_set_timestamp();
-
-
