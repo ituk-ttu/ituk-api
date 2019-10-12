@@ -1,0 +1,15 @@
+version: "3"
+services:
+  db:
+    image: "postgres:11.4"
+    container_name: "postgres-ituk-api"
+    ports:
+      - "5433:5432"
+#    volumes:
+#      - ~/docker/volumes/postgres/ituk-api:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: ituk-api
+      SCHEMA: public
+    restart: unless-stopped

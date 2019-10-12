@@ -9,6 +9,7 @@ create table general_meeting
 
 create table meeting_participation
 (
+    id serial primary key,
     user_id      integer references "user" (id),
     meeting_id   integer references general_meeting (id),
     participated boolean default false,

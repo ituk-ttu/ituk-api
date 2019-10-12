@@ -1,5 +1,6 @@
-create table mentor
+create table mentor_profile
 (
+    id           serial primary key,
     user_id      integer unique                     not null references "user" (id),
     curriculum   varchar(255),
     text         text,
@@ -13,7 +14,7 @@ create table mentor
 
 create trigger updated_at
     before update
-    on mentor
+    on mentor_profile
     for each row
 execute procedure trigger_set_timestamp();
 

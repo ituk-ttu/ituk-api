@@ -11,7 +11,7 @@ create table application
     created_at            timestamptz default LOCALTIMESTAMP not null,
     updated_at            timestamptz default LOCALTIMESTAMP not null,
     processed_by_id       integer references "user" (id) on update cascade,
-    mentor_id             integer references mentor (user_id) on update cascade
+    mentor_id             integer references mentor_profile (user_id) on update cascade
 );
 
 create trigger updated_at

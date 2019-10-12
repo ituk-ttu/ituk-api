@@ -1,8 +1,8 @@
 create table user_status
 (
-    id          serial       not null,
-    status_name varchar(255) not null,
-    description varchar(255)
+    id          serial primary key,
+    status_name varchar(255) unique not null,
+    description varchar(1000)
 );
 
 create table "user"
@@ -12,18 +12,16 @@ create table "user"
     last_name    varchar(255),
     email        varchar(255),
     card_number  varchar(255),
-    telegram     varchar(255),
     password     varchar(255),
     student_code varchar(255),
-    status_id    integer                            references user_status (id)
-                                                        on update cascade on delete set null,
+    status_id    integer                             references user_status (id)
+                                                         on update cascade on delete set null,
     curriculum   varchar(255),
     iban         varchar(35),
-    mentor_id    integer,
-    admin        boolean     default false          not null,
-    archived     boolean     default false          not null,
-    created_at   timestamptz default LOCALTIMESTAMP not null,
-    updated_at   timestamptz default LOCALTIMESTAMP not null
+    role         varchar(255) default 'MEMBER'       not null,
+    archived     boolean      default false          not null,
+    created_at   timestamptz  default LOCALTIMESTAMP not null,
+    updated_at   timestamptz  default LOCALTIMESTAMP not null
 );
 
 create trigger updated_at
