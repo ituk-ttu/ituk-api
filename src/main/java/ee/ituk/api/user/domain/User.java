@@ -1,14 +1,19 @@
 package ee.ituk.api.user.domain;
 
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Collection;
+import java.util.List;
 
 @Data
 @Entity
 @Table(name = "user", schema = "public")
-public class User {
+public class User implements UserDetails {
 
   @Id
   @GeneratedValue
@@ -30,4 +35,33 @@ public class User {
   private LocalDate createdAt;
   private LocalDate updatedAt;
 
+  @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+    return List.of(new SimpleGrantedAuthority(role.name()));
+  }
+
+  @Override
+  public String getUsername() {
+    return email;
+  }
+
+  @Override
+  public boolean isAccountNonExpired() {
+    return !archived;
+  }
+
+  @Override
+  public boolean isAccountNonLocked() {
+    return !archived;
+  }
+
+  @Override
+  public boolean isCredentialsNonExpired() {
+    return !archived;
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return !archived;
+  }
 }

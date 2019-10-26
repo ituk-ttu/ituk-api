@@ -18,8 +18,12 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
-
 management:
   endpoint:
     health:
       show-details: always
+email:
+  domain: "ituk.ee"
+  fromName: "IT teaduskonna üliõpilaskogu"
+  fromEmail: "kontakt@ituk.ee"
+  apiKey: "I AM KEY"

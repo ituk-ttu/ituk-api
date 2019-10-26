@@ -1,14 +1,14 @@
-package ee.ituk.api.domain;
+package ee.ituk.api.join;
 
+import ee.ituk.api.user.domain.User;
 import lombok.Data;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 @Data
 @Entity
+@Table(name = "application", schema = "public")
 public class Application {
 
   @Id
@@ -23,7 +23,10 @@ public class Application {
   private String mentorSelectionCode;
   private LocalDate createdAt;
   private LocalDate updatedAt;
-
-  private Long processedById;
-  private Long mentorId;
+  @ManyToOne
+  @JoinColumn(name = "processedById")
+  private User processedBy;
+  @ManyToOne
+  @JoinColumn(name = "mentorId")
+  private MentorProfile mentor;
 }
