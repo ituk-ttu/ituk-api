@@ -27,3 +27,6 @@ email:
   fromName: "IT teaduskonna üliõpilaskogu"
   fromEmail: "kontakt@ituk.ee"
   apiKey: "I AM KEY"
+security:
+  signing:
+    key: "ituk"
