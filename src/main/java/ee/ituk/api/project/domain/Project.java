@@ -25,7 +25,7 @@ public class Project {
     private String description;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "project_lead_id")
     private User projectLead;
 
     @OneToMany(mappedBy = "project")
