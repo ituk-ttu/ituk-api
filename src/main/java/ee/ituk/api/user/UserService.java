@@ -7,7 +7,7 @@ import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.validation.UserValidator;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,12 @@ import java.util.List;
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RecoveryService recoveryService;
-    private final UserValidator userValidator;
-
+    private final UserValidator userValidator = new UserValidator();
 
     @Override
     public UserDetails loadUserByUsername(String email) {
