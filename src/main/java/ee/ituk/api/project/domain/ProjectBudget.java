@@ -18,6 +18,6 @@ public class ProjectBudget {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "project_budget")
+    @OneToMany(mappedBy = "projectBudget")
     private List<ProjectBudgetRow> projectBudgetRows;
 }
