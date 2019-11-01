@@ -26,6 +26,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) {
+        return loadInternalUserByUsername(email);
+    }
+
+    public User loadInternalUserByUsername(String email) {
         return userRepository.findByEmail(email).orElseThrow(EmailNotFoundException::new);
     }
 

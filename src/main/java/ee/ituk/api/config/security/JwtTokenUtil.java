@@ -20,11 +20,8 @@ public class JwtTokenUtil implements Serializable {
 
     private static final int SEC_IN_MIN = 60;
     private static final int MILLIS_IN_SEC = 1000;
-    private static final int TEMP_TOKEN_DURATION = 5;
     private static final String AUTHORITIES_KEY = "authorities";
     private static final String ISSUER = "http://www.ituk.ee";
-    private static final String TYPE_KEY = "type";
-    private static final String QR_KEY = "qr";
 
     @Value("${security.signing.key}")
     private String signingKey;
