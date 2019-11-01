@@ -13,6 +13,7 @@ public class UserDto {
     private String email;
     private String cardNumber;
     private String studentCode;
+    private String idCode;
     private UserStatusDto status;
     private String curriculum;
     private String iban;

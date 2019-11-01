@@ -24,6 +24,7 @@ public class User implements UserDetails {
   private String cardNumber;
   private String password;
   private String studentCode;
+  private String idCode;
   @ManyToOne
   @JoinColumn( name = "status_id")
   private UserStatus status;
