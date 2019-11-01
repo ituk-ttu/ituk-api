@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
     private final UserService userService;
+    private final SessionService sessionService;
     private final JwtTokenUtil jwtTokenUtil;
     private final BCryptPasswordEncoder encoder;
 
     String loginUser(LoginUserDto loginUserDto) {
         User user = userService.loadInternalUserByUsername(loginUserDto.getEmail());
         if (encoder.matches(loginUserDto.getPassword(), user.getPassword())) {
+            sessionService.createSession(user);
             return jwtTokenUtil.generateToken(user);
         } else {
             throw new IncorrectPasswordException();

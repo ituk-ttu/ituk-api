@@ -1,9 +1,12 @@
 package ee.ituk.api.config.security;
 
+import ee.ituk.api.login.SessionService;
+import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
@@ -16,6 +19,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
+@RequiredArgsConstructor
 public class JwtTokenUtil implements Serializable {
 
     private static final int SEC_IN_MIN = 60;
@@ -25,6 +29,9 @@ public class JwtTokenUtil implements Serializable {
 
     @Value("${security.signing.key}")
     private String signingKey;
+
+    private final SessionService sessionService;
+    private final UserService userService;
 
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
@@ -81,7 +88,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     boolean validateToken(String token) {
-        return !isTokenExpired(token);
+        return !isTokenExpired(token) && validateSession(token);
     }
 
     private Integer getSessionTimeout() {
@@ -90,6 +97,11 @@ public class JwtTokenUtil implements Serializable {
 
     @Transactional
     public void updateSessionExpiration(User user, Date expireDate) {
+    }
+
+    private boolean validateSession(String token) {
+        User user = userService.loadInternalUserByUsername(getUsernameFromToken(token));
+        return sessionService.checkSession(user);
     }
 
 }

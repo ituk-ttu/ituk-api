@@ -44,6 +44,9 @@ public class UserController {
         return mapper.userToDto(userService.getRecoveryUser(key));
     }
 
-
+    @GetMapping("/logout")
+    public void logout() {
+        userService.logout();
+    }
 
 }
