@@ -1,12 +1,12 @@
 package ee.ituk.api.user;
 
-import ee.ituk.api.exception.EmailNotFoundException;
-import ee.ituk.api.exception.NotFoundException;
-import ee.ituk.api.exception.ValidationException;
+import ee.ituk.api.common.exception.EmailNotFoundException;
+import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.recovery.RecoveryKey;
 import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.user.dto.PasswordChangeDto;
+import ee.ituk.api.user.validation.UserValidator;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,12 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
+
 @Service
 @AllArgsConstructor
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RecoveryService recoveryService;
+    private final UserValidator userValidator;
 
 
     @Override
@@ -33,9 +36,7 @@ public class UserService implements UserDetailsService {
 
     void changePassword(long id, PasswordChangeDto passwordChangeDto) {
         User user = findUserById(id);
-        if (!user.getPassword().equals(passwordChangeDto.getOldPassword())) {
-            throw new ValidationException();
-        }
+        checkForErrors(userValidator.validatePasswordChange(user, passwordChangeDto));
         user.setPassword(passwordChangeDto.getNewPassword());
         saveUser(user);
     }
@@ -45,7 +46,8 @@ public class UserService implements UserDetailsService {
     }
 
     User createUser(User user) {
-        //TODO add validation module here
+
+        checkForErrors(userValidator.validateOnCreate(user));
 
         user = saveUser(user);
 

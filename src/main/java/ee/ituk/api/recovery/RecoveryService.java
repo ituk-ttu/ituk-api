@@ -1,6 +1,6 @@
 package ee.ituk.api.recovery;
 
-import ee.ituk.api.exception.NotFoundException;
+import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.user.domain.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package ee.ituk.api.exception;
+package ee.ituk.api.common.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
