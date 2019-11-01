@@ -1,4 +1,4 @@
-package ee.ituk.api.domain;
+package ee.ituk.api.door;
 
 import lombok.Data;
 
