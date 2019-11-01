@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @Entity
@@ -26,4 +27,7 @@ public class Project {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User projectLead;
+
+    @OneToMany(mappedBy = "project")
+    private List<ProjectMember> members;
 }
