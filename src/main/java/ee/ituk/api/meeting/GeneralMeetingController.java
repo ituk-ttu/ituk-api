@@ -23,4 +23,10 @@ public class GeneralMeetingController {
         return meetingService.create(meeting);
     }
 
+    @PutMapping("/{id}")
+    public GeneralMeeting  updateMeeting(@PathVariable Long id, @RequestBody GeneralMeeting meeting) {
+        return meetingService.update(id, meeting);
+    }
+
+
 }
