@@ -21,5 +21,5 @@ public class Session {
 
     private String code;
 
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 }
