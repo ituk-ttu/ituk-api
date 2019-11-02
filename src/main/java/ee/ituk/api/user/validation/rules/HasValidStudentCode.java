@@ -16,11 +16,11 @@ import static java.util.Collections.singletonList;
 @AllArgsConstructor
 public class HasValidStudentCode implements ValidationRule<User> {
 
-    private final Pattern studentCodePattern = Pattern.compile("^\\d{6}[iyIY][a-zA-Z]{2}[bmdBMD]$");
+    private final Pattern studentCodePattern = Pattern.compile("^\\d{6}[IYT][A-Z]{2}[BMD]?$");
 
     @Override
     public List<ValidationError> apply(User user) {
-        if (studentCodePattern.matcher(user.getStudentCode()).matches()) {
+        if (studentCodePattern.matcher(user.getStudentCode().toUpperCase()).matches()) {
             return emptyList();
         }
         return singletonList(ValidationError.builder().code(STUDENTCODE_INCORRECT).build());
