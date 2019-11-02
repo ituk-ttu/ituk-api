@@ -19,5 +19,5 @@ public class ProjectBudget {
     private Project project;
 
     @OneToMany(mappedBy = "projectBudget")
-    private List<ProjectBudgetRow> projectBudgetRows;
+    private List<ProjectBudgetRow> rows;
 }
