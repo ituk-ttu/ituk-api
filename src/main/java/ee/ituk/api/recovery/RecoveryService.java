@@ -1,11 +1,10 @@
 package ee.ituk.api.recovery;
 
+import ee.ituk.api.common.GlobalUtil;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.user.domain.User;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -22,7 +21,7 @@ public class RecoveryService {
     public RecoveryKey createRecoveryKey(User user) {
         RecoveryKey recoveryKey = new RecoveryKey();
         recoveryKey.setUser(user);
-        recoveryKey.setKey(UUID.randomUUID().toString().replace("-", ""));
+        recoveryKey.setKey(GlobalUtil.generateCode());
         return recoveryKeyRepository.save(recoveryKey);
     }
 }

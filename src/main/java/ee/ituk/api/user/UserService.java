@@ -77,4 +77,18 @@ public class UserService implements UserDetailsService {
         User user = loadInternalUserByUsername(username);
         sessionService.deleteSession(user);
     }
+
+    public long getMemberCount() {
+        return userRepository.count();
+    }
+
+    public User updateUser(User user) {
+        //TODO validation
+        return userRepository.save(user);
+    }
+
+    public User getLoggedUser() {
+        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+                .orElseThrow(NotFoundException::new);
+    }
 }

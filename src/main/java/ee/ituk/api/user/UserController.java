@@ -34,6 +34,12 @@ public class UserController {
         return mapper.userToDto(userService.createUser(mapper.userToEntity(userDto)));
     }
 
+    @PutMapping
+    @ResponseBody
+    public UserDto updateUser(@RequestBody UserDto userDto) {
+        return mapper.userToDto(userService.updateUser(mapper.userToEntity(userDto)));
+    }
+
     @PutMapping("/{id}/new-password")
     public void changePassword(@PathVariable Long id, @RequestBody PasswordChangeDto passwordChangeDto) {
         userService.changePassword(id, passwordChangeDto);
@@ -47,6 +53,18 @@ public class UserController {
     @GetMapping("/logout")
     public void logout() {
         userService.logout();
+    }
+
+    @GetMapping("/count")
+    @ResponseBody
+    public long getMemberCount() {
+        return userService.getMemberCount();
+    }
+
+    @GetMapping("/me")
+    @ResponseBody
+    public UserDto getLoggedUser() {
+        return mapper.userToDto(userService.getLoggedUser());
     }
 
 }
