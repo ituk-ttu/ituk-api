@@ -1,4 +1,4 @@
-package ee.ituk.api.join;
+package ee.ituk.api.join.domain;
 
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
