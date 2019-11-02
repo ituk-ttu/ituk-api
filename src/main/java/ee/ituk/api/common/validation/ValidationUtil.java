@@ -8,6 +8,8 @@ public final class ValidationUtil {
     public static final String PASSWORD_NOT_SECURE = "password.not.secure";
     public static final String PASSWORD_UNCHANGED = "password.unchanged";
 
+    public static final String STUDENTCODE_INCORRECT = "studentCode.incorrect";
+
     public static final String NAME_MISSING = "name.missing";
 
     private ValidationUtil() {
