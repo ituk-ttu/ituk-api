@@ -36,7 +36,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email).orElseThrow(BadCredentialsException::new);
     }
 
-    User findUserById(long id) {
+    public User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
