@@ -1,13 +1,12 @@
 package ee.ituk.api.project.dto;
 
-import ee.ituk.api.project.domain.Project;
-import ee.ituk.api.user.domain.User;
+import ee.ituk.api.user.dto.UserDto;
 import lombok.Data;
 
 @Data
 public class ProjectMemberDto {
     private Long id;
-    private Project project;
-    private User user;
+    private ProjectDto project;
+    private UserDto user;
     private String name;
 }

@@ -1,7 +1,7 @@
 package ee.ituk.api.project.dto;
 
-import ee.ituk.api.project.domain.ProjectMember;
-import ee.ituk.api.user.domain.User;
+import ee.ituk.api.user.dto.UserDto;
+
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -14,6 +14,6 @@ public class ProjectDto {
     private LocalDate dateStart;
     private LocalDate dateEnd;
     private String description;
-    private User projectLead;
-    private List<ProjectMember> members;
+    private UserDto projectLead;
+    private List<ProjectMemberDto> members;
 }
