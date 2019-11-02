@@ -1,4 +1,4 @@
-package ee.ituk.api.common.validation;
+package ee.ituk.api.common.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ValidationError {
+public class ErrorMessage {
 
   private String code;
   private String description;
