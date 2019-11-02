@@ -16,4 +16,5 @@ public class ProjectDto {
     private String description;
     private UserDto projectLead;
     private List<ProjectMemberDto> members;
+    private ProjectBudgetDto projectBudget;
 }
