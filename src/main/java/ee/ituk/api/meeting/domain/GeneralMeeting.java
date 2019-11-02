@@ -1,4 +1,4 @@
-package ee.ituk.api.domain;
+package ee.ituk.api.meeting.domain;
 
 import lombok.Data;
 
@@ -16,6 +16,8 @@ public class GeneralMeeting {
   private Long id;
   private String name;
   private LocalDate date;
+  private boolean election;
+  private String protocolUrl;
   private LocalDate createdAt;
   private LocalDate updatedAt;
 }
