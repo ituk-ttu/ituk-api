@@ -19,5 +19,7 @@ public class Session {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String code;
+
     private LocalDateTime createdAt;
 }

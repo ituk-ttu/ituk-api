@@ -20,7 +20,6 @@ public class AuthService {
     String loginUser(LoginUserDto loginUserDto) {
         User user = userService.loadInternalUserByUsername(loginUserDto.getEmail());
         if (encoder.matches(loginUserDto.getPassword(), user.getPassword())) {
-            sessionService.createSession(user);
             return jwtTokenUtil.generateToken(user);
         } else {
             throw new IncorrectPasswordException();

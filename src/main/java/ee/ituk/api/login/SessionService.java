@@ -1,5 +1,6 @@
 package ee.ituk.api.login;
 
+import ee.ituk.api.common.GlobalUtil;
 import ee.ituk.api.login.domain.Session;
 import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -13,8 +14,8 @@ public class SessionService {
 
     private final SessionRepository sessionRepository;
 
-    public boolean checkSession(User user) {
-        return sessionRepository.existsByUser(user);
+    public boolean checkSession(User user, String code) {
+        return sessionRepository.existsSessionByUserAndCode(user, code);
     }
 
     public void deleteSession(User user) {
@@ -22,8 +23,9 @@ public class SessionService {
     }
 
     public Session createSession(User user) {
-        Session session = new Session();
+        Session session = sessionRepository.findByUser(user).orElse(new Session());
         session.setUser(user);
+        session.setCode(GlobalUtil.generateCode());
         session.setCreatedAt(LocalDateTime.now());
         return sessionRepository.save(session);
     }
