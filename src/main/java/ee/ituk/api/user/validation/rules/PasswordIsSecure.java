@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 import static ee.ituk.api.common.validation.ValidationUtil.PASSWORD_NOT_SECURE;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static org.apache.commons.lang.StringUtils.isBlank;
 
 @AllArgsConstructor
 public class PasswordIsSecure implements BasicValidationRule {
@@ -20,7 +21,7 @@ public class PasswordIsSecure implements BasicValidationRule {
 
     @Override
     public List<ValidationError> apply() {
-        if (password.length() > 9 && passwordPattern.matcher(password).matches()) {
+        if (isBlank(password) || (password.length() > 9 && passwordPattern.matcher(password).matches())) {
             return emptyList();
         }
         return singletonList(ValidationError.builder().code(PASSWORD_NOT_SECURE).build());
