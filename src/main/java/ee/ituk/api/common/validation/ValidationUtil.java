@@ -10,6 +10,7 @@ public final class ValidationUtil {
 
     public static final String NAME_MISSING = "name.missing";
 
+    public static final String PROJECT_MISSING_REQUIRED_FIELDS = "project.missing.required.fields";
     public static final String PROJECT_MEMBER_NOT_VALID = "project.member.not.valid";
 
     private ValidationUtil() {
