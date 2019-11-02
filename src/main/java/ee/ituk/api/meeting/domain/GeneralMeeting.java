@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -19,6 +20,6 @@ public class GeneralMeeting {
   private LocalDate date;
   private boolean election;
   private String protocolUrl;
-  private LocalDate createdAt;
-  private LocalDate updatedAt;
+  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime updatedAt = LocalDateTime.now();
 }
