@@ -30,7 +30,7 @@ public class GeneralMeetingController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletMeeting(@PathVariable Long id) {
+    public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
         meetingService.delete(id);
         return ResponseEntity.noContent().build();
     }
