@@ -35,4 +35,9 @@ public class GeneralMeetingService {
         }
         return meetingsRepository.save(meeting);
     }
+
+    public void delete(Long id) {
+        GeneralMeeting meeting = meetingsRepository.findById(id).orElseThrow(NotFoundException::new);
+        meetingsRepository.delete(meeting);
+    }
 }
