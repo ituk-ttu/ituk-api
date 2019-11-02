@@ -24,9 +24,9 @@ public class Application {
   private LocalDate createdAt;
   private LocalDate updatedAt;
   @ManyToOne
-  @JoinColumn(name = "processedById")
+  @JoinColumn(name = "processed_by_id")
   private User processedBy;
   @ManyToOne
-  @JoinColumn(name = "mentorId")
+  @JoinColumn(name = "mentor_id")
   private MentorProfile mentor;
 }
