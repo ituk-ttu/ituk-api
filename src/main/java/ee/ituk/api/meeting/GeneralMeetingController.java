@@ -2,6 +2,7 @@ package ee.ituk.api.meeting;
 
 import ee.ituk.api.meeting.domain.GeneralMeeting;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,5 +29,10 @@ public class GeneralMeetingController {
         return meetingService.update(id, meeting);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
+        meetingService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }
