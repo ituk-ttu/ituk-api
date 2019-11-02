@@ -1,5 +1,6 @@
 package ee.ituk.api.join.domain;
 
+import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
 
@@ -28,5 +29,6 @@ public class Application {
   private User processedBy;
   @ManyToOne
   @JoinColumn(name = "mentorId")
+  //TODO: this should be a reference to user
   private MentorProfile mentor;
 }

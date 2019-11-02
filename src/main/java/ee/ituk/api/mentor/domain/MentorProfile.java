@@ -1,4 +1,4 @@
-package ee.ituk.api.join.domain;
+package ee.ituk.api.mentor.domain;
 
 
 import ee.ituk.api.user.domain.User;
@@ -25,4 +25,8 @@ public class MentorProfile {
   private String pictureName;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
+
+  public MentorProfile(User user) {
+      this.user = user;
+  }
 }
