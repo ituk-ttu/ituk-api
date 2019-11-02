@@ -1,5 +1,6 @@
 package ee.ituk.api.common.validation;
 
+import ee.ituk.api.common.exception.ErrorMessage;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,13 +11,13 @@ import java.util.List;
 @NoArgsConstructor
 public class ValidationResult {
 
-  private final List<ValidationError> errors = new ArrayList<>();
+  private final List<ErrorMessage> errors = new ArrayList<>();
 
-  public ValidationResult(ValidationError error) {
+  public ValidationResult(ErrorMessage error) {
     this.errors.add(error);
   }
 
-  public ValidationResult(List<ValidationError> errors) {
+  public ValidationResult(List<ErrorMessage> errors) {
     this.errors.addAll(errors);
   }
 
@@ -24,12 +25,12 @@ public class ValidationResult {
     return !errors.isEmpty();
   }
 
-  public ValidationResult add(ValidationError error) {
+  public ValidationResult add(ErrorMessage error) {
     this.errors.add(error);
     return this;
   }
 
-  public ValidationResult add(List<ValidationError> errors) {
+  public ValidationResult add(List<ErrorMessage> errors) {
     this.errors.addAll(errors);
     return this;
   }

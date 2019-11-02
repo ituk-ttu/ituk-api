@@ -1,7 +1,7 @@
 package ee.ituk.api.user.validation.rules;
 
+import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.validation.BasicValidationRule;
-import ee.ituk.api.common.validation.ValidationError;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
@@ -20,10 +20,10 @@ public class PasswordIsSecure implements BasicValidationRule {
     private String password;
 
     @Override
-    public List<ValidationError> apply() {
+    public List<ErrorMessage> apply() {
         if (isBlank(password) || (password.length() > 9 && passwordPattern.matcher(password).matches())) {
             return emptyList();
         }
-        return singletonList(ValidationError.builder().code(PASSWORD_NOT_SECURE).build());
+        return singletonList(ErrorMessage.builder().code(PASSWORD_NOT_SECURE).build());
     }
 }

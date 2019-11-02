@@ -1,8 +1,8 @@
 package ee.ituk.api.meeting;
 
+import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
-import ee.ituk.api.common.validation.ValidationError;
 import ee.ituk.api.meeting.domain.GeneralMeeting;
 import ee.ituk.api.meeting.validation.GeneralMeetingValidator;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class GeneralMeetingService {
     public GeneralMeeting update(Long id, GeneralMeeting meeting) {
         meetingsRepository.findById(id).orElseThrow(NotFoundException::new);
         if (!id.equals(meeting.getId())) {
-            throw new ValidationException(ValidationError.builder().code("meeting.id.mismatch").build());
+            throw new ValidationException(ErrorMessage.builder().code("meeting.id.mismatch").build());
         }
         return meetingsRepository.save(meeting);
     }

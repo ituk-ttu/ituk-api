@@ -1,6 +1,6 @@
 package ee.ituk.api.user;
 
-import ee.ituk.api.common.exception.EmailNotFoundException;
+import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.recovery.RecoveryKey;
@@ -33,7 +33,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User loadInternalUserByUsername(String email) {
-        return userRepository.findByEmail(email).orElseThrow(EmailNotFoundException::new);
+        return userRepository.findByEmail(email).orElseThrow(BadCredentialsException::new);
     }
 
     User findUserById(long id) {

@@ -1,10 +1,9 @@
 package ee.ituk.api.login;
 
+import ee.ituk.api.login.dto.LoginUserDto;
+import ee.ituk.api.login.dto.TokenDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/login")
@@ -14,7 +13,8 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping
-    public String login(@RequestBody LoginUserDto loginUserDto) {
+    @ResponseBody
+    public TokenDto login(@RequestBody LoginUserDto loginUserDto) {
         return authService.loginUser(loginUserDto);
     }
 }

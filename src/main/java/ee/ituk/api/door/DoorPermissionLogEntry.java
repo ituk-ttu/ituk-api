@@ -5,7 +5,7 @@ import lombok.Data;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -15,6 +15,6 @@ public class DoorPermissionLogEntry {
   @GeneratedValue
   private Long id;
   private String change;
-  private LocalDate updatedAt;
+  private LocalDateTime updatedAt;
   private Long modifiedBy;
 }

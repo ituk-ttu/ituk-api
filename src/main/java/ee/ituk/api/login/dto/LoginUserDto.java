@@ -1,4 +1,4 @@
-package ee.ituk.api.login;
+package ee.ituk.api.login.dto;
 
 import lombok.Data;
 
