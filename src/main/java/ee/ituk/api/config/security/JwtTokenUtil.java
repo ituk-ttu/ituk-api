@@ -2,6 +2,7 @@ package ee.ituk.api.config.security;
 
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.login.domain.Session;
+import ee.ituk.api.settings.GlobalSettingsService;
 import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
 import io.jsonwebtoken.Claims;
@@ -11,9 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
@@ -21,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
-public class JwtTokenUtil implements Serializable {
+public class JwtTokenUtil {
 
     private static final int SEC_IN_MIN = 60;
     private static final int MILLIS_IN_SEC = 1000;
@@ -34,8 +33,9 @@ public class JwtTokenUtil implements Serializable {
 
     private final SessionService sessionService;
     private final UserService userService;
+    private final GlobalSettingsService globalSettingsService;
 
-    public String getUsernameFromToken(String token) {
+    String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
@@ -100,11 +100,7 @@ public class JwtTokenUtil implements Serializable {
     }
 
     private Integer getSessionTimeout() {
-        return 60;
-    }
-
-    @Transactional
-    public void updateSessionExpiration(User user, Date expireDate) {
+        return globalSettingsService.getSessionTimeInMinutes();
     }
 
     private boolean validateSession(String token) {

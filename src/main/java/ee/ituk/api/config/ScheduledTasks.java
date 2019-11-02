@@ -2,6 +2,7 @@ package ee.ituk.api.config;
 
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.login.domain.Session;
+import ee.ituk.api.settings.GlobalSettingsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,13 +19,14 @@ import java.util.stream.Collectors;
 public class ScheduledTasks {
 
     private final SessionService sessionService;
+    private final GlobalSettingsService settingsService;
 
     @Scheduled(cron = "0 * * * * *")
     public void checkSessions() {
         log.info("Checking sessions");
         LocalDateTime now = LocalDateTime.now();
         List<Session> sessionsToDelete = sessionService.findAll().stream()
-                .filter(session -> Duration.between(session.getCreatedAt(), now).toMinutes() > 60)
+                .filter(session -> Duration.between(session.getCreatedAt(), now).toMinutes() > settingsService.getSessionTimeInMinutes())
                 .collect(Collectors.toList());
         sessionsToDelete.forEach(
                 session -> log.info("Deleting session for " + session.getUser().getEmail()
