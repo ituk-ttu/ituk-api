@@ -11,7 +11,6 @@ public class ProjectSummaryDto {
     private LocalDateTime createdAt;
     private String positiveSummary;
     private String negativeSummary;
-    private ProjectDto project;
     private UserDto createdBy;
     private UserDto confirmedBy;
 }

@@ -8,11 +8,11 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name="project_summary", schema = "public")
+@Table(name = "project_summary", schema = "public")
 public class ProjectSummary {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private LocalDateTime createdAt;

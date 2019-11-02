@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class ProjectBudgetRow {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne

@@ -11,13 +11,13 @@ import java.util.List;
 public class ProjectBudget {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "projectBudget")
+    @OneToMany(mappedBy = "projectBudget", cascade = CascadeType.ALL)
     private List<ProjectBudgetRow> rows;
 }

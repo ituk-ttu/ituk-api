@@ -13,7 +13,7 @@ import java.util.List;
 public class Project {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String title;
@@ -28,6 +28,12 @@ public class Project {
     @JoinColumn(name = "project_lead_id")
     private User projectLead;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
     private List<ProjectMember> members;
+
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
+    private ProjectBudget budget;
+
+    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
+    private ProjectSummary summary;
 }
