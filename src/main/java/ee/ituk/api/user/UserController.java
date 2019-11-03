@@ -76,4 +76,11 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/birthdays")
+    public List<String> getBirthdayUsers() {
+        return userService.getBirthdayUserNames();
+    }
+
+
+
 }
