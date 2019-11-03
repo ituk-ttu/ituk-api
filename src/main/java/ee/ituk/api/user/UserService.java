@@ -105,6 +105,7 @@ public class UserService implements UserDetailsService {
     public void changeRole(Long id, Role role) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         user.setRole(role);
+        userRepository.save(user);
         if (role.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
             mentorProfileService.create(user);
         }
