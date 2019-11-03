@@ -4,6 +4,8 @@ import ee.ituk.api.user.domain.User;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -16,8 +18,10 @@ public class Project {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String title;
 
+    @NotNull
     private LocalDate dateStart;
 
     private LocalDate dateEnd;

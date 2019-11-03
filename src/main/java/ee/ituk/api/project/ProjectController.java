@@ -35,6 +35,7 @@ public class ProjectController {
 
     @PutMapping("/{id}")
     public ProjectDto update(@PathVariable Long id, @RequestBody ProjectDto projectDto) {
+        // TODO: proper update
         return Mapper.projectToDto(
                 projectService.save(Mapper.projectToEntity(projectDto))
         );

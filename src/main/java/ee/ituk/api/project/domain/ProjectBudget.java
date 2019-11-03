@@ -18,6 +18,6 @@ public class ProjectBudget {
     @JoinColumn(name = "project_id")
     private Project project;
 
-    @OneToMany(mappedBy = "projectBudget", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "projectBudget", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ProjectBudgetRow> rows;
 }
