@@ -1,5 +1,6 @@
 package ee.ituk.api.mentor;
 
+import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -25,4 +26,7 @@ public class MentorProfileService {
         mentorProfileRepository.save(profile);
     }
 
+    public MentorProfile getMentorById(Long id) {
+        return mentorProfileRepository.findById(id).orElseThrow(NotFoundException::new);
+    }
 }
