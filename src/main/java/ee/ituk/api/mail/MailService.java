@@ -1,7 +1,7 @@
 package ee.ituk.api.mail;
 
 
-import ee.ituk.api.join.Application;
+import ee.ituk.api.join.domain.Application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sargue.mailgun.Mail;

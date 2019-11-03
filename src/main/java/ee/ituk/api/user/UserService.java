@@ -3,8 +3,11 @@ package ee.ituk.api.user;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.login.SessionService;
+import ee.ituk.api.mentor.MentorProfileRepository;
+import ee.ituk.api.mentor.MentorProfileService;
 import ee.ituk.api.recovery.RecoveryKey;
 import ee.ituk.api.recovery.RecoveryService;
+import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.validation.UserValidator;
@@ -23,7 +26,9 @@ import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final MentorProfileRepository mentorProfileRepository;
     private final RecoveryService recoveryService;
+    private final MentorProfileService mentorProfileService;
     private final SessionService sessionService;
     private final UserValidator userValidator = new UserValidator();
 
@@ -91,4 +96,13 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(NotFoundException::new);
     }
+
+    public void changeRole(Long id, Role role) {
+        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        user.setRole(role);
+        if (role.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
+            mentorProfileService.create(user);
+        }
+    }
+
 }

@@ -1,11 +1,11 @@
-package ee.ituk.api.join;
+package ee.ituk.api.mentor.domain;
 
 
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -13,17 +13,20 @@ import java.time.LocalDate;
 public class MentorProfile {
 
   @Id
-  @GeneratedValue
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;  //NB! THIS IS ONLY FOR JPA, FOR FUNCTIONALITY USE USER_ID
   @OneToOne
   @JoinColumn(name = "user_id")
   private User user;
-  private String curriculum;
   private String text;
   private String gif;
   private String quote;
   private boolean enabled;
   private String pictureName;
-  private LocalDate createdAt;
-  private LocalDate updatedAt;
+  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime updatedAt = LocalDateTime.now();
+
+  public MentorProfile(User user) {
+      this.user = user;
+  }
 }
