@@ -16,11 +16,13 @@ public class MentorProfileController {
     private final MentorProfileService mentorProfileService;
     private final MentorProfileMapper mentorProfileMapper = Mappers.getMapper(MentorProfileMapper.class);
 
-    @DeleteMapping("/{id}")
+/*
+  Should be unnecessary since we never really delete profiles
+  @DeleteMapping("/{id}")
     @ResponseBody
     public void deleteMentorProfile(@PathVariable long id) {
         mentorProfileService.deleteMentorProfile(id);
-    }
+    }*/
 
     @PutMapping
     @ResponseBody
@@ -42,17 +44,19 @@ public class MentorProfileController {
     @ApiOperation(value="Get all mentor profiles for user with mentor role (MENTOR, BOARD, ADMIN)")
     @GetMapping
     @ResponseBody
-    public List<MentorProfileDto> getAllMentorProfiles() {
+    public List<MentorProfileDto> getAllActiveMentorProfiles() {
         return mentorProfileMapper.mentorprofilesToDto(mentorProfileService.getAllActive());
     }
 
-    @PostMapping
+/*
+ Should be unnecessary since mentor profile is created automatically when user role is changed
+ @PostMapping
     @ResponseBody
     public MentorProfileDto createMentorProfile(@RequestBody MentorProfileDto mentorProfileDto) {
         return mentorProfileMapper.mentorprofileToDto(
                 mentorProfileService.createProfile(
                         mentorProfileMapper.mentorprofileDtoToEntity(mentorProfileDto)));
-    }
+    }*/
 
     /*@ApiOperation(value = "Get all mentor profiles with users who are mentors based on their role (ADMIN, BOARD, MENTOR)")
     @GetMapping("")

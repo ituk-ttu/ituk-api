@@ -2,7 +2,7 @@ package ee.ituk.api.user;
 
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
-import ee.ituk.api.common.validation.ValidationUtil;
+import ee.ituk.api.common.exception.ValidationException;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
+import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 
 @Service
 @RequiredArgsConstructor
@@ -47,7 +48,7 @@ public class UserService implements UserDetailsService {
 
     public User findUserById(long id) {
         return userRepository.findById(id).orElseThrow(()
-                -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+                -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
     void changePassword(long id, PasswordChangeDto passwordChangeDto) {
@@ -99,7 +100,7 @@ public class UserService implements UserDetailsService {
 
     public User getLoggedUser() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(() -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
     public void changeRole(Long id, Role role) {
@@ -123,4 +124,10 @@ public class UserService implements UserDetailsService {
                 .collect(Collectors.toList());
     }
 
+    public void archive(Long id, boolean isArchived) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new ValidationException(getNotFoundError(User.class)));
+        user.setArchived(isArchived);
+        userRepository.save(user);
+    }
 }

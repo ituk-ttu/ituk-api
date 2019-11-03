@@ -76,6 +76,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("/{id}/isArchived")
+    public ResponseEntity<?> archive(@PathVariable Long id, @RequestParam boolean isArchived) {
+        userService.archive(id, isArchived);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping("/birthdays")
     public List<String> getBirthdayUsers() {
         return userService.getBirthdayUserNames();
