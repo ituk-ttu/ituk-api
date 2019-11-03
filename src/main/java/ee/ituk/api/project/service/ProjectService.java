@@ -1,6 +1,7 @@
 package ee.ituk.api.project.service;
 
 import ee.ituk.api.common.exception.NotFoundException;
+import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.project.domain.Project;
 import ee.ituk.api.project.repository.ProjectRepository;
 import ee.ituk.api.project.validation.ProjectValidator;
@@ -8,6 +9,7 @@ import ee.ituk.api.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -22,7 +24,7 @@ public class ProjectService {
 
     public Project findById(long id) {
         return projectRepository.findById(id)
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
     }
 
     public List<Project> findAll() {

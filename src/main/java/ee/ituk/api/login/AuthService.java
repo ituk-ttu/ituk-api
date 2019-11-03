@@ -1,6 +1,7 @@
 package ee.ituk.api.login;
 
 import ee.ituk.api.common.exception.BadCredentialsException;
+import ee.ituk.api.common.exception.NoPasswordSetException;
 import ee.ituk.api.config.security.JwtTokenUtil;
 import ee.ituk.api.login.dto.LoginUserDto;
 import ee.ituk.api.login.dto.TokenDto;
@@ -9,6 +10,8 @@ import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +23,9 @@ public class AuthService {
 
     TokenDto loginUser(LoginUserDto loginUserDto) {
         User user = userService.loadInternalUserByUsername(loginUserDto.getEmail());
+        if (Objects.isNull(user.getPassword())) {
+            throw new NoPasswordSetException();
+        }
         if (encoder.matches(loginUserDto.getPassword(), user.getPassword())) {
             return new TokenDto(jwtTokenUtil.generateToken(user));
         } else {

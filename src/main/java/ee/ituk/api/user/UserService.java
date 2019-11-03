@@ -2,6 +2,7 @@ package ee.ituk.api.user;
 
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
+import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -42,7 +44,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(long id) {
-        return userRepository.findById(id).orElseThrow(NotFoundException::new);
+        return userRepository.findById(id).orElseThrow(()
+                -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
     }
 
     void changePassword(long id, PasswordChangeDto passwordChangeDto) {
@@ -94,7 +97,7 @@ public class UserService implements UserDetailsService {
 
     public User getLoggedUser() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
-                .orElseThrow(NotFoundException::new);
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
     }
 
     public void changeRole(Long id, Role role) {

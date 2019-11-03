@@ -1,5 +1,6 @@
 package ee.ituk.api.common.validation;
 
+import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.ValidationException;
 
 public final class ValidationUtil {
@@ -30,5 +31,10 @@ public final class ValidationUtil {
         if (result.hasErrors()) {
             throw new ValidationException(result);
         }
+    }
+
+    public static ErrorMessage getNotFoundError(Class aClass) {
+        String objectName = aClass.getSimpleName().toLowerCase();
+        return new ErrorMessage(objectName + ".not.found", objectName + " not found");
     }
 }
