@@ -14,7 +14,7 @@ public class ProjectDto {
     private LocalDate dateStart;
     private LocalDate dateEnd;
     private String description;
-    private UserDto projectLead;
+    private Long projectLeadId;
     private List<ProjectMemberDto> members;
     private ProjectBudgetDto budget;
     private ProjectSummaryDto summary;
