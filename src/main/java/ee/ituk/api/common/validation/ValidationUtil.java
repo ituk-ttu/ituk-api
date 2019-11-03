@@ -12,6 +12,13 @@ public final class ValidationUtil {
 
     public static final String NAME_MISSING = "name.missing";
 
+    public static final String PROJECT_MISSING_REQUIRED_FIELDS = "project.missing.required.fields";
+    public static final String PROJECT_BUDGET_MISSING_REQUIRED_FIELDS = "project.budget.missing.required.fields";
+    public static final String PROJECT_BUDGET_ROW_MISSING_REQUIRED_FIELDS = "project.budget.row.missing.required.fields";
+    public static final String PROJECT_BUDGET_ROW_VALUES_NOT_VALID = "project.budget.row.values.not.valid";
+    public static final String PROJECT_MEMBER_NOT_VALID = "project.member.not.valid";
+    public static final String PROJECT_SUMMARY_MISSING_REQUIRED_FIELDS = "project.summary.missing.required.fields";
+
     private ValidationUtil() {
         //not instance
     }
