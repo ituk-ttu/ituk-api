@@ -3,6 +3,7 @@ package ee.ituk.api.mentor.domain;
 
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "mentor_profile", schema = "public")
+@NoArgsConstructor
 public class MentorProfile {
 
   @Id

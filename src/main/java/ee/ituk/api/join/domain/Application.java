@@ -4,8 +4,14 @@ import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -13,7 +19,7 @@ import java.time.LocalDate;
 public class Application {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String firstName;
   private String lastName;
@@ -22,12 +28,13 @@ public class Application {
   private String studentCode;
   private String curriculum;
   private String mentorSelectionCode;
-  private LocalDate createdAt;
-  private LocalDate updatedAt;
+  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime updatedAt = LocalDateTime.now();
   @ManyToOne
-  @JoinColumn(name = "processed_by_id")
+  @JoinColumn(name = "processedById")
   private User processedBy;
   @ManyToOne
-  @JoinColumn(name = "mentor_id")
+  @JoinColumn(name = "mentor_id", referencedColumnName = "user_id")
+  //TODO: this should be a reference to user
   private MentorProfile mentor;
 }

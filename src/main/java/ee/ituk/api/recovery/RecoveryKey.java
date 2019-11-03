@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class RecoveryKey {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY )
   private Long id;
   private String key;
   private LocalDateTime createdAt = LocalDateTime.now();
