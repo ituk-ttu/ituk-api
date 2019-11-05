@@ -21,7 +21,7 @@ public class PasswordIsSecure implements BasicValidationRule {
 
     @Override
     public List<ErrorMessage> apply() {
-        if (isBlank(password) || (password.length() > 9 && passwordPattern.matcher(password).matches())) {
+        if (isBlank(password) || (password.length() > 7 && passwordPattern.matcher(password).matches())) {
             return emptyList();
         }
         return singletonList(ErrorMessage.builder().code(PASSWORD_NOT_SECURE).build());

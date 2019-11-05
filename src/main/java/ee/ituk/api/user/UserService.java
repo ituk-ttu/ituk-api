@@ -16,8 +16,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +39,9 @@ public class UserService implements UserDetailsService {
     private final SessionService sessionService;
     private final UserValidator userValidator = new UserValidator();
 
+    @Inject
+    private BCryptPasswordEncoder encoder;
+
     @Override
     public UserDetails loadUserByUsername(String email) {
         return loadInternalUserByUsername(email);
@@ -53,9 +58,13 @@ public class UserService implements UserDetailsService {
 
     void changePassword(long id, PasswordChangeDto passwordChangeDto) {
         User user = findUserById(id);
-        checkForErrors(userValidator.validatePasswordChange(user, passwordChangeDto));
-        user.setPassword(passwordChangeDto.getNewPassword());
-        saveUser(user);
+        if (encoder.matches(passwordChangeDto.getOldPassword(), user.getPassword())) {
+            user.setPassword(encoder.encode(passwordChangeDto.getNewPassword()));
+            checkForErrors(userValidator.validatePasswordChange(passwordChangeDto));
+            saveUser(user);
+            return;
+        }
+        throw new BadCredentialsException();
     }
 
     List<User> findAll() {
