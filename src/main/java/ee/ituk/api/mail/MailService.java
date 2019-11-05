@@ -26,6 +26,13 @@ public class MailService {
     private final VelocityEngine velocityEngine;
 
 
+    public CompletableFuture<Response> sendNewPasswordEmail(String email, String newRawPassword) {
+        VelocityContext context = createContext();
+        context.put("password", newRawPassword);
+        return sendAsync(email, "newPassword",
+                context, "Uus salasõna");
+    }
+
     public CompletableFuture<Response> sendNewMinionEmail(Application application) {
         VelocityContext context = createContext();
         context.put("name", application.getFirstName() + " " + application.getLastName());

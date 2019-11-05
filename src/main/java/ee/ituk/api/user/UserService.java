@@ -77,15 +77,7 @@ public class UserService implements UserDetailsService {
 
         user = saveUser(user);
 
-        RecoveryKey recoveryKey = recoveryService.createRecoveryKey(user);
-
-        //TODO SEND MAIL
-
         return user;
-    }
-
-    User getRecoveryUser(String key) {
-        return recoveryService.getUserByKey(key);
     }
 
     private User saveUser(User user) {

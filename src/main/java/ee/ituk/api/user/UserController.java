@@ -1,5 +1,6 @@
 package ee.ituk.api.user;
 
+import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.dto.UserDto;
@@ -17,6 +18,7 @@ public class UserController {
 
     private final UserService userService;
     private final UserMapper mapper = Mappers.getMapper(UserMapper.class);
+    private final RecoveryService recoveryService;
 
     @GetMapping("/{id}")
     @ResponseBody
@@ -48,9 +50,9 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/recovery/{key}")
-    public UserDto getRecoveryUser(@PathVariable("key") String key) {
-        return mapper.userToDto(userService.getRecoveryUser(key));
+    @GetMapping("/recovery/{email}")
+    public void sendNewPasswordToEmail(@PathVariable("email") String email) {
+        recoveryService.sendNewRecoveryPassword(email);
     }
 
     @GetMapping("/logout")
@@ -86,7 +88,6 @@ public class UserController {
     public List<String> getBirthdayUsers() {
         return userService.getBirthdayUserNames();
     }
-
 
 
 }
