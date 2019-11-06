@@ -6,7 +6,6 @@ import ee.ituk.api.common.exception.ValidationException;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
-import ee.ituk.api.recovery.RecoveryKey;
 import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
@@ -108,7 +107,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         user.setRole(role);
         userRepository.save(user);
-        if (role.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
+        if (role.isCanBeMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
             mentorProfileService.create(user);
         }
     }

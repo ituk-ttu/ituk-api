@@ -11,6 +11,6 @@ public enum Role {
     MEMBER(false),
     MENTOR(true);
 
-    private final boolean isMentor;
+    private final boolean canBeMentor;
 
 }
