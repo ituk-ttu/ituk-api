@@ -29,7 +29,7 @@ public class MentorProfileController {
 
     @PutMapping
     @ResponseBody
-    public MentorProfileDto updateMentorProfile(MentorProfileDto mentorProfileDto) {
+    public MentorProfileDto updateMentorProfile(@RequestBody MentorProfileDto mentorProfileDto) {
         return mentorProfileMapper.mentorprofileToDto(
                 mentorProfileService.updateMentor(
                         mentorProfileMapper.mentorprofileDtoToEntity(mentorProfileDto)
