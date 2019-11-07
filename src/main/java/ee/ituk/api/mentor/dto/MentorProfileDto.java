@@ -13,7 +13,7 @@ public class MentorProfileDto {
     private String gif;
     private String quote;
     private boolean enabled;
-    private String pictureName;
+    private String picture;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

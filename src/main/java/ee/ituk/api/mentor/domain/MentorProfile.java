@@ -24,7 +24,7 @@ public class MentorProfile {
   private String gif;
   private String quote;
   private boolean enabled;
-  private String pictureName;
+  private String picture;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
 
