@@ -34,7 +34,6 @@ public class Application {
   @JoinColumn(name = "processedById")
   private User processedBy;
   @ManyToOne
-  @JoinColumn(name = "mentor_id", referencedColumnName = "user_id")
-  //TODO: this should be a reference to user
-  private MentorProfile mentor;
+  @JoinColumn(name = "mentor_id", referencedColumnName = "id")
+  private User mentor;
 }

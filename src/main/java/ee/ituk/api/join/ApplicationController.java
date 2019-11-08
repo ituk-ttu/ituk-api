@@ -1,6 +1,7 @@
 package ee.ituk.api.join;
 
 import ee.ituk.api.join.dto.ApplicationDto;
+import ee.ituk.api.join.dto.ApplicationResponseDto;
 import ee.ituk.api.join.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -40,14 +41,14 @@ public class ApplicationController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public ApplicationDto findApplicationById(@PathVariable long id) {
-        return applicationMapper.applicationToDto(applicationService.findApplicationById(id));
+    public ApplicationResponseDto findApplicationById(@PathVariable long id) {
+        return applicationMapper.applicationToResponseDto(applicationService.findApplicationById(id));
     }
 
     @GetMapping
     @ResponseBody
-    public List<ApplicationDto> findAllApplications() {
-        return applicationMapper.applicationsToDto(applicationService.findAll());
+    public List<ApplicationResponseDto> findAllApplications() {
+        return applicationMapper.applicationsToResponseDto(applicationService.findAll());
     }
 
     @PostMapping

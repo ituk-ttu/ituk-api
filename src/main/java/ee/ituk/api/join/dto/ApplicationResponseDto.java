@@ -1,11 +1,12 @@
 package ee.ituk.api.join.dto;
 
+import ee.ituk.api.user.domain.User;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
-public class ApplicationDto {
+public class ApplicationResponseDto {
     private Long id;
     private String firstName;
     private String lastName;
@@ -17,5 +18,5 @@ public class ApplicationDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long processedById;
-    private Long mentorId;
+    private User mentor;
 }
