@@ -35,6 +35,14 @@ public class JwtTokenUtil {
     private final UserService userService;
     private final GlobalSettingsService globalSettingsService;
 
+    public String generateToken(User user) {
+        return doGenerateToken(user);
+    }
+
+    boolean validateToken(String token) {
+        return !isTokenExpired(token) && validateSession(token);
+    }
+
     String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
@@ -65,10 +73,6 @@ public class JwtTokenUtil {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
-        return doGenerateToken(user);
-    }
-
     private String doGenerateToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         List<String> authorities = user.getAuthorities().stream()
@@ -82,7 +86,6 @@ public class JwtTokenUtil {
         return buildJwtToken(claims, sessionTimeoutMin);
     }
 
-
     private String buildJwtToken(Claims claims, int tokenTimeoutMin) {
         long currentTimeMillis = System.currentTimeMillis();
         Date expireDate = new Date(currentTimeMillis + tokenTimeoutMin * SEC_IN_MIN * MILLIS_IN_SEC);
@@ -93,10 +96,6 @@ public class JwtTokenUtil {
                 .setExpiration(expireDate)
                 .signWith(SignatureAlgorithm.HS256, signingKey)
                 .compact();
-    }
-
-    boolean validateToken(String token) {
-        return !isTokenExpired(token) && validateSession(token);
     }
 
     private Integer getSessionTimeout() {

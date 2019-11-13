@@ -19,14 +19,12 @@ public class RecoveryService {
 
     public void sendNewRecoveryPassword(String email) {
         Optional<PasswordRecovery> byEmail = passwordRecoveryRepository.findByEmail(email);
-        String rawPassword = UUID.randomUUID().toString();
-        PasswordRecovery passwordRecovery;
-        if (byEmail.isPresent()) {
-            passwordRecovery = byEmail.get();
-        } else {
-            passwordRecovery = new PasswordRecovery();
-            passwordRecovery.setEmail(email);
-        }
+        byEmail.ifPresent(passwordRecoveryRepository::delete);
+
+        String rawPassword = UUID.randomUUID().toString().replace("-", "");
+
+        PasswordRecovery passwordRecovery = new PasswordRecovery();
+        passwordRecovery.setEmail(email);
         passwordRecovery.setPassword(encoder.encode(rawPassword));
         passwordRecoveryRepository.save(passwordRecovery);
         mailService.sendNewPasswordEmail(email, rawPassword);

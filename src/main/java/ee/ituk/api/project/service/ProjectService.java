@@ -30,25 +30,23 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-
     public Project save(Project project) {
         checkForErrors(validator.validateData(project));
+        Project remappedProject = selfMapProject(project);
 
-        selfMapProject(project);
-
-        project = projectRepository.save(project);
-        return project;
+        return projectRepository.save(remappedProject);
     }
 
     public void delete(long id) {
         projectRepository.deleteById(id);
     }
 
-
-    private void selfMapProject(Project project) {
+    private Project selfMapProject(Project project) {
         project.getSummary().setProject(project);
         project.getBudget().setProject(project);
         project.getMembers().forEach(member -> member.setProject(project));
         project.getBudget().getRows().forEach(row -> row.setProjectBudget(project.getBudget()));
+
+        return project;
     }
 }

@@ -21,7 +21,9 @@ public class ScheduledTasks {
     private final SessionService sessionService;
     private final GlobalSettingsService settingsService;
 
-    @Scheduled(cron = "0 * * * * *")
+    private static final String ONE_MINUTE_CRON_JOB = "0 * * * * *";
+
+    @Scheduled(cron = ONE_MINUTE_CRON_JOB)
     public void checkSessions() {
         log.info("Checking sessions");
         LocalDateTime now = LocalDateTime.now();

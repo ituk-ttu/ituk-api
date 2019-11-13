@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
+
 @Service
 @RequiredArgsConstructor
 public class GlobalSettingsService {
@@ -14,8 +16,8 @@ public class GlobalSettingsService {
     private final GlobalSettingsRepository settingsRepository;
 
     public int getSessionTimeInMinutes() {
-        return Integer.parseInt(settingsRepository.findByName("session_duration_in_minutes").orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(
-                        ValidationUtil.getNotFoundError(this.getClass())))).getValue());
+        return Integer.parseInt(settingsRepository.findByName(Settings.SESSION_DURATION_IN_MINUTES.getName())
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))))
+                .getValue());
     }
 }
