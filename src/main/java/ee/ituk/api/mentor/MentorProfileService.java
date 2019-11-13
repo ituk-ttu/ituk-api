@@ -17,41 +17,23 @@ public class MentorProfileService {
     private final MentorProfileRepository mentorProfileRepository;
     private final UserRepository userRepository;
 
-    public MentorProfile createProfile(MentorProfile mentorProfile) {
-        return mentorProfileRepository.save(mentorProfile);
-    }
-
-    public List<MentorProfile> getAll() {
-        return mentorProfileRepository.findAll();
-    }
-
-    public MentorProfile getByUserId(long id) {
-        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
-        return mentorProfileRepository.findByUser(user).orElseThrow(NotFoundException::new);
-    }
-
-    public MentorProfile findByUser(User user) {
-        return mentorProfileRepository.findByUser(user).orElseThrow(NotFoundException::new);
-    }
-
-    public MentorProfile updateMentor(MentorProfile mentorprofile) {
-        return mentorProfileRepository.save(mentorprofile);
-    }
-
-    public void deleteMentorProfile(long id) {
-        MentorProfile mentorProfile = getByUserId(id);
-        mentorProfileRepository.delete(mentorProfile);
-    }
-
-    public List<MentorProfile> getAllActive() {
-        return mentorProfileRepository.findAll().stream()
-                .filter(profile -> profile.getUser().getRole().isCanBeMentor())
-                .collect(Collectors.toList());
-    }
-
     public void create(User user) {
         MentorProfile profile = new MentorProfile(user);
         mentorProfileRepository.save(profile);
     }
 
+    MentorProfile getByUserId(long id) {
+        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        return mentorProfileRepository.findByUser(user).orElseThrow(NotFoundException::new);
+    }
+
+    MentorProfile updateMentor(MentorProfile mentorprofile) {
+        return mentorProfileRepository.save(mentorprofile);
+    }
+
+    List<MentorProfile> getAllActive() {
+        return mentorProfileRepository.findAll().stream()
+                .filter(profile -> profile.getUser().getRole().isCanBeMentor())
+                .collect(Collectors.toList());
+    }
 }
