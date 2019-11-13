@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import static ee.ituk.api.common.validation.ValidationUtil.MEETING_ID_MISMATCH;
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 
 @Service
@@ -44,7 +45,7 @@ public class GeneralMeetingService {
         meetingsRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
         if (!id.equals(meeting.getId())) {
-            throw new ValidationException(ErrorMessage.builder().code("meeting.id.mismatch").build());
+            throw new ValidationException(ErrorMessage.builder().code(MEETING_ID_MISMATCH).build());
         }
         return meetingsRepository.save(meeting);
     }

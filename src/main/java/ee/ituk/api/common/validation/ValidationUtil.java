@@ -23,6 +23,8 @@ public final class ValidationUtil {
     public static final String RESOURCE_URL_MISSING = "url.missing";
     public static final String RESOURCE_AUTHOR_MISSING = "author.missing";
 
+    public static final String MEETING_ID_MISMATCH = "meeting.id.mismatch";
+
     private ValidationUtil() {
         //not instance
     }
