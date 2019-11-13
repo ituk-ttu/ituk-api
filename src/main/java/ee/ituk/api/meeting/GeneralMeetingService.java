@@ -20,25 +20,11 @@ import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 public class GeneralMeetingService {
 
     private final GeneralMeetingsRepository meetingsRepository;
-    private final GeneralMeetingValidator meetingValidator = new GeneralMeetingValidator();
 
-    public List<GeneralMeeting> getAll() {
-        List<GeneralMeeting> meetings = meetingsRepository.findAll();
-        meetings.sort(Comparator.comparing(GeneralMeeting::getDate).reversed());
-        return meetings;
-    }
+    private final GeneralMeetingValidator meetingValidator = new GeneralMeetingValidator();
 
     public GeneralMeeting create(GeneralMeeting meeting) {
         checkForErrors(meetingValidator.validateOnCreate(meeting));
-        return meetingsRepository.save(meeting);
-    }
-
-    public GeneralMeeting update(Long id, GeneralMeeting meeting) {
-        meetingsRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
-        if (!id.equals(meeting.getId())) {
-            throw new ValidationException(ErrorMessage.builder().code("meeting.id.mismatch").build());
-        }
         return meetingsRepository.save(meeting);
     }
 
@@ -46,5 +32,20 @@ public class GeneralMeetingService {
         GeneralMeeting meeting = meetingsRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
         meetingsRepository.delete(meeting);
+    }
+
+    List<GeneralMeeting> getAll() {
+        List<GeneralMeeting> meetings = meetingsRepository.findAll();
+        meetings.sort(Comparator.comparing(GeneralMeeting::getDate).reversed());
+        return meetings;
+    }
+
+    GeneralMeeting update(Long id, GeneralMeeting meeting) {
+        meetingsRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+        if (!id.equals(meeting.getId())) {
+            throw new ValidationException(ErrorMessage.builder().code("meeting.id.mismatch").build());
+        }
+        return meetingsRepository.save(meeting);
     }
 }

@@ -14,9 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ApplicationService {
 
-
     private final ApplicationRepository applicationRepository;
-    private final MentorProfileService mentorProfileService;
     private final UserService userService;
 
     public Application createApplication(Application application) {
@@ -25,12 +23,6 @@ public class ApplicationService {
 
     public Application findApplicationById(long id) {
         return applicationRepository.findById(id).orElseThrow(NotFoundException::new);
-    }
-
-    private Application saveApplication(Application application) {
-        application.setProcessedBy(userService.findUserById(application.getProcessedBy().getId()));
-        application.setMentor(application.getMentor());
-        return applicationRepository.save(application);
     }
 
     public List<Application> findAll() {
@@ -44,5 +36,11 @@ public class ApplicationService {
     public void deleteApplication(long id) {
         Application application = findApplicationById(id);
         applicationRepository.delete(application);
+    }
+
+    private Application saveApplication(Application application) {
+        application.setProcessedBy(userService.findUserById(application.getProcessedBy().getId()));
+        application.setMentor(application.getMentor());
+        return applicationRepository.save(application);
     }
 }
