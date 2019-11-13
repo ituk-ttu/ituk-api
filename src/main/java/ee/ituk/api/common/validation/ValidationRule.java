@@ -7,6 +7,6 @@ import java.util.List;
 @FunctionalInterface
 public interface ValidationRule<T> {
 
-  List<ErrorMessage> apply(T object);
+    List<ErrorMessage> apply(T object);
 
 }

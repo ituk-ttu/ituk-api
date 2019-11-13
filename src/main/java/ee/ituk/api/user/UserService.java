@@ -57,9 +57,9 @@ public class UserService implements UserDetailsService {
             user.setPassword(encoder.encode(passwordChangeDto.getNewPassword()));
             checkForErrors(userValidator.validatePasswordChange(passwordChangeDto));
             saveUser(user);
-            return;
+        } else {
+            throw new BadCredentialsException();
         }
-        throw new BadCredentialsException();
     }
 
     List<User> findAll() {
@@ -67,16 +67,8 @@ public class UserService implements UserDetailsService {
     }
 
     User createUser(User user) {
-
         checkForErrors(userValidator.validateOnCreate(user));
-
-        user = saveUser(user);
-
-        return user;
-    }
-
-    private User saveUser(User user) {
-        return userRepository.save(user);
+        return saveUser(user);
     }
 
     void logout() {
@@ -112,17 +104,21 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .filter(user -> {
-                    int userBirthMonth = Integer.parseInt(user.getIdCode().substring(3, 5));
-                    int userBirthDay = Integer.parseInt(user.getIdCode().substring(5, 7));
-                    return LocalDate.now().getMonthValue() == userBirthMonth && LocalDate.now().getDayOfMonth() == userBirthDay;
-                }).map(user -> user.getFirstName() + " " + user.getLastName())
+                    int month = Integer.parseInt(user.getIdCode().substring(3, 5));
+                    int day = Integer.parseInt(user.getIdCode().substring(5, 7));
+                    return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
+                })
+                .map(user -> user.getFirstName() + " " + user.getLastName())
                 .collect(Collectors.toList());
     }
 
     void archive(Long id, boolean isArchived) {
-        User user = userRepository.findById(id).orElseThrow(() ->
-                new ValidationException(getNotFoundError(User.class)));
+        User user = userRepository.findById(id).orElseThrow(() -> new ValidationException(getNotFoundError(User.class)));
         user.setArchived(isArchived);
         userRepository.save(user);
+    }
+
+    private User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

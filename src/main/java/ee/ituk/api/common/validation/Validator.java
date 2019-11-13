@@ -14,7 +14,7 @@ public abstract class Validator {
         return new ValidationResult(messages);
     }
 
-    protected  <T> ValidationResult applyRule(T object, ValidationRule<T> validationRule) {
+    protected <T> ValidationResult applyRule(T object, ValidationRule<T> validationRule) {
         List<ErrorMessage> messages = validationRule.apply(object);
         return new ValidationResult(messages);
     }
@@ -27,7 +27,7 @@ public abstract class Validator {
         return new ValidationResult(messages);
     }
 
-    protected  <T> ValidationResult applyRules(T object, List<ValidationRule<T>> validationRules) {
+    protected <T> ValidationResult applyRules(T object, List<ValidationRule<T>> validationRules) {
         List<ErrorMessage> messages = validationRules.stream()
                 .map(rule -> rule.apply(object))
                 .flatMap(Collection::stream)

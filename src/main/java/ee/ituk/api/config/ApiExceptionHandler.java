@@ -20,7 +20,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ApiException.class)
     @ResponseBody
-    public ResponseEntity<?> handleException(ApiException ex) {
+    public ResponseEntity handleException(ApiException ex) {
         return new ResponseEntity<>(new ApiExceptionDto(ex), ex.getStatus());
     }
 

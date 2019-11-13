@@ -11,33 +11,33 @@ import java.util.List;
 @NoArgsConstructor
 public class ValidationResult {
 
-  private final List<ErrorMessage> errors = new ArrayList<>();
+    private final List<ErrorMessage> errors = new ArrayList<>();
 
-  public ValidationResult(ErrorMessage error) {
-    this.errors.add(error);
-  }
+    public ValidationResult(ErrorMessage error) {
+        this.errors.add(error);
+    }
 
-  public ValidationResult(List<ErrorMessage> errors) {
-    this.errors.addAll(errors);
-  }
+    public ValidationResult(List<ErrorMessage> errors) {
+        this.errors.addAll(errors);
+    }
 
-  public boolean hasErrors() {
-    return !errors.isEmpty();
-  }
+    public boolean hasErrors() {
+        return !errors.isEmpty();
+    }
 
-  public ValidationResult add(ErrorMessage error) {
-    this.errors.add(error);
-    return this;
-  }
+    public ValidationResult add(ErrorMessage error) {
+        this.errors.add(error);
+        return this;
+    }
 
-  public ValidationResult add(List<ErrorMessage> errors) {
-    this.errors.addAll(errors);
-    return this;
-  }
+    public ValidationResult add(List<ErrorMessage> errors) {
+        this.errors.addAll(errors);
+        return this;
+    }
 
-  public ValidationResult add(ValidationResult other) {
-    this.errors.addAll(other.getErrors());
-    return this;
-  }
+    public ValidationResult add(ValidationResult other) {
+        this.errors.addAll(other.getErrors());
+        return this;
+    }
 
 }
