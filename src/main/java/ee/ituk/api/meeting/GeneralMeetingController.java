@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping("/meeting")
 @RequiredArgsConstructor
@@ -15,24 +17,23 @@ public class GeneralMeetingController {
     private final GeneralMeetingService meetingService;
 
     @GetMapping("")
-    public List<GeneralMeeting> getAllMeetings() {
-        return meetingService.getAll();
+    public ResponseEntity getAllMeetings() {
+        return ok(meetingService.getAll());
     }
 
     @PostMapping("")
-    public GeneralMeeting createMeeting(@RequestBody GeneralMeeting meeting) {
-        return meetingService.create(meeting);
+    public ResponseEntity createMeeting(@RequestBody GeneralMeeting meeting) {
+        return ok(meetingService.create(meeting));
     }
 
     @PutMapping("/{id}")
-    public GeneralMeeting  updateMeeting(@PathVariable Long id, @RequestBody GeneralMeeting meeting) {
-        return meetingService.update(id, meeting);
+    public ResponseEntity updateMeeting(@PathVariable Long id, @RequestBody GeneralMeeting meeting) {
+        return ok(meetingService.update(id, meeting));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
+    public ResponseEntity deleteMeeting(@PathVariable Long id) {
         meetingService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping("/resource")
 @RequiredArgsConstructor
@@ -24,31 +26,31 @@ public class ResourceController {
 
     @GetMapping
     @ResponseBody
-    public List<ResourceDto> findAllResource() {
-        return mapper.resourcesToDto(resourceService.findAll());
+    public ResponseEntity findAllResource() {
+        return ok(mapper.resourcesToDto(resourceService.findAll()));
     }
 
     @PostMapping
     @ResponseBody
-    public ResourceDto saveResource(Authentication authentication, @RequestBody ResourceDto resourceDto) {
+    public ResponseEntity saveResource(Authentication authentication, @RequestBody ResourceDto resourceDto) {
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
         resourceDto.setAuthorId(userId);
-        return mapper.resourceToDto(resourceService.saveResource(mapper.resourceToEntity(resourceDto)));
+        return ok(mapper.resourceToDto(resourceService.saveResource(mapper.resourceToEntity(resourceDto))));
     }
 
     @PutMapping
     @ResponseBody
-    public ResourceDto updateResource(Authentication authentication, @RequestBody ResourceDto resourceDto) {
+    public ResponseEntity updateResource(Authentication authentication, @RequestBody ResourceDto resourceDto) {
         User user = (User) authentication.getPrincipal();
         Long userId = user.getId();
         resourceDto.setAuthorId(userId);
         Resource savedResource = resourceService.updateResource(resourceDto);
-        return mapper.resourceToDto(savedResource);
+        return ok(mapper.resourceToDto(savedResource));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteMeeting(@PathVariable Long id) {
+    public ResponseEntity deleteMeeting(@PathVariable Long id) {
         resourceService.deleteResource(id);
         return ResponseEntity.noContent().build();
     }

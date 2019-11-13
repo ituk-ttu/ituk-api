@@ -17,7 +17,7 @@ import java.util.List;
 public class MentorProfileController {
 
     private final MentorProfileService mentorProfileService;
-    private final MentorProfileMapper mentorProfileMapper = Mappers.getMapper(MentorProfileMapper.class);
+    private final MentorProfileMapper mentorProfileMapper = MentorProfileMapper.INSTANCE;
 
 /*
   Should be unnecessary since we never really delete profiles

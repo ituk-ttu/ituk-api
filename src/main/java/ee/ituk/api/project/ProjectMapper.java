@@ -16,8 +16,6 @@ import java.util.List;
 @Mapper
 public interface ProjectMapper {
 
-    ProjectMapper INSTANCE = Mappers.getMapper(ProjectMapper.class);
-
     @Mapping(target = "projectLeadId", source = "projectLead.id")
     @Mapping(target = "summary.createdById", source = "summary.createdBy.id")
     @Mapping(target = "summary.confirmedById", source = "summary.confirmedBy.id")

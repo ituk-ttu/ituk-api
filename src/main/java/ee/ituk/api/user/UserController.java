@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static org.springframework.http.ResponseEntity.ok;
+
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
@@ -22,72 +24,72 @@ public class UserController {
 
     @GetMapping("/{id}")
     @ResponseBody
-    public UserDto findUserById(@PathVariable Long id) {
-        return mapper.userToDto(userService.findUserById(id));
+    public ResponseEntity findUserById(@PathVariable Long id) {
+        return ok(mapper.userToDto(userService.findUserById(id)));
     }
 
     @GetMapping
     @ResponseBody
-    public List<UserDto> findAll() {
-        return mapper.usersToDto(userService.findAll());
+    public ResponseEntity findAll() {
+        return ok(mapper.usersToDto(userService.findAll()));
     }
 
     @PostMapping
     @ResponseBody
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return mapper.userToDto(userService.createUser(mapper.userToEntity(userDto)));
+    public ResponseEntity createUser(@RequestBody UserDto userDto) {
+        return ok(mapper.userToDto(userService.createUser(mapper.userToEntity(userDto))));
     }
 
     @PutMapping
     @ResponseBody
-    public UserDto updateUser(@RequestBody UserDto userDto) {
-        return mapper.userToDto(userService.updateUser(mapper.userToEntity(userDto)));
+    public ResponseEntity updateUser(@RequestBody UserDto userDto) {
+        return ok(mapper.userToDto(userService.updateUser(mapper.userToEntity(userDto))));
     }
 
     @PutMapping("/{id}/new-password")
-    public ResponseEntity<?> changePassword(@PathVariable Long id, @RequestBody PasswordChangeDto passwordChangeDto) {
+    public ResponseEntity changePassword(@PathVariable Long id, @RequestBody PasswordChangeDto passwordChangeDto) {
         userService.changePassword(id, passwordChangeDto);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/recovery/{email}")
-    public void sendNewPasswordToEmail(@PathVariable("email") String email) {
+    public ResponseEntity sendNewPasswordToEmail(@PathVariable("email") String email) {
         recoveryService.sendNewRecoveryPassword(email);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/logout")
-    public void logout() {
+    public ResponseEntity logout() {
         userService.logout();
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/count")
     @ResponseBody
-    public long getMemberCount() {
-        return userService.getMemberCount();
+    public ResponseEntity getMemberCount() {
+        return ok(userService.getMemberCount());
     }
 
     @GetMapping("/me")
     @ResponseBody
-    public UserDto getLoggedUser() {
-        return mapper.userToDto(userService.getLoggedUser());
+    public ResponseEntity getLoggedUser() {
+        return ok(mapper.userToDto(userService.getLoggedUser()));
     }
 
     @PutMapping("/{id}/role")
-    public ResponseEntity<?> changeRole(@PathVariable Long id, @RequestParam Role role) {
+    public ResponseEntity changeRole(@PathVariable Long id, @RequestParam Role role) {
         userService.changeRole(id, role);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/isArchived")
-    public ResponseEntity<?> archive(@PathVariable Long id, @RequestParam boolean isArchived) {
+    public ResponseEntity archive(@PathVariable Long id, @RequestParam boolean isArchived) {
         userService.archive(id, isArchived);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/birthdays")
-    public List<String> getBirthdayUsers() {
-        return userService.getBirthdayUserNames();
+    public ResponseEntity getBirthdayUsers() {
+        return ok(userService.getBirthdayUserNames());
     }
-
-
 }

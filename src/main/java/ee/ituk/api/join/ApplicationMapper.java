@@ -13,8 +13,6 @@ import java.util.List;
 @Mapper(imports = MentorProfileService.class)
 public interface ApplicationMapper {
 
-    ApplicationMapper INSTANCE = Mappers.getMapper(ApplicationMapper.class);
-
     @Mapping(target = "mentorId", source = "application.mentor.id")
     @Mapping(target = "processedById", source = "application.processedBy.id")
     ApplicationDto applicationToDto(Application application);

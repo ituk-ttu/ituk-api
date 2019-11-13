@@ -4,9 +4,10 @@ import ee.ituk.api.project.dto.ProjectDto;
 import ee.ituk.api.project.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/project")
@@ -14,35 +15,32 @@ import java.util.List;
 public class ProjectController {
 
     private final ProjectService projectService;
-    private final ProjectMapper Mapper = Mappers.getMapper(ProjectMapper.class);
+    private final ProjectMapper mapper = Mappers.getMapper(ProjectMapper.class);
 
     @GetMapping()
-    public List<ProjectDto> findAll() {
-        return Mapper.projectsToDto(projectService.findAll());
+    public ResponseEntity findAll() {
+        return ok(mapper.projectsToDto(projectService.findAll()));
     }
 
     @GetMapping("/{id}")
-    public ProjectDto findProjectById(@PathVariable Long id) {
-        return Mapper.projectToDto(projectService.findById(id));
+    public ResponseEntity findProjectById(@PathVariable Long id) {
+        return ok(mapper.projectToDto(projectService.findById(id)));
     }
 
     @PostMapping()
-    public ProjectDto create(@RequestBody ProjectDto projectDto) {
-        return Mapper.projectToDto(
-                projectService.save(Mapper.projectToEntity(projectDto))
-        );
+    public ResponseEntity create(@RequestBody ProjectDto projectDto) {
+        return ok(mapper.projectToDto(projectService.save(mapper.projectToEntity(projectDto))));
     }
 
     @PutMapping("/{id}")
-    public ProjectDto update(@PathVariable Long id, @RequestBody ProjectDto projectDto) {
+    public ResponseEntity update(@PathVariable Long id, @RequestBody ProjectDto projectDto) {
         // TODO: proper update
-        return Mapper.projectToDto(
-                projectService.save(Mapper.projectToEntity(projectDto))
-        );
+        return ok(mapper.projectToDto(projectService.save(mapper.projectToEntity(projectDto))));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity delete(@PathVariable Long id) {
         projectService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
