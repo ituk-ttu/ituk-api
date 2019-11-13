@@ -37,7 +37,7 @@ public class MailService {
         VelocityContext context = createContext();
         context.put("name", application.getFirstName() + " " + application.getLastName());
         context.put("email", application.getEmail());
-        return sendAsync(application.getMentor().getUser().getEmail(), "newMinion",
+        return sendAsync(application.getMentor().getEmail(), "newMinion",
                 context, "Uus minion");
     }
 

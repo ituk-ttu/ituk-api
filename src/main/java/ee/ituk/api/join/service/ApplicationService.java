@@ -29,11 +29,13 @@ public class ApplicationService {
 
     private Application saveApplication(Application application) {
         application.setProcessedBy(userService.findUserById(application.getProcessedBy().getId()));
-        application.setMentor(mentorProfileService.findByUser(application.getMentor().getUser()));
+        application.setMentor(application.getMentor());
         return applicationRepository.save(application);
     }
 
-    public List<Application> findAll() { return applicationRepository.findAll(); }
+    public List<Application> findAll() {
+        return applicationRepository.findAll();
+    }
 
     public Application updateProfile(Application application) {
         return applicationRepository.save(application);
