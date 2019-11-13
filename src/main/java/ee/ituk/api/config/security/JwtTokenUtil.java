@@ -1,40 +1,59 @@
 package ee.ituk.api.config.security;
 
+import ee.ituk.api.login.SessionService;
+import ee.ituk.api.login.domain.Session;
+import ee.ituk.api.settings.GlobalSettingsService;
+import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
-public class JwtTokenUtil implements Serializable {
+@RequiredArgsConstructor
+public class JwtTokenUtil {
 
     private static final int SEC_IN_MIN = 60;
     private static final int MILLIS_IN_SEC = 1000;
-    private static final int TEMP_TOKEN_DURATION = 5;
     private static final String AUTHORITIES_KEY = "authorities";
+    private static final String SESSION = "sessionCode";
     private static final String ISSUER = "http://www.ituk.ee";
-    private static final String TYPE_KEY = "type";
-    private static final String QR_KEY = "qr";
 
     @Value("${security.signing.key}")
     private String signingKey;
 
-    public String getUsernameFromToken(String token) {
+    private final SessionService sessionService;
+    private final UserService userService;
+    private final GlobalSettingsService globalSettingsService;
+
+    public String generateToken(User user) {
+        return doGenerateToken(user);
+    }
+
+    boolean validateToken(String token) {
+        return !isTokenExpired(token) && validateSession(token);
+    }
+
+    String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 
     private Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
+    }
+
+    private String getSessionCode(String token) {
+        Claims allClaimsFromToken = getAllClaimsFromToken(token);
+        return (String) allClaimsFromToken.get(SESSION);
     }
 
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsResolver) {
@@ -54,22 +73,18 @@ public class JwtTokenUtil implements Serializable {
         return expiration.before(new Date());
     }
 
-    public String generateToken(User user) {
-        return doGenerateToken(user);
-    }
-
-
     private String doGenerateToken(User user) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
         List<String> authorities = user.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
+        Session session = sessionService.createSession(user);
+        claims.put(SESSION, session.getCode());
         claims.put(AUTHORITIES_KEY, authorities);
         Integer sessionTimeoutMin = getSessionTimeout();
 
         return buildJwtToken(claims, sessionTimeoutMin);
     }
-
 
     private String buildJwtToken(Claims claims, int tokenTimeoutMin) {
         long currentTimeMillis = System.currentTimeMillis();
@@ -83,16 +98,13 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
-    boolean validateToken(String token) {
-        return !isTokenExpired(token);
-    }
-
     private Integer getSessionTimeout() {
-        return 60;
+        return globalSettingsService.getSessionTimeInMinutes();
     }
 
-    @Transactional
-    public void updateSessionExpiration(User user, Date expireDate) {
+    private boolean validateSession(String token) {
+        User user = userService.loadInternalUserByUsername(getUsernameFromToken(token));
+        return sessionService.checkSession(user, getSessionCode(token));
     }
 
 }

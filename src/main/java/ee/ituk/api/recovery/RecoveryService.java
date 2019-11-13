@@ -1,28 +1,38 @@
 package ee.ituk.api.recovery;
 
-import ee.ituk.api.common.exception.NotFoundException;
-import ee.ituk.api.user.domain.User;
+import ee.ituk.api.mail.MailService;
+import ee.ituk.api.user.PasswordRecoveryRepository;
+import ee.ituk.api.user.domain.PasswordRecovery;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class RecoveryService {
+    private final PasswordRecoveryRepository passwordRecoveryRepository;
+    private final BCryptPasswordEncoder encoder;
+    private final MailService mailService;
 
-    private final RecoveryKeyRepository recoveryKeyRepository;
+    public void sendNewRecoveryPassword(String email) {
+        Optional<PasswordRecovery> byEmail = passwordRecoveryRepository.findByEmail(email);
+        byEmail.ifPresent(passwordRecoveryRepository::delete);
 
-    public User getUserByKey(String key) {
-        return recoveryKeyRepository.findByKey(key)
-                .map(RecoveryKey::getUser)
-                .orElseThrow(NotFoundException::new);
+        String rawPassword = UUID.randomUUID().toString().replace("-", "");
+
+        PasswordRecovery passwordRecovery = new PasswordRecovery();
+        passwordRecovery.setEmail(email);
+        passwordRecovery.setPassword(encoder.encode(rawPassword));
+        passwordRecoveryRepository.save(passwordRecovery);
+        mailService.sendNewPasswordEmail(email, rawPassword);
     }
 
-    public RecoveryKey createRecoveryKey(User user) {
-        RecoveryKey recoveryKey = new RecoveryKey();
-        recoveryKey.setUser(user);
-        recoveryKey.setKey(UUID.randomUUID().toString().replace("-", ""));
-        return recoveryKeyRepository.save(recoveryKey);
+    public Optional<String> getRecoveryPasswordByEmail(String email) {
+        Optional<PasswordRecovery> byEmail = passwordRecoveryRepository.findByEmail(email);
+        return byEmail.map(PasswordRecovery::getPassword);
     }
+
 }

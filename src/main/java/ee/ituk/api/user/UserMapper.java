@@ -11,11 +11,10 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
 
-    UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
-
     UserDto userToDto(User user);
 
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "authorities", ignore = true)
     User userToEntity(UserDto userDto);
 
     List<UserDto> usersToDto(List<User> users);

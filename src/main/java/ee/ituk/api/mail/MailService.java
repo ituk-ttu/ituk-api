@@ -1,7 +1,7 @@
 package ee.ituk.api.mail;
 
 
-import ee.ituk.api.join.Application;
+import ee.ituk.api.join.domain.Application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sargue.mailgun.Mail;
@@ -26,11 +26,18 @@ public class MailService {
     private final VelocityEngine velocityEngine;
 
 
+    public CompletableFuture<Response> sendNewPasswordEmail(String email, String newRawPassword) {
+        VelocityContext context = createContext();
+        context.put("password", newRawPassword);
+        return sendAsync(email, "newPassword",
+                context, "Uus salasõna");
+    }
+
     public CompletableFuture<Response> sendNewMinionEmail(Application application) {
         VelocityContext context = createContext();
         context.put("name", application.getFirstName() + " " + application.getLastName());
         context.put("email", application.getEmail());
-        return sendAsync(application.getMentor().getUser().getEmail(), "newMinion",
+        return sendAsync(application.getMentor().getEmail(), "newMinion",
                 context, "Uus minion");
     }
 

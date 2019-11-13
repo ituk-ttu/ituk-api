@@ -24,14 +24,8 @@ public class UserValidator extends Validator {
         return validationResult;
     }
 
-    public ValidationResult validatePasswordChange(User user, PasswordChangeDto dto) {
-        ValidationResult validationResult = applyRule(new PasswordIsCorrect(user, dto.getOldPassword()));
-        if (validationResult.hasErrors()) {
-            return validationResult;
-        }
-        validationResult.add(applyRules(singletonList(
-                new PasswordIsSecure(dto.getNewPassword())
-        )));
+    public ValidationResult validatePasswordChange(PasswordChangeDto dto) {
+        ValidationResult validationResult = applyRule(new PasswordIsSecure(dto.getNewPassword()));
         return validationResult.hasErrors() ? validationResult : applyRules(dto, singletonList(
                 new NewPasswordIsDifferentFromOld()
         ));

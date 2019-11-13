@@ -30,7 +30,7 @@ public class EmailConfig {
     }
 
     @Bean
-    public VelocityEngine getVelocityEngine() throws Exception {
+    public VelocityEngine getVelocityEngine() {
         VelocityEngine engine = new VelocityEngine();
         engine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
         engine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());

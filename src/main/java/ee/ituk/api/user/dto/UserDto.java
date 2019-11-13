@@ -2,7 +2,7 @@ package ee.ituk.api.user.dto;
 
 import lombok.Data;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class UserDto {
@@ -13,11 +13,12 @@ public class UserDto {
     private String email;
     private String cardNumber;
     private String studentCode;
+    private String idCode;
     private UserStatusDto status;
     private String curriculum;
     private String iban;
     private String role;
     private boolean archived;
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

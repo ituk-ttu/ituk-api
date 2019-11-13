@@ -6,7 +6,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -16,7 +16,7 @@ import java.util.List;
 public class User implements UserDetails {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY )
   private Long id;
   private String firstName;
   private String lastName;
@@ -24,16 +24,17 @@ public class User implements UserDetails {
   private String cardNumber;
   private String password;
   private String studentCode;
+  private String idCode;
   @ManyToOne
   @JoinColumn( name = "status_id")
   private UserStatus status;
   private String curriculum;
   private String iban;
   @Enumerated(EnumType.STRING)
-  private Role role;
-  private boolean archived;
-  private LocalDate createdAt;
-  private LocalDate updatedAt;
+  private Role role = Role.MEMBER;
+  private boolean archived = false;
+  private LocalDateTime createdAt = LocalDateTime.now();
+  private LocalDateTime updatedAt = LocalDateTime.now();
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

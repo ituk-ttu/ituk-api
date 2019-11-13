@@ -30,3 +30,8 @@ email:
 security:
   signing:
     key: "ituk"
+logging.level.org.springframework.web: DEBUG
+logging.level.org.hibernate: ERROR
+logging:
+  level:
+    DEBUG
