@@ -6,7 +6,6 @@ import ee.ituk.api.common.exception.ValidationException;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
-import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.user.dto.PasswordChangeDto;
@@ -18,7 +17,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.inject.Inject;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -33,13 +31,11 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MentorProfileRepository mentorProfileRepository;
-    private final RecoveryService recoveryService;
     private final MentorProfileService mentorProfileService;
     private final SessionService sessionService;
-    private final UserValidator userValidator = new UserValidator();
+    private final BCryptPasswordEncoder encoder;
 
-    @Inject
-    private BCryptPasswordEncoder encoder;
+    private final UserValidator userValidator = new UserValidator();
 
     @Override
     public UserDetails loadUserByUsername(String email) {
@@ -89,21 +85,21 @@ public class UserService implements UserDetailsService {
         sessionService.deleteSession(user);
     }
 
-    public long getMemberCount() {
+    long getMemberCount() {
         return userRepository.count();
     }
 
-    public User updateUser(User user) {
+    User updateUser(User user) {
         //TODO validation
         return userRepository.save(user);
     }
 
-    public User getLoggedUser() {
+    User getLoggedUser() {
         return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
-    public void changeRole(Long id, Role role) {
+    void changeRole(Long id, Role role) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         user.setRole(role);
         userRepository.save(user);
@@ -115,16 +111,15 @@ public class UserService implements UserDetailsService {
     List<String> getBirthdayUserNames() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .filter(e -> {
-                    String userIdCode = e.getIdCode().substring(3, 7);
-                    int userBirthMonth = Integer.parseInt(userIdCode.substring(3, 5));
-                    int userBirthDay = Integer.parseInt(userIdCode.substring(5, 7));
+                .filter(user -> {
+                    int userBirthMonth = Integer.parseInt(user.getIdCode().substring(3, 5));
+                    int userBirthDay = Integer.parseInt(user.getIdCode().substring(5, 7));
                     return LocalDate.now().getMonthValue() == userBirthMonth && LocalDate.now().getDayOfMonth() == userBirthDay;
-                }).map(e -> e.getFirstName() + " " + e.getLastName())
+                }).map(user -> user.getFirstName() + " " + user.getLastName())
                 .collect(Collectors.toList());
     }
 
-    public void archive(Long id, boolean isArchived) {
+    void archive(Long id, boolean isArchived) {
         User user = userRepository.findById(id).orElseThrow(() ->
                 new ValidationException(getNotFoundError(User.class)));
         user.setArchived(isArchived);
