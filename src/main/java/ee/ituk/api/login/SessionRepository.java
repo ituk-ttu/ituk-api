@@ -10,8 +10,6 @@ public interface SessionRepository extends JpaRepository<Session, Long> {
 
     Optional<Session> findByUser(User user);
 
-    boolean existsByUser(User user);
-
     boolean existsSessionByUserAndCode(User user, String code);
 
     void deleteByUser(User user);
