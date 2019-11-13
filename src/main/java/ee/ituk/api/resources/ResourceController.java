@@ -6,19 +6,14 @@ import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping("/resource")
 @RequiredArgsConstructor
-// TODO move PreAuthorize to websecurity conf (REMOVE @PREAUTHRIZE)
-@PreAuthorize("isAuthenticated()")
 public class ResourceController {
 
     private final ResourceService resourceService;
