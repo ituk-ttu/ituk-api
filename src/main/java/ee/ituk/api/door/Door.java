@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-public class Door {
+class Door {
 
   @Id
   private String code;
