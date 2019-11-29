@@ -4,6 +4,7 @@ import ee.ituk.api.door.domain.Door;
 import ee.ituk.api.door.request.BatchDoorPermissionRequest;
 import ee.ituk.api.door.request.DoorPermissionDto;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ import java.util.List;
 public class DoorController {
 
     private final DoorService doorService;
-    private final DoorPermissionMapper mapper;
+    private final DoorPermissionMapper mapper = Mappers.getMapper(DoorPermissionMapper.class);
 
     @GetMapping
     public List<Door> getAllDoors() {
