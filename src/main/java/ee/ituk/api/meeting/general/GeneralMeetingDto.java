@@ -1,4 +1,4 @@
-package ee.ituk.api.meeting.dto;
+package ee.ituk.api.meeting.general;
 
 import lombok.Data;
 

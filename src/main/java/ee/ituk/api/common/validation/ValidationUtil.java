@@ -25,6 +25,8 @@ public final class ValidationUtil {
 
     public static final String MEETING_ID_MISMATCH = "meeting.id.mismatch";
 
+    public static final String PARTICIPANT_ID_MISMATCH = "participant.id.mismatch";
+
     private ValidationUtil() {
         //not instance
     }

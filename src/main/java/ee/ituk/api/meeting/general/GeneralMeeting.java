@@ -1,4 +1,4 @@
-package ee.ituk.api.meeting.domain;
+package ee.ituk.api.meeting.general;
 
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;

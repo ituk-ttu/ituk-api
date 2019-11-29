@@ -1,7 +1,5 @@
-package ee.ituk.api.meeting;
+package ee.ituk.api.meeting.general;
 
-import ee.ituk.api.meeting.domain.GeneralMeeting;
-import ee.ituk.api.meeting.dto.GeneralMeetingDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
