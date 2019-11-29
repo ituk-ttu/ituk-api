@@ -1,8 +1,7 @@
-package ee.ituk.api.meeting.validation;
+package ee.ituk.api.meeting.general;
 
 import ee.ituk.api.common.validation.ValidationResult;
 import ee.ituk.api.common.validation.Validator;
-import ee.ituk.api.meeting.domain.GeneralMeeting;
 
 public class GeneralMeetingValidator extends Validator {
 

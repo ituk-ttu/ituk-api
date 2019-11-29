@@ -1,6 +1,7 @@
 package ee.ituk.api.join;
 
 import ee.ituk.api.join.dto.ApplicationDto;
+import ee.ituk.api.join.dto.ApplicationMentorRequest;
 import ee.ituk.api.join.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
@@ -46,5 +47,11 @@ public class ApplicationController {
     @PostMapping
     public ResponseEntity createApplication(@RequestBody ApplicationDto applicationDto) {
         return ok(applicationMapper.applicationToDto(applicationService.createApplication(applicationMapper.applicationToEntity(applicationDto))));
+    }
+
+    @PutMapping("/mentor")
+    public ResponseEntity<Void> setMentorToApplication(@RequestBody ApplicationMentorRequest request) {
+        applicationService.setMentorToApplication(request.getApplicationId(), request.getMentorId());
+        return ok().build();
     }
 }
