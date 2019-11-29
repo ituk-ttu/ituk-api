@@ -51,6 +51,10 @@ public class UserService implements UserDetailsService {
                 -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
+    public List<User> findByIds(List<Long> ids) {
+        return userRepository.findByIdIn(ids);
+    }
+
     void changePassword(long id, PasswordChangeDto passwordChangeDto) {
         User user = findUserById(id);
         if (encoder.matches(passwordChangeDto.getOldPassword(), user.getPassword())) {
