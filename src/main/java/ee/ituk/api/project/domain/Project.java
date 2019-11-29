@@ -2,6 +2,9 @@ package ee.ituk.api.project.domain;
 
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLDeleteAll;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -10,8 +13,11 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "Project")
 @Table(name = "project", schema = "public")
+@SQLDelete(sql = "UPDATE project SET deleted_at = now() WHERE id = ?")
+@SQLDeleteAll(sql = "UPDATE project SET deleted_at = NOW() WHERE 1 = 1")
+@Where(clause = "deleted_at IS null")
 public class Project {
 
     @Id

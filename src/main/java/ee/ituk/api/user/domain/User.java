@@ -1,6 +1,9 @@
 package ee.ituk.api.user.domain;
 
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLDeleteAll;
+import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -11,8 +14,11 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "User")
 @Table(name = "user", schema = "public")
+@SQLDelete(sql = "UPDATE user SET deleted_at = now() WHERE id = ?")
+@SQLDeleteAll(sql = "UPDATE user SET deleted_at = NOW() WHERE 1 = 1")
+@Where(clause = "deleted_at IS null")
 public class User implements UserDetails {
 
   @Id
