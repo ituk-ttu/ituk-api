@@ -36,10 +36,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-//	implementation 'de.codecentric:spring-boot-admin-starter-client'
-//	implementation 'de.codecentric:spring-boot-admin-starter-server'
 	implementation 'org.flywaydb:flyway-core'
 	implementation 'org.springframework.session:spring-session-core'
+	implementation 'org.springframework.boot:spring-boot-starter-log4j2'
+	implementation 'org.zalando:logbook-spring-boot-starter:1.11.0'
+	implementation 'org.zalando:tracer-core:0.17.0'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'org.postgresql:postgresql'
@@ -54,6 +55,7 @@ dependencies {
 	implementation 'net.sargue:mailgun:1.9.0'
 	implementation 'org.apache.velocity:velocity:1.7'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'org.glassfish.jersey.inject:jersey-hk2:2.29.1'
 }
 
 dependencyManagement {

@@ -26,7 +26,7 @@ public class EmailConfig {
         return (MailgunConfiguration) new MailgunConfiguration().domain(domain)
                                                                 .apiKey(apiKey)
                                                                 .from(fromName, fromEmail)
-                                                                .apiUrl("https://api.eu.mailgun.net/v3");
+                                                                .apiUrl("https://api.mailgun.net/v3");
     }
 
     @Bean
