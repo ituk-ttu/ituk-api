@@ -1,4 +1,4 @@
-package ee.ituk.api.door;
+package ee.ituk.api.door.domain;
 
 import lombok.Data;
 
@@ -7,7 +7,7 @@ import javax.persistence.Id;
 
 @Data
 @Entity
-class Door {
+public class Door {
 
   @Id
   private String code;
