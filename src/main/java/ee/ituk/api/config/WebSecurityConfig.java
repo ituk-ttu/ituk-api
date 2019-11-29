@@ -28,6 +28,9 @@ import java.security.SecureRandom;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/users/birthdays", "/users/count"};
+    private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
+
     @Resource(name = "userService")
     private UserDetailsService userDetailsService;
 
@@ -55,10 +58,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**").authenticated()
-                .antMatchers("/login/**").permitAll()
+                .antMatchers(LET_THEM_THROUGH).permitAll()
+                .antMatchers(DONT_LET_THEM_IN).authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
@@ -73,6 +77,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configuring propagation of the Spring Security principal with @Async
+     *
      * @return MethodInvokingFactoryBean
      */
     @Bean
