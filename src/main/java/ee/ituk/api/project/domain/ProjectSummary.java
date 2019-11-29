@@ -2,14 +2,20 @@ package ee.ituk.api.project.domain;
 
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLDeleteAll;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Data
-@Entity
+@Entity(name = "ProjectSummary")
 @Table(name = "project_summary", schema = "public")
+@SQLDelete(sql = "UPDATE project_summary SET deleted_at = now() WHERE id = ?")
+@SQLDeleteAll(sql = "UPDATE project_summary SET deleted_at = NOW() WHERE 1 = 1")
+@Where(clause = "deleted_at IS null")
 public class ProjectSummary {
 
     @Id
