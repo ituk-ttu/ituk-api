@@ -55,13 +55,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/resources/**").authenticated()
-                .antMatchers("/**").authenticated()
-                .antMatchers("/login/**").permitAll()
-                .antMatchers("/actuator/**").permitAll()
-                .antMatchers("/swagger-ui.html").permitAll()
+                .antMatchers("/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**").permitAll()
+                .antMatchers("/**", "/resources/**").authenticated()
                 .and()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
+                .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .addFilterBefore(authenticationTokenFilterBean(), UsernamePasswordAuthenticationFilter.class)
@@ -76,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Configuring propagation of the Spring Security principal with @Async
+     *
      * @return MethodInvokingFactoryBean
      */
     @Bean
