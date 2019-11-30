@@ -75,7 +75,7 @@ public class DoorService {
         userPermissions = userPermissions.stream()
                 .filter(permission -> doors.contains(permission.getDoor()))
                 .collect(Collectors.toList());
-        if (userPermissions.isEmpty()) {
+        if (!userPermissions.isEmpty()) {
             createPermissionLogEntry(false, Collections.singletonMap(user, userPermissions));
             permissionRepository.deleteAll(userPermissions);
         }
