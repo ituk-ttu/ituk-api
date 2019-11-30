@@ -112,7 +112,7 @@ public class UserService implements UserDetailsService {
                     int day = Integer.parseInt(user.getIdCode().substring(5, 7));
                     return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
                 })
-                .map(user -> user.getFirstName() + " " + user.getLastName())
+                .map(User::getFullName)
                 .collect(Collectors.toList());
     }
 

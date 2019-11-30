@@ -125,7 +125,7 @@ public class DoorService {
         List<DoorPermissionLogEntry> entries = new ArrayList<>();
         userToDoorPermissions.forEach((user, permissions) ->
                 DoorPermissionLogEntry.builder()
-                .change(user.getFirstName() + " " + user.getLastName() + " "
+                .change(user.getFullName() + " "
                         + (added ? "added" : "removed") + "permissions to doors: " + createDoorNamesString(permissions))
                 .updatedAt(LocalDateTime.now())
                 .userModified((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal())

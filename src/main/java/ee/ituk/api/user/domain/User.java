@@ -71,4 +71,8 @@ public class User implements UserDetails {
   public boolean isEnabled() {
     return !archived;
   }
+
+  public String getFullName() {
+    return firstName + " " + lastName;
+  }
 }
