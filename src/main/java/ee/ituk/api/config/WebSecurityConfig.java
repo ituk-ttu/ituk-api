@@ -70,9 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder encoder() throws NoSuchAlgorithmException {
-        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-        return new BCryptPasswordEncoder(12, secureRandom);
+    public BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(12);
     }
 
     /**
