@@ -1,6 +1,5 @@
-package ee.ituk.api.meeting;
+package ee.ituk.api.meeting.general;
 
-import ee.ituk.api.meeting.domain.GeneralMeeting;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GeneralMeetingsRepository extends JpaRepository<GeneralMeeting, Long> {

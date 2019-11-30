@@ -1,6 +1,5 @@
-package ee.ituk.api.meeting;
+package ee.ituk.api.meeting.general;
 
-import ee.ituk.api.meeting.dto.GeneralMeetingDto;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
