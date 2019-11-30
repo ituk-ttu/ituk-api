@@ -87,6 +87,8 @@ public class UserService implements UserDetailsService {
 
     User updateUser(User user) {
         //TODO validation
+        User fromBase = userRepository.getOne(user.getId());
+        user.setPassword(fromBase.getPassword());
         return userRepository.save(user);
     }
 
