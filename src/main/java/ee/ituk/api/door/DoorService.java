@@ -95,7 +95,7 @@ public class DoorService {
                     if (userToDoorPermissions.containsKey(permission.getUser())) {
                         userToDoorPermissions.get(permission.getUser()).add(permission);
                     } else {
-                        userToDoorPermissions.put(permission.getUser(), Arrays.asList(permission));
+                        userToDoorPermissions.put(permission.getUser(), new ArrayList<>(Arrays.asList(permission)));
                     }
                 });
         createPermissionLogEntry(false, userToDoorPermissions);
@@ -139,5 +139,20 @@ public class DoorService {
                 .map(DoorPermission::getDoor)
                 .map(Door::getCode)
                 .collect(Collectors.joining(" ,"));
+    }
+
+    public List<UserDoorsDto> getUserDoorPermissions() {
+        Map<User, List<Door>> userToDoorPermissions = new HashMap<>();
+        permissionRepository.findAll()
+                .forEach(permission -> {
+                    if (userToDoorPermissions.containsKey(permission.getUser())) {
+                        userToDoorPermissions.get(permission.getUser()).add(permission.getDoor());
+                    } else {
+                        userToDoorPermissions.put(permission.getUser(), new ArrayList<>(Arrays.asList(permission.getDoor())));
+                    }
+                });
+        return userToDoorPermissions.entrySet().stream()
+                .map(e -> new UserDoorsDto(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
     }
 }

@@ -1,4 +1,4 @@
-package ee.ituk.api.door.request;
+package ee.ituk.api.door.dto;
 
 import ee.ituk.api.door.domain.Door;
 import lombok.Getter;
