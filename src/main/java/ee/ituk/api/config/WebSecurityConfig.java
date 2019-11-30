@@ -28,7 +28,7 @@ import java.security.SecureRandom;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/users/birthdays", "/users/count"};
+    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/user/birthdays", "/user/count"};
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
 
     @Resource(name = "userService")
