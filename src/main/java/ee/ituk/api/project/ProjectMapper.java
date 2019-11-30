@@ -7,9 +7,8 @@ import ee.ituk.api.project.domain.ProjectMember;
 import ee.ituk.api.project.dto.ProjectBudgetRowDto;
 import ee.ituk.api.project.dto.ProjectDto;
 import ee.ituk.api.project.dto.ProjectMemberDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
+
+import org.mapstruct.*;
 
 import java.util.List;
 
