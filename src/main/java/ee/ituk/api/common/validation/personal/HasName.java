@@ -1,8 +1,8 @@
-package ee.ituk.api.user.validation.rules;
+package ee.ituk.api.common.validation.personal;
 
+import ee.ituk.api.common.domain.PersonalData;
 import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.validation.ValidationRule;
-import ee.ituk.api.user.domain.User;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static org.apache.commons.lang.StringUtils.isNotBlank;
 
-public class HasName implements ValidationRule<User> {
+public class HasName implements ValidationRule<PersonalData> {
     @Override
-    public List<ErrorMessage> apply(User user) {
+    public List<ErrorMessage> apply(PersonalData user) {
         if (isNotBlank(user.getFirstName()) || isNotBlank(user.getLastName())) {
             return emptyList();
         }
