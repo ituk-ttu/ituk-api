@@ -42,6 +42,8 @@ public class DoorService {
         Map<User, List<DoorPermission>> userToDoorPermissions = new HashMap<>();
         List<DoorPermission> permissions = createDoorPermissions(doors, user);
 
+        userToDoorPermissions.put(user, permissions);
+
         createPermissionLogEntry(true, userToDoorPermissions);
         return permissionRepository.saveAll(permissions);
     }
@@ -124,12 +126,13 @@ public class DoorService {
     private void createPermissionLogEntry(boolean added,  Map<User, List<DoorPermission>> userToDoorPermissions) {
         List<DoorPermissionLogEntry> entries = new ArrayList<>();
         userToDoorPermissions.forEach((user, permissions) ->
+                entries.add(
                 DoorPermissionLogEntry.builder()
                 .change(user.getFullName() + " "
-                        + (added ? "added" : "removed") + "permissions to doors: " + createDoorNamesString(permissions))
+                        + (added ? "added" : "removed") + " permissions to doors: " + createDoorNamesString(permissions))
                 .updatedAt(LocalDateTime.now())
                 .userModified((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .build());
+                .build()));
         logEntryRepository.saveAll(entries);
     }
 
