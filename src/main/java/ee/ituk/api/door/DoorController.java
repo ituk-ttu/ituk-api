@@ -1,8 +1,8 @@
 package ee.ituk.api.door;
 
 import ee.ituk.api.door.domain.Door;
-import ee.ituk.api.door.request.BatchDoorPermissionRequest;
-import ee.ituk.api.door.request.DoorPermissionDto;
+import ee.ituk.api.door.dto.BatchDoorPermissionRequest;
+import ee.ituk.api.door.dto.DoorPermissionDto;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
@@ -48,5 +48,10 @@ public class DoorController {
     public ResponseEntity batchDeletePermission(@RequestBody BatchDoorPermissionRequest request) {
         doorService.batchDeletePermission(request.getDoors(), request.getUserIds());
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("users")
+    public ResponseEntity<List<UserDoorsDto>> getUsersWithPermissions() {
+        return ResponseEntity.ok(doorService.getUserDoorPermissions());
     }
 }
