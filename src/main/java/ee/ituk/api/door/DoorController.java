@@ -39,7 +39,7 @@ public class DoorController {
     }
 
     @PutMapping("/{userId}/delete")
-    public ResponseEntity batchDeletePermission(@PathVariable Long userId, @RequestBody List<Door> doors) {
+    public ResponseEntity deletePermission(@PathVariable Long userId, @RequestBody List<Door> doors) {
         doorService.deletePermissions(doors, userId);
         return ResponseEntity.noContent().build();
     }
