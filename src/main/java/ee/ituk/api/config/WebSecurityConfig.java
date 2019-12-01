@@ -20,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 @Configuration
 @EnableWebSecurity
@@ -57,10 +55,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .authorizeRequests()
-                .antMatchers(LET_THEM_THROUGH).permitAll()
-                .antMatchers(DONT_LET_THEM_IN).authenticated()
-                .and()
+               // .authorizeRequests()
+               // .antMatchers(LET_THEM_THROUGH).permitAll()
+               // .antMatchers(DONT_LET_THEM_IN).authenticated()
+               // .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

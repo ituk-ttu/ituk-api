@@ -28,7 +28,7 @@ public class GeneralMeeting {
 
   @OneToOne
   @JoinColumn(name = "meeting_agenda_id")
-  private MeetingAgenda agenda;
+  private MeetingAgenda meetingAgenda;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
 }

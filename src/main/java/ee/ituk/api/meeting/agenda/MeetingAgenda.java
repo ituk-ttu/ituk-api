@@ -23,8 +23,8 @@ public class MeetingAgenda {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
     private LocalDateTime deletedAt;
 
     @OneToMany(mappedBy = "meetingAgenda", fetch = FetchType.LAZY)
