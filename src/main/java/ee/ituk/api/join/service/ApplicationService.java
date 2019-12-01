@@ -69,4 +69,9 @@ public class ApplicationService {
             throw new NotFoundException(Collections.singletonList(getNotFoundError(Application.class)));
         }
     }
+
+    public List<Application> findByMentor(Long mentorUserId) {
+        User mentor = userService.findUserById(mentorUserId);
+        return applicationRepository.findAllByMentor(mentor);
+    }
 }

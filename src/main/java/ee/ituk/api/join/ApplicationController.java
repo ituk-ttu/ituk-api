@@ -50,8 +50,13 @@ public class ApplicationController {
     }
 
     @PutMapping("/mentor")
-    public ResponseEntity<Void> setMentorToApplication(@RequestBody ApplicationMentorRequest request) {
+    public ResponseEntity setMentorToApplication(@RequestBody ApplicationMentorRequest request) {
         applicationService.setMentorToApplication(request.getApplicationId(), request.getMentorId());
         return ok().build();
+    }
+
+    @GetMapping("{id}/minions")
+    public ResponseEntity findUsersMinions(@PathVariable Long id) {
+        return ok(applicationMapper.applicationsToResponseDto(applicationService.findByMentor(id)));
     }
 }
