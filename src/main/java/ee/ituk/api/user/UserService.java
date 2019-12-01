@@ -66,7 +66,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    List<User> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll();
     }
 
@@ -87,6 +87,8 @@ public class UserService implements UserDetailsService {
 
     User updateUser(User user) {
         //TODO validation
+        User fromBase = userRepository.getOne(user.getId());
+        user.setPassword(fromBase.getPassword());
         return userRepository.save(user);
     }
 
@@ -108,11 +110,11 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .filter(user -> {
-                    int month = Integer.parseInt(user.getIdCode().substring(3, 5));
-                    int day = Integer.parseInt(user.getIdCode().substring(5, 7));
+                    int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
+                    int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
                     return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
                 })
-                .map(user -> user.getFirstName() + " " + user.getLastName())
+                .map(User::getFullName)
                 .collect(Collectors.toList());
     }
 

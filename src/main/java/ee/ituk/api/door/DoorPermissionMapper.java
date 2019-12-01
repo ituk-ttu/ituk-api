@@ -1,7 +1,7 @@
 package ee.ituk.api.door;
 
 import ee.ituk.api.door.domain.DoorPermission;
-import ee.ituk.api.door.request.DoorPermissionDto;
+import ee.ituk.api.door.dto.DoorPermissionDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

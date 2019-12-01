@@ -42,6 +42,8 @@ public class DoorService {
         Map<User, List<DoorPermission>> userToDoorPermissions = new HashMap<>();
         List<DoorPermission> permissions = createDoorPermissions(doors, user);
 
+        userToDoorPermissions.put(user, permissions);
+
         createPermissionLogEntry(true, userToDoorPermissions);
         return permissionRepository.saveAll(permissions);
     }
@@ -73,7 +75,7 @@ public class DoorService {
         userPermissions = userPermissions.stream()
                 .filter(permission -> doors.contains(permission.getDoor()))
                 .collect(Collectors.toList());
-        if (userPermissions.isEmpty()) {
+        if (!userPermissions.isEmpty()) {
             createPermissionLogEntry(false, Collections.singletonMap(user, userPermissions));
             permissionRepository.deleteAll(userPermissions);
         }
@@ -95,7 +97,7 @@ public class DoorService {
                     if (userToDoorPermissions.containsKey(permission.getUser())) {
                         userToDoorPermissions.get(permission.getUser()).add(permission);
                     } else {
-                        userToDoorPermissions.put(permission.getUser(), Arrays.asList(permission));
+                        userToDoorPermissions.put(permission.getUser(), new ArrayList<>(Arrays.asList(permission)));
                     }
                 });
         createPermissionLogEntry(false, userToDoorPermissions);
@@ -124,12 +126,13 @@ public class DoorService {
     private void createPermissionLogEntry(boolean added,  Map<User, List<DoorPermission>> userToDoorPermissions) {
         List<DoorPermissionLogEntry> entries = new ArrayList<>();
         userToDoorPermissions.forEach((user, permissions) ->
+                entries.add(
                 DoorPermissionLogEntry.builder()
-                .change(user.getFirstName() + " " + user.getLastName() + " "
-                        + (added ? "added" : "removed") + "permissions to doors: " + createDoorNamesString(permissions))
+                .change(user.getFullName() + " "
+                        + (added ? "added" : "removed") + " permissions to doors: " + createDoorNamesString(permissions))
                 .updatedAt(LocalDateTime.now())
                 .userModified((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal())
-                .build());
+                .build()));
         logEntryRepository.saveAll(entries);
     }
 
@@ -139,5 +142,20 @@ public class DoorService {
                 .map(DoorPermission::getDoor)
                 .map(Door::getCode)
                 .collect(Collectors.joining(" ,"));
+    }
+
+    public List<UserDoorsDto> getUserDoorPermissions() {
+        Map<User, List<Door>> userToDoorPermissions = new HashMap<>();
+        permissionRepository.findAll()
+                .forEach(permission -> {
+                    if (userToDoorPermissions.containsKey(permission.getUser())) {
+                        userToDoorPermissions.get(permission.getUser()).add(permission.getDoor());
+                    } else {
+                        userToDoorPermissions.put(permission.getUser(), new ArrayList<>(Arrays.asList(permission.getDoor())));
+                    }
+                });
+        return userToDoorPermissions.entrySet().stream()
+                .map(e -> new UserDoorsDto(e.getKey(), e.getValue()))
+                .collect(Collectors.toList());
     }
 }

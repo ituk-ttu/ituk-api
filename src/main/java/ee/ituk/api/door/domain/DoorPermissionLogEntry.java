@@ -14,10 +14,11 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "door_permission_log_entry", schema = "public")
 public class DoorPermissionLogEntry {
 
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
   private String change;
   private LocalDateTime updatedAt;

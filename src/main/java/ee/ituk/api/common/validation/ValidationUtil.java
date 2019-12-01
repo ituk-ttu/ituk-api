@@ -9,7 +9,9 @@ public final class ValidationUtil {
     public static final String PASSWORD_NOT_SECURE = "password.not.secure";
     public static final String PASSWORD_UNCHANGED = "password.unchanged";
 
-    public static final String STUDENTCODE_INCORRECT = "studentCode.incorrect";
+    public static final String STUDENT_CODE_INCORRECT = "studentCode.incorrect";
+    public static final String PERSONAL_CODE_INCORRECT = "personalCode.incorrect";
+    public static final String EMAIL_INCORRECT = "email.incorrect";
 
     public static final String NAME_MISSING = "name.missing";
 

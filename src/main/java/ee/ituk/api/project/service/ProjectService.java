@@ -47,6 +47,11 @@ public class ProjectService {
         project.getMembers().forEach(member -> member.setProject(project));
         project.getBudget().getRows().forEach(row -> row.setProjectBudget(project.getBudget()));
 
+        // force confirmedBy to be null if confirmedById is null (cannot be done with MapStruct because of https://github.com/mapstruct/mapstruct/issues/1166
+        if (project.getSummary().getConfirmedBy() != null && project.getSummary().getConfirmedBy().getId() == null) {
+            project.getSummary().setConfirmedBy(null);
+        }
+
         return project;
     }
 }

@@ -7,6 +7,10 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 2MB
   datasource:
     url: jdbc:postgresql://127.0.0.1:5433/ituk-api
     username: postgres
@@ -35,3 +39,6 @@ logging.level.org.hibernate: ERROR
 logging:
   level:
     DEBUG
+file-storage:
+  base-dir: "{CHANGE_THIS}"
+  mentor-profile-dir: "mentors"

@@ -3,6 +3,7 @@ package ee.ituk.api.join.service;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.join.domain.Application;
 import ee.ituk.api.join.repository.ApplicationRepository;
+import ee.ituk.api.join.validation.ApplicationValidator;
 import ee.ituk.api.mail.MailService;
 import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
@@ -13,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 
 @Service
@@ -22,6 +24,8 @@ public class ApplicationService {
     private final ApplicationRepository applicationRepository;
     private final UserService userService;
     private final MailService mailService;
+
+    private final ApplicationValidator validator = new ApplicationValidator();
 
     public Application createApplication(Application application) {
         return saveApplication(application);
@@ -47,6 +51,7 @@ public class ApplicationService {
     private Application saveApplication(Application application) {
         application.setProcessedBy(userService.findUserById(application.getProcessedBy().getId()));
         application.setMentor(application.getMentor());
+        checkForErrors(validator.validateOnCreate(application));
         return applicationRepository.save(application);
     }
 

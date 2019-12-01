@@ -1,5 +1,6 @@
 package ee.ituk.api.user.domain;
 
+import ee.ituk.api.common.domain.PersonalData;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLDeleteAll;
@@ -19,7 +20,7 @@ import java.util.List;
 @SQLDelete(sql = "UPDATE user SET deleted_at = now() WHERE id = ?")
 @SQLDeleteAll(sql = "UPDATE user SET deleted_at = NOW() WHERE 1 = 1")
 @Where(clause = "deleted_at IS null")
-public class User implements UserDetails {
+public class User implements UserDetails, PersonalData {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY )
@@ -30,7 +31,7 @@ public class User implements UserDetails {
   private String cardNumber;
   private String password;
   private String studentCode;
-  private String idCode;
+  private String personalCode;
   @ManyToOne
   @JoinColumn( name = "status_id")
   private UserStatus status;
@@ -70,5 +71,9 @@ public class User implements UserDetails {
   @Override
   public boolean isEnabled() {
     return !archived;
+  }
+
+  public String getFullName() {
+    return firstName + " " + lastName;
   }
 }

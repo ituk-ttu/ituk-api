@@ -28,7 +28,7 @@ import java.security.SecureRandom;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/users/birthdays", "/users/count"};
+    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project"};
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
 
     @Resource(name = "userService")
@@ -70,9 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public BCryptPasswordEncoder encoder() throws NoSuchAlgorithmException {
-        SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
-        return new BCryptPasswordEncoder(12, secureRandom);
+    public BCryptPasswordEncoder encoder() {
+        return new BCryptPasswordEncoder(12);
     }
 
     /**
