@@ -47,6 +47,10 @@ public class MentorProfileService {
         this.fileStorageService.uploadMentorPicture(id, file);
     }
 
+    public void setNewBase64ProfileImage(Long id, String base64) {
+        this.mentorProfileRepository.updateMentorProfilePic(id, base64);
+    }
+
     public Resource loadPicture(String id) {
        return this.fileStorageService.loadMentorPicture(id);
     }
