@@ -5,6 +5,7 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -35,5 +36,11 @@ public class GeneralMeetingController {
     public ResponseEntity deleteMeeting(@PathVariable Long id) {
         meetingService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("meeting/{meetingId}/agenda/{agendaItemId}")
+    public ResponseEntity removeAgendaItemFromMeeting(@PathVariable Long meetingId, @PathVariable Long agendaItemId) {
+        meetingService.removeAgendaItem(agendaItemId, meetingId);
+        return noContent().build();
     }
 }
