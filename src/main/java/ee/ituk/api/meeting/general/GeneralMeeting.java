@@ -1,5 +1,6 @@
 package ee.ituk.api.meeting.general;
 
+import ee.ituk.api.meeting.agenda.MeetingAgenda;
 import lombok.Data;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLDeleteAll;
@@ -24,6 +25,10 @@ public class GeneralMeeting {
   private LocalDate date;
   private boolean election;
   private String protocolUrl;
+
+  @OneToOne
+  @JoinColumn(name = "meeting_agenda_id")
+  private MeetingAgenda meetingAgenda;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
 }

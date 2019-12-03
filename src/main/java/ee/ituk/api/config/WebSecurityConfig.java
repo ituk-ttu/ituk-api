@@ -20,8 +20,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 
 @Configuration
 @EnableWebSecurity

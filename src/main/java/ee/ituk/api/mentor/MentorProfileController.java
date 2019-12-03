@@ -41,6 +41,12 @@ public class MentorProfileController {
         return ResponseEntity.noContent().build();
     }
 
+    @PutMapping("{id}/picture/base64")
+    public ResponseEntity uploadPicture(@PathVariable("id") Long id, @RequestBody(required = false) String file) {
+        this.mentorProfileService.setNewBase64ProfileImage(id, file);
+        return ResponseEntity.noContent().build();
+    }
+
     @ApiOperation(value = "Find mentor by user id")
     @GetMapping("/{id}")
     @ResponseBody

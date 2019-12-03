@@ -14,8 +14,11 @@ public class HasValidPersonalCode implements ValidationRule<PersonalData> {
 
     @Override
     public List<ErrorMessage> apply(PersonalData person) {
-        if (person.getPersonalCode().length() == 11) {
-            return emptyList();
+        if (person.getPersonalCode().length() == 11 && person.getPersonalCode().matches("\\d+")) {
+            IdNumber idCode = new IdNumber(person);
+            if (idCode.isValidEstonianIdNumber()) {
+                return emptyList();
+            }
         }
         return singletonList(ErrorMessage.builder().code(PERSONAL_CODE_INCORRECT).build());
     }
