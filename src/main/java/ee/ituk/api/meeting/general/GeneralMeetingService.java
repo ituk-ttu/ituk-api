@@ -43,6 +43,12 @@ public class GeneralMeetingService {
         meetingsRepository.delete(meeting);
     }
 
+    public GeneralMeeting findById(Long id) {
+        return meetingsRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass())))
+        );
+    }
+
     List<GeneralMeeting> getAll() {
         List<GeneralMeeting> meetings = meetingsRepository.findAll();
         meetings.sort(Comparator.comparing(GeneralMeeting::getDate).reversed());
@@ -50,17 +56,33 @@ public class GeneralMeetingService {
     }
 
     GeneralMeeting update(Long id, GeneralMeeting meeting) {
+        validateGeneralMeeting(id, meeting);
+        GeneralMeeting meetingWithUpdatedAgenda = updateMeetingsAgenda(meeting);
+        return meetingsRepository.save(meetingWithUpdatedAgenda);
+    }
+
+    void removeAgendaItem(Long agendaItemId, Long meetingId) {
+        // validate the meeting actually exists
+        meetingsRepository.findById(meetingId).orElseThrow(
+                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+
+        meetingAgendaItemRepository.deleteById(agendaItemId);
+    }
+
+    private GeneralMeeting updateMeetingsAgenda(GeneralMeeting meeting) {
+        MeetingAgenda agenda = meeting.getMeetingAgenda();
+        MeetingAgenda savedAgenda = meetingAgendaRepository.save(agenda);
+        meetingAgendaItemRepository.saveAll(savedAgenda.getItems());
+
+        meeting.setMeetingAgenda(savedAgenda);
+        return meeting;
+    }
+
+    private void validateGeneralMeeting(Long id, GeneralMeeting meeting) {
         meetingsRepository.findById(id).orElseThrow(
                 () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
         if (!id.equals(meeting.getId())) {
             throw new ValidationException(ErrorMessage.builder().code(MEETING_ID_MISMATCH).build());
         }
-        return meetingsRepository.save(meeting);
-    }
-
-    public GeneralMeeting findById(Long id) {
-        return meetingsRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass())))
-        );
     }
 }
