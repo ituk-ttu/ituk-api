@@ -39,13 +39,13 @@ public class GeneralMeetingService {
 
     public void delete(Long id) {
         GeneralMeeting meeting = meetingsRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(GeneralMeeting.class))));
         meetingsRepository.delete(meeting);
     }
 
     public GeneralMeeting findById(Long id) {
         return meetingsRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass())))
+                () -> new NotFoundException(Collections.singletonList(getNotFoundError(GeneralMeeting.class)))
         );
     }
 
@@ -64,7 +64,7 @@ public class GeneralMeetingService {
     void removeAgendaItem(Long agendaItemId, Long meetingId) {
         // validate the meeting actually exists
         meetingsRepository.findById(meetingId).orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(GeneralMeeting.class))));
 
         meetingAgendaItemRepository.deleteById(agendaItemId);
     }
@@ -80,7 +80,7 @@ public class GeneralMeetingService {
 
     private void validateGeneralMeeting(Long id, GeneralMeeting meeting) {
         meetingsRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(this.getClass()))));
+                () -> new NotFoundException(Collections.singletonList(ValidationUtil.getNotFoundError(GeneralMeeting.class))));
         if (!id.equals(meeting.getId())) {
             throw new ValidationException(ErrorMessage.builder().code(MEETING_ID_MISMATCH).build());
         }
