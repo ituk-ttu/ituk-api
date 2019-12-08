@@ -1,1 +1,1 @@
-ALTER TABLE meeting_agenda_item ADD COLUMN "order" INTEGER;
+ALTER TABLE meeting_agenda_item ADD COLUMN "order" VARCHAR;
