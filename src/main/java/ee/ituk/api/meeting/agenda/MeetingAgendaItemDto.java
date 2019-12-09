@@ -7,4 +7,5 @@ public class MeetingAgendaItemDto {
 
     private Long id;
     private String item;
+    private String order;
 }

@@ -19,4 +19,5 @@ public class MeetingAgendaItem {
     @JoinColumn(name = "meeting_agenda_id")
     private MeetingAgenda meetingAgenda;
     private String item;
+    private String order;
 }
