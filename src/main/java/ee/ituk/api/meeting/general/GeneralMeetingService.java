@@ -28,11 +28,12 @@ public class GeneralMeetingService {
 
     public GeneralMeeting create(GeneralMeeting meeting) {
         checkForErrors(meetingValidator.validateOnCreate(meeting));
-
-        MeetingAgenda meetingAgenda = meetingAgendaRepository.save(meeting.getMeetingAgenda());
-        meeting.getMeetingAgenda().getItems().forEach(item -> item.setMeetingAgenda(meetingAgenda));
-        meetingAgendaItemRepository.saveAll(meeting.getMeetingAgenda().getItems());
-        meeting.setMeetingAgenda(meetingAgenda);
+        if (meeting.getMeetingAgenda() != null) {
+            MeetingAgenda meetingAgenda = meetingAgendaRepository.save(meeting.getMeetingAgenda());
+            meeting.getMeetingAgenda().getItems().forEach(item -> item.setMeetingAgenda(meetingAgenda));
+            meetingAgendaItemRepository.saveAll(meeting.getMeetingAgenda().getItems());
+            meeting.setMeetingAgenda(meetingAgenda);
+        }
 
         return meetingsRepository.save(meeting);
     }
