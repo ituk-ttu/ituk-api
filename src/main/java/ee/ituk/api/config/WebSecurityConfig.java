@@ -26,7 +26,10 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project"};
+    private static final String[] LET_THEM_THROUGH = {
+            "/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**",
+            "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project", "/application"
+    };
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
 
     @Resource(name = "userService")
