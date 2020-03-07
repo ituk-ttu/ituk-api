@@ -89,4 +89,8 @@ public class GeneralMeetingService {
             throw new ValidationException(ErrorMessage.builder().code(MEETING_ID_MISMATCH).build());
         }
     }
+
+    public GeneralMeeting getById(Long id) {
+        return meetingsRepository.getOne(id);
+    }
 }
