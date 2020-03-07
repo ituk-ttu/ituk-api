@@ -18,8 +18,7 @@ addons:
       - sshpass
 
 script:
-  - ./gradlew clean build
-  - ./gradlew jar
+  - ./gradlew -v
 
 deploy:
   - provider: script
