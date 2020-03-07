@@ -19,6 +19,7 @@ addons:
 
 script:
   - ./gradlew clean build
+  - ./gradlew jar
 
 deploy:
   - provider: script
