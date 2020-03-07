@@ -15,16 +15,14 @@ addons:
   ssh_known_hosts: ituk.ee
 
 script:
-  - ./gradlew build
+  - gradle build
 
 deploy:
   - provider: script
-    skip_cleanup: true
     script: bash scripts/deploy-master.sh
     on:
       branch: master
   - provider: script
-    skip_cleanup: true
     script: script/deploy-staging.sh
     on:
       branch: develop
