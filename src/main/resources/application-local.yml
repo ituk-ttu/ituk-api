@@ -1,5 +1,12 @@
 spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/ituk-api
+    username: postgres
+    password: postgres
+    initialization-mode: never
   flyway:
-    locations:
-      - classpath:db/migration
-      - classpath:db/local
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+    url: jdbc:postgresql://localhost:5433/ituk-api
+    user: postgres
+    password: postgres
