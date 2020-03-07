@@ -53,6 +53,13 @@ public class ApplicationService {
         checkForErrors(validator.validateOnCreate(application));
         application.setCreatedAt(LocalDateTime.now());
         application.setUpdatedAt(LocalDateTime.now());
+
+        if (application.getMentor() == null || application.getMentor().getId() == null) {
+            application.setMentor(null);
+        }
+        if (application.getProcessedBy() == null || application.getProcessedBy().getId() == null) {
+            application.setProcessedBy(null);
+        }
         return applicationRepository.save(application);
     }
 
