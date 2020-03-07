@@ -1,5 +1,7 @@
 #!/bin/sh
 
+echo "started master deploy script"
+
 # define SSHPASS env variable that sshpass uses with -e argument
 export SSHPASS=$DEPLOY_PASS
 
