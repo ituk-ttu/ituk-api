@@ -27,4 +27,4 @@ deploy:
     skip_cleanup: true
     script: script/deploy-staging.sh
     on:
-      branch: staging
+      branch: develop
