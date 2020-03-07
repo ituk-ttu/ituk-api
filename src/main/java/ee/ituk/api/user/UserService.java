@@ -117,9 +117,12 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .filter(user -> {
-                    int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
-                    int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                    return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
+                    if (user.getPersonalCode() != null) {
+                        int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
+                        int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
+                        return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
+                    }
+                    return false;
                 })
                 .map(User::getFullName)
                 .collect(Collectors.toList());
