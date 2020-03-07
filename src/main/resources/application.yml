@@ -24,9 +24,9 @@ spring:
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-    url: ${spring.datasource.url}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
+    url: ${DS_URL}
+    user: ${DS_USER}
+    password: ${DS_PASSWORD}
 management:
   endpoint:
     health:
