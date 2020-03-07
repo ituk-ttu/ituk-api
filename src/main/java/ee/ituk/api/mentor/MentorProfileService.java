@@ -43,6 +43,10 @@ public class MentorProfileService {
                 .collect(Collectors.toList());
     }
 
+    List<MentorProfile> getAll() {
+        return mentorProfileRepository.findAll();
+    }
+
     public void uploadPicture(String id, MultipartFile file) {
         this.fileStorageService.uploadMentorPicture(id, file);
     }

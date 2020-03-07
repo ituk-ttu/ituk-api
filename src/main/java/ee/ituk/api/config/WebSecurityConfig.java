@@ -32,6 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project",
     };
     private static final String[] ALLOW_ONLY_POST = {  "/application" };
+    private static final String[] ALLOW_ONLY_GET = { "/mentor/active", "/application/{\\d+}" };
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
 
     @Resource(name = "userService")
@@ -63,6 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(LET_THEM_THROUGH).permitAll()
                 .antMatchers(HttpMethod.POST, ALLOW_ONLY_POST).permitAll()
+                .antMatchers(HttpMethod.GET, ALLOW_ONLY_GET).permitAll()
                 .antMatchers(DONT_LET_THEM_IN).authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
