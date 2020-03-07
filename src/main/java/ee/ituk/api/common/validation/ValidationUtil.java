@@ -21,6 +21,7 @@ public final class ValidationUtil {
     public static final String PROJECT_BUDGET_ROW_VALUES_NOT_VALID = "project.budget.row.values.not.valid";
     public static final String PROJECT_MEMBER_NOT_VALID = "project.member.not.valid";
     public static final String PROJECT_SUMMARY_MISSING_REQUIRED_FIELDS = "project.summary.missing.required.fields";
+    public static final String PROJECT_ID_MISMATCH = "project.id.mismatch";
 
     public static final String RESOURCE_URL_MISSING = "url.missing";
     public static final String RESOURCE_AUTHOR_MISSING = "author.missing";

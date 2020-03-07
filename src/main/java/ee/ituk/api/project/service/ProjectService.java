@@ -1,16 +1,20 @@
 package ee.ituk.api.project.service;
 
+import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
+import ee.ituk.api.common.exception.ValidationException;
 import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.project.domain.Project;
 import ee.ituk.api.project.repository.ProjectRepository;
 import ee.ituk.api.project.validation.ProjectValidator;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
 
+import static ee.ituk.api.common.validation.ValidationUtil.PROJECT_ID_MISMATCH;
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 
 @Service
@@ -30,11 +34,14 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project save(Project project) {
+    public Project create(Project project) {
         checkForErrors(validator.validateData(project));
-        Project remappedProject = selfMapProject(project);
+        return saveProject(project);
+    }
 
-        return projectRepository.save(remappedProject);
+    public Project update(Project project, Long id) {
+        checkForErrors(validator.validateUpdate(project, id));
+        return saveProject(project);
     }
 
     public void delete(long id) {
@@ -53,5 +60,10 @@ public class ProjectService {
         }
 
         return project;
+    }
+
+    private Project saveProject(Project project) {
+        Project remappedProject = selfMapProject(project);
+        return projectRepository.save(remappedProject);
     }
 }
