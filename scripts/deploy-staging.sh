@@ -4,6 +4,12 @@ echo "started develop deploy script"
 
 ls -al
 
+echo "starting build from script"
+./gradlew build
+
+echo "ls after script build"
+ls -al
+
 # define SSHPASS env variable that sshpass uses with -e argument
 export SSHPASS=$DEPLOY_PASS
 
