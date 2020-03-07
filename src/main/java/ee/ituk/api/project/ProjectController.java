@@ -29,13 +29,12 @@ public class ProjectController {
 
     @PostMapping()
     public ResponseEntity create(@RequestBody ProjectDto projectDto) {
-        return ok(mapper.projectToDto(projectService.save(mapper.projectToEntity(projectDto))));
+        return ok(mapper.projectToDto(projectService.create(mapper.projectToEntity(projectDto))));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity update(@PathVariable Long id, @RequestBody ProjectDto projectDto) {
-        // TODO: proper update
-        return ok(mapper.projectToDto(projectService.save(mapper.projectToEntity(projectDto))));
+        return ok(mapper.projectToDto(projectService.update(mapper.projectToEntity(projectDto), id)));
     }
 
     @DeleteMapping("/{id}")

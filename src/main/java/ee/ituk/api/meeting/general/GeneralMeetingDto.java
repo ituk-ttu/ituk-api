@@ -9,11 +9,11 @@ import java.time.LocalDateTime;
 @Data
 public class GeneralMeetingDto {
     private Long id;
-    private String name;
     private LocalDate date;
     private boolean election;
     private String protocolUrl;
     private MeetingAgendaDto meetingAgenda;
+    private Boolean urgent;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }
