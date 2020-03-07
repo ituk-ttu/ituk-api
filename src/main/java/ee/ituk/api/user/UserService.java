@@ -72,7 +72,11 @@ public class UserService implements UserDetailsService {
 
     User createUser(User user) {
         checkForErrors(userValidator.validateOnCreate(user));
-        return saveUser(user);
+        User savedUser = saveUser(user);
+        if (savedUser.isMentor() && mentorProfileRepository.findByUser(savedUser).isEmpty()) {
+            mentorProfileService.create(savedUser);
+        }
+        return savedUser;
     }
 
     void logout() {
@@ -89,6 +93,9 @@ public class UserService implements UserDetailsService {
         //TODO validation
         User fromBase = userRepository.getOne(user.getId());
         user.setPassword(fromBase.getPassword());
+        if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
+            mentorProfileService.create(user);
+        }
         return userRepository.save(user);
     }
 
@@ -101,7 +108,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         user.setRole(role);
         userRepository.save(user);
-        if (role.isCanBeMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
+        if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
             mentorProfileService.create(user);
         }
     }

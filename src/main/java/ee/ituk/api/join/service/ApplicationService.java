@@ -59,7 +59,7 @@ public class ApplicationService {
         if (Objects.nonNull(applicationId) && Objects.nonNull(mentorId)) {
             Application application = findApplicationById(applicationId);
             User mentor = userService.findUserById(mentorId);
-            if (!mentor.getRole().isCanBeMentor()) {
+            if (mentor.isMentor()) {
                 throw new NotFoundException(Collections.singletonList(getNotFoundError(User.class)));
             }
             application.setMentor(mentor);

@@ -40,6 +40,7 @@ public class User implements UserDetails, PersonalData {
   @Enumerated(EnumType.STRING)
   private Role role = Role.MEMBER;
   private boolean archived = false;
+  private boolean isMentor = false;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
 
