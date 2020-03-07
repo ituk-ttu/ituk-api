@@ -1,8 +1,6 @@
 package ee.ituk.api.project.service;
 
-import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
-import ee.ituk.api.common.exception.ValidationException;
 import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.project.domain.Project;
 import ee.ituk.api.project.repository.ProjectRepository;
@@ -14,7 +12,6 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-import static ee.ituk.api.common.validation.ValidationUtil.PROJECT_ID_MISMATCH;
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 
 @Service

@@ -20,7 +20,6 @@ public class HasMatchingIdOnUpdate implements ValidationRule<Project> {
 
     @Override
     public List<ErrorMessage> apply(Project object) {
-        // projectMember must have either an User or a name, but not both
         if (object.getId().equals(id)) {
             return emptyList();
         }
