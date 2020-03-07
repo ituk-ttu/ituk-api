@@ -19,10 +19,6 @@ configurations {
 	}
 }
 
-jar {
-	enabled=true
-}
-
 repositories {
 	mavenCentral()
 }
