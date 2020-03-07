@@ -10,6 +10,7 @@ import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -50,6 +51,8 @@ public class ApplicationService {
 
     private Application saveApplication(Application application) {
         checkForErrors(validator.validateOnCreate(application));
+        application.setCreatedAt(LocalDateTime.now());
+        application.setUpdatedAt(LocalDateTime.now());
         return applicationRepository.save(application);
     }
 
