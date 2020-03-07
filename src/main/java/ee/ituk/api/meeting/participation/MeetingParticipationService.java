@@ -21,9 +21,9 @@ public class MeetingParticipationService {
 
     private final MeetingParticipantValidator validator = new MeetingParticipantValidator();
 
-    public MeetingParticipation add(MeetingParticipation participant) {
-        checkForErrors(validator.validateOnCreate(participant));
-        return repository.save(participant);
+    public List<MeetingParticipation> add(List<MeetingParticipation> participants) {
+        participants.forEach(participant -> checkForErrors(validator.validateOnCreate(participant)));
+        return repository.saveAll(participants);
     }
 
     public void delete(Long id) {
