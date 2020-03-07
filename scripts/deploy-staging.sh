@@ -2,7 +2,7 @@
 
 echo "started develop deploy script"
 
-ls -a
+ls -aL
 
 # define SSHPASS env variable that sshpass uses with -e argument
 export SSHPASS=$DEPLOY_PASS
