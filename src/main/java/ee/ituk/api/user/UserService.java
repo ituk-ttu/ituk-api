@@ -3,6 +3,7 @@ package ee.ituk.api.user;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
+import ee.ituk.api.join.repository.ApplicationRepository;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -31,6 +32,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MentorProfileRepository mentorProfileRepository;
+    private final ApplicationRepository applicationRepository;
     private final MentorProfileService mentorProfileService;
     private final SessionService sessionService;
     private final BCryptPasswordEncoder encoder;
@@ -136,5 +138,10 @@ public class UserService implements UserDetailsService {
 
     private User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public String getMentorName(Long userId) {
+        User user = findUserById(userId);
+        return applicationRepository.findByUser(user).orElseThrow(NotFoundException::new).getMentor().getFullName();
     }
 }
