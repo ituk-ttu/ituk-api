@@ -5,6 +5,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -20,6 +22,11 @@ public class GeneralMeetingController {
     @GetMapping
     public ResponseEntity getAllMeetings() {
         return ok(meetingService.getAll());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralMeetingDto> getById(@PathVariable @NotNull Long id) {
+        return ok(mapper.meetingToDto(meetingService.getById(id)));
     }
 
     @PostMapping
