@@ -49,8 +49,6 @@ public class ApplicationService {
     }
 
     private Application saveApplication(Application application) {
-        application.setProcessedBy(userService.findUserById(application.getProcessedBy().getId()));
-        application.setMentor(application.getMentor());
         checkForErrors(validator.validateOnCreate(application));
         return applicationRepository.save(application);
     }
