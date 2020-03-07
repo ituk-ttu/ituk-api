@@ -13,9 +13,12 @@ branches:
 
 addons:
   ssh_known_hosts: ituk.ee
+  apt:
+    packages:
+      - sshpass
 
 script:
-  - gradle build
+  - ./gradlew build
 
 deploy:
   - provider: script
