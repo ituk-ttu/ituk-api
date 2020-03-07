@@ -1,4 +1,9 @@
+server:
+  port: 8081
+
 spring:
+  application:
+    name: ituk-api
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -12,9 +17,9 @@ spring:
       enabled: true
       max-file-size: 2MB
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5433/ituk-api
-    username: postgres
-    password: postgres
+    url: ${DS_URL}
+    username: ${DS_USER}
+    password: ${DS_PASSWORD}
     initialization-mode: never
   flyway:
     locations: classpath:db/migration
