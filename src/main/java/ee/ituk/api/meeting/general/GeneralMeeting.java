@@ -21,7 +21,6 @@ public class GeneralMeeting {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private String name;
   private LocalDate date;
   private boolean election;
   private String protocolUrl;
@@ -29,6 +28,7 @@ public class GeneralMeeting {
   @OneToOne
   @JoinColumn(name = "meeting_agenda_id")
   private MeetingAgenda meetingAgenda;
+  private Boolean urgent;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
 }
