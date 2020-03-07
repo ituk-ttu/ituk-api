@@ -22,10 +22,10 @@ script:
 
 deploy:
   - provider: script
-    script: bash scripts/deploy-master.sh
+    script: sh scripts/deploy-master.sh
     on:
       branch: master
   - provider: script
-    script: script/deploy-staging.sh
+    script: sh script/deploy-staging.sh
     on:
       branch: develop
