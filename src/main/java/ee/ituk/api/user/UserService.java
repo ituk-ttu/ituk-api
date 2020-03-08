@@ -1,14 +1,16 @@
 package ee.ituk.api.user;
 
+import ee.ituk.api.application.domain.Application;
+import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
-import ee.ituk.api.join.repository.ApplicationRepository;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
 import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
+import ee.ituk.api.user.dto.MentorNameDto;
 import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -69,7 +72,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByIdAsc();
     }
 
     User createUser(User user) {
@@ -140,8 +143,12 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public String getMentorName(Long userId) {
+    public MentorNameDto getMentorName(Long userId) {
         User user = findUserById(userId);
-        return applicationRepository.findByUser(user).orElseThrow(NotFoundException::new).getMentor().getFullName();
+        Optional<Application> applicationOptional = applicationRepository.findByUser(user);
+        if (applicationOptional.isPresent()) {
+            return MentorNameDto.builder().name(applicationOptional.get().getMentor().getFullName()).build();
+        }
+        return MentorNameDto.builder().name("").build();
     }
 }

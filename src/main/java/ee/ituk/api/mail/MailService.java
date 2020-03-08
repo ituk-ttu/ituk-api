@@ -1,7 +1,7 @@
 package ee.ituk.api.mail;
 
 
-import ee.ituk.api.join.domain.Application;
+import ee.ituk.api.application.domain.Application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.sargue.mailgun.Mail;
@@ -47,7 +47,7 @@ public class MailService {
         Mail mail = Mail.using(mailgunConfig)
                 .to(to)
                 .subject(subject)
-                .text(renderTemplate("plain/" + templateName, context))
+                .text(renderTemplate("html/" + templateName, context))
                 .build();
         CompletableFuture<Response> result = sendAsync(mail);
         result.whenComplete((response, ex) -> {

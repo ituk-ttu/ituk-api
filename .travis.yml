@@ -11,8 +11,17 @@ branches:
     - master
     - develop
 
+# this skips the default ./graldlew assemble task (the actual build script is run in the deploy stage)
+install:
+  - true
+
+# this skips the default ./graldlew check task
+script:
+  - true
+
 addons:
-  ssh_known_hosts: ituk.ee
+  ssh_known_hosts:
+    - ituk.ee
   apt:
     packages:
       - sshpass
