@@ -65,20 +65,16 @@ public class ApplicationService {
     }
 
     public void setMentorToApplication(Long applicationId, Long mentorId) {
-        if (Objects.nonNull(applicationId) && Objects.nonNull(mentorId)) {
-            Application application = findApplicationById(applicationId);
-            MentorProfile mentorProfile = mentorProfileRepository.findById(mentorId)
-                    .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(MentorProfile.class))));
-            User mentor = mentorProfile.getUser();
-            if (mentor.isMentor()) {
-                throw new NotFoundException(Collections.singletonList(getNotFoundError(User.class)));
-            }
-            application.setMentor(mentor);
-            Application saved = applicationRepository.save(application);
-            mailService.sendNewMinionEmail(saved);
-        } else {
-            throw new NotFoundException(Collections.singletonList(getNotFoundError(Application.class)));
+        Application application = findApplicationById(applicationId);
+        MentorProfile mentorProfile = mentorProfileRepository.findById(mentorId)
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(MentorProfile.class))));
+        User mentor = mentorProfile.getUser();
+        if (!mentor.isMentor()) {
+            throw new NotFoundException(Collections.singletonList(getNotFoundError(User.class)));
         }
+        application.setMentor(mentor);
+        Application saved = applicationRepository.save(application);
+        mailService.sendNewMinionEmail(saved);
     }
 
     public List<Application> findByMentor(Long mentorUserId) {
