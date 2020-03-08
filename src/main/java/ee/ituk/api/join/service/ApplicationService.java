@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
@@ -53,7 +54,7 @@ public class ApplicationService {
         checkForErrors(validator.validateOnCreate(application));
         application.setCreatedAt(LocalDateTime.now());
         application.setUpdatedAt(LocalDateTime.now());
-
+        application.setMentorSelectionCode(UUID.randomUUID().toString().replace("-", ""));
         if (application.getMentor() == null || application.getMentor().getId() == null) {
             application.setMentor(null);
         }
