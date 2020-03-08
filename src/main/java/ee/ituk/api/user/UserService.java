@@ -12,6 +12,7 @@ import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.user.dto.MentorNameDto;
 import ee.ituk.api.user.dto.PasswordChangeDto;
+import ee.ituk.api.user.dto.UserBirthdayDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,9 +22,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -118,19 +117,42 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    List<String> getBirthdayUserNames() {
+    MentorNameDto getMentorName(Long userId) {
+        User user = findUserById(userId);
+        Optional<Application> applicationOptional = applicationRepository.findByUser(user);
+        if (applicationOptional.isPresent()) {
+            return MentorNameDto.builder().name(applicationOptional.get().getMentor().getFullName()).build();
+        }
+        return MentorNameDto.builder().name("").build();
+    }
+
+    List<String> getTodayBirthdayUserNames() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .filter(user -> {
-                    if (user.getPersonalCode() != null) {
-                        int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
-                        int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                        return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
-                    }
-                    return false;
-                })
+                .filter(this::isBirthdayToday)
                 .map(User::getFullName)
                 .collect(Collectors.toList());
+    }
+
+    List<UserBirthdayDto> getLastWeekBirthdays() {
+        List<User> users = userRepository.findAll();
+        final LocalDate yesterday = LocalDate.now().minusDays(1);
+        final LocalDate nextWeek = LocalDate.now().plusDays(8);
+        List<UserBirthdayDto> birthdays = new ArrayList<>();
+        users.forEach(user -> {
+            if (Objects.nonNull(user.getPersonalCode())) {
+                int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
+                int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
+                LocalDate birthday = LocalDate.of(LocalDate.now().getYear(), month, day);
+                if (birthday.isAfter(yesterday) && birthday.isAfter(nextWeek)) {
+                    birthdays.add(UserBirthdayDto.builder()
+                        .fullName(user.getFullName())
+                        .birthday(birthday)
+                        .build());
+                }
+            }
+        });
+        return birthdays;
     }
 
     void archive(Long id, boolean isArchived) {
@@ -143,12 +165,13 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public MentorNameDto getMentorName(Long userId) {
-        User user = findUserById(userId);
-        Optional<Application> applicationOptional = applicationRepository.findByUser(user);
-        if (applicationOptional.isPresent()) {
-            return MentorNameDto.builder().name(applicationOptional.get().getMentor().getFullName()).build();
+
+    private boolean isBirthdayToday(User user) {
+        if (user.getPersonalCode() != null) {
+            int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
+            int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
+            return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
         }
-        return MentorNameDto.builder().name("").build();
+        return false;
     }
 }
