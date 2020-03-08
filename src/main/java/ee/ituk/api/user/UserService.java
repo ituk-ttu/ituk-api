@@ -10,6 +10,7 @@ import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
 import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
+import ee.ituk.api.user.dto.MentorNameDto;
 import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -142,12 +143,12 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public String getMentorName(Long userId) {
+    public MentorNameDto getMentorName(Long userId) {
         User user = findUserById(userId);
         Optional<Application> applicationOptional = applicationRepository.findByUser(user);
         if (applicationOptional.isPresent()) {
-            return applicationOptional.get().getMentor().getFullName();
+            return MentorNameDto.builder().name(applicationOptional.get().getMentor().getFullName()).build();
         }
-        return "";
+        return MentorNameDto.builder().name("").build();
     }
 }
