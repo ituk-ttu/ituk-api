@@ -15,6 +15,10 @@ branches:
 install:
   - true
 
+# this skips the default ./graldlew check task
+script:
+  - true
+
 addons:
   ssh_known_hosts:
     - ituk.ee
