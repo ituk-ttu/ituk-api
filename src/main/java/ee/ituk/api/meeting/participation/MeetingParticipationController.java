@@ -5,6 +5,8 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -16,14 +18,14 @@ public class MeetingParticipationController {
 
     private final MeetingParticipationMapper mapper = Mappers.getMapper(MeetingParticipationMapper.class);
 
-    @PostMapping
-    public ResponseEntity addParticipant(@RequestBody MeetingParticipationDto dto) {
-        return ok(mapper.entityToDto(service.add(mapper.dtoToEntity(dto))));
+    @PutMapping
+    public ResponseEntity<List<MeetingParticipationDto>> updateParticipations(@RequestBody List<MeetingParticipationDto> dtos) {
+        return ok(mapper.entitiesToDtos(service.add(mapper.dtosToEntities(dtos))));
     }
 
-    @GetMapping("{meetingId}/all")
-    public ResponseEntity getAllParticipantsInAMeeting(@PathVariable Long meetingId) {
-        return ok(mapper.dtosToEntities(service.getAllParticipantsByMeeting(meetingId)));
+    @GetMapping("/{meetingId}/all")
+    public ResponseEntity<List<MeetingParticipationDto>> getAllParticipantsInAMeeting(@PathVariable Long meetingId) {
+        return ok(mapper.entitiesToDtos(service.getAllParticipantsByMeeting(meetingId)));
     }
 
     @DeleteMapping("{id}")
@@ -32,9 +34,4 @@ public class MeetingParticipationController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping
-    public ResponseEntity updateParticipant(@RequestBody MeetingParticipation participant) {
-        service.update(participant);
-        return ResponseEntity.noContent().build();
-    }
 }

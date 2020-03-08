@@ -54,10 +54,17 @@ public class MentorProfileController {
         return mapper.mentorProfileToDto(mentorProfileService.getByUserId(id));
     }
 
-    @ApiOperation(value = "Get all mentor profiles for user with mentor role (MENTOR, BOARD, ADMIN)")
-    @GetMapping
+    @ApiOperation(value = "Get all mentor profiles for user with isMentor true")
+    @GetMapping("/active")
     @ResponseBody
     public List<MentorProfileDto> getAllActiveMentorProfiles() {
         return mapper.mentorProfilesToDto(mentorProfileService.getAllActive());
+    }
+
+    @ApiOperation(value = "Get all mentor profiles")
+    @GetMapping
+    @ResponseBody
+    public List<MentorProfileDto> getAll() {
+        return mapper.mentorProfilesToDto(mentorProfileService.getAll());
     }
 }

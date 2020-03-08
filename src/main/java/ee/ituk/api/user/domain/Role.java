@@ -6,11 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Role {
-    ADMIN(true),
-    BOARD(true),
-    MEMBER(false),
-    MENTOR(true);
-
-    private final boolean canBeMentor;
-
+    ADMIN,
+    BOARD,
+    MEMBER;
 }

@@ -9,8 +9,6 @@ import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -91,5 +89,10 @@ public class UserController {
     @GetMapping("/birthdays")
     public ResponseEntity getBirthdayUsers() {
         return ok(userService.getBirthdayUserNames());
+    }
+
+    @GetMapping("/{userId}/mentor-name")
+    public ResponseEntity getMentorName(@PathVariable Long userId) {
+        return ok(userService.getMentorName(userId));
     }
 }

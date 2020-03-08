@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.MethodInvokingFactoryBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -26,7 +27,12 @@ import javax.annotation.Resource;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] LET_THEM_THROUGH = {"/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project"};
+    private static final String[] LET_THEM_THROUGH = {
+            "/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**",
+            "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project",
+    };
+    private static final String[] ALLOW_ONLY_POST = {  "/application" };
+    private static final String[] ALLOW_ONLY_GET = { "/mentor/active", "/application/{\\d+}" };
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
 
     @Resource(name = "userService")
@@ -57,6 +63,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .authorizeRequests()
                 .antMatchers(LET_THEM_THROUGH).permitAll()
+                .antMatchers(HttpMethod.POST, ALLOW_ONLY_POST).permitAll()
+                .antMatchers(HttpMethod.GET, ALLOW_ONLY_GET).permitAll()
                 .antMatchers(DONT_LET_THEM_IN).authenticated()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler)

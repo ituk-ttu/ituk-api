@@ -19,6 +19,7 @@ public class UserDto {
     private String iban;
     private String role;
     private boolean archived;
+    private boolean isMentor;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

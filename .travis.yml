@@ -1,0 +1,28 @@
+os: linux
+
+language: java
+jdk: openjdk11
+
+notifications:
+  slack: ituk-dev:sRNXjpzecEiwpjNFsnHTf2bj
+
+branches:
+  only:
+    - master
+    - develop
+
+addons:
+  ssh_known_hosts: ituk.ee
+  apt:
+    packages:
+      - sshpass
+
+deploy:
+  - provider: script
+    script: bash scripts/deploy-master.sh
+    on:
+      branch: master
+  - provider: script
+    script: bash scripts/deploy-staging.sh
+    on:
+      branch: develop

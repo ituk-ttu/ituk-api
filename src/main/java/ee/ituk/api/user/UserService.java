@@ -3,6 +3,7 @@ package ee.ituk.api.user;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
+import ee.ituk.api.join.repository.ApplicationRepository;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -31,6 +32,7 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final MentorProfileRepository mentorProfileRepository;
+    private final ApplicationRepository applicationRepository;
     private final MentorProfileService mentorProfileService;
     private final SessionService sessionService;
     private final BCryptPasswordEncoder encoder;
@@ -72,7 +74,11 @@ public class UserService implements UserDetailsService {
 
     User createUser(User user) {
         checkForErrors(userValidator.validateOnCreate(user));
-        return saveUser(user);
+        User savedUser = saveUser(user);
+        if (savedUser.isMentor() && mentorProfileRepository.findByUser(savedUser).isEmpty()) {
+            mentorProfileService.create(savedUser);
+        }
+        return savedUser;
     }
 
     void logout() {
@@ -89,6 +95,9 @@ public class UserService implements UserDetailsService {
         //TODO validation
         User fromBase = userRepository.getOne(user.getId());
         user.setPassword(fromBase.getPassword());
+        if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
+            mentorProfileService.create(user);
+        }
         return userRepository.save(user);
     }
 
@@ -101,7 +110,7 @@ public class UserService implements UserDetailsService {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         user.setRole(role);
         userRepository.save(user);
-        if (role.isCanBeMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
+        if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
             mentorProfileService.create(user);
         }
     }
@@ -110,9 +119,12 @@ public class UserService implements UserDetailsService {
         List<User> users = userRepository.findAll();
         return users.stream()
                 .filter(user -> {
-                    int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
-                    int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                    return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
+                    if (user.getPersonalCode() != null) {
+                        int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
+                        int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
+                        return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
+                    }
+                    return false;
                 })
                 .map(User::getFullName)
                 .collect(Collectors.toList());
@@ -126,5 +138,10 @@ public class UserService implements UserDetailsService {
 
     private User saveUser(User user) {
         return userRepository.save(user);
+    }
+
+    public String getMentorName(Long userId) {
+        User user = findUserById(userId);
+        return applicationRepository.findByUser(user).orElseThrow(NotFoundException::new).getMentor().getFullName();
     }
 }

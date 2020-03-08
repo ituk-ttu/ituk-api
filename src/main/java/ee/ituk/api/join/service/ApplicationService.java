@@ -10,6 +10,7 @@ import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -49,9 +50,16 @@ public class ApplicationService {
     }
 
     private Application saveApplication(Application application) {
-        application.setProcessedBy(userService.findUserById(application.getProcessedBy().getId()));
-        application.setMentor(application.getMentor());
         checkForErrors(validator.validateOnCreate(application));
+        application.setCreatedAt(LocalDateTime.now());
+        application.setUpdatedAt(LocalDateTime.now());
+
+        if (application.getMentor() == null || application.getMentor().getId() == null) {
+            application.setMentor(null);
+        }
+        if (application.getProcessedBy() == null || application.getProcessedBy().getId() == null) {
+            application.setProcessedBy(null);
+        }
         return applicationRepository.save(application);
     }
 
@@ -59,7 +67,7 @@ public class ApplicationService {
         if (Objects.nonNull(applicationId) && Objects.nonNull(mentorId)) {
             Application application = findApplicationById(applicationId);
             User mentor = userService.findUserById(mentorId);
-            if (!mentor.getRole().isCanBeMentor()) {
+            if (mentor.isMentor()) {
                 throw new NotFoundException(Collections.singletonList(getNotFoundError(User.class)));
             }
             application.setMentor(mentor);

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import static ee.ituk.api.common.validation.ValidationUtil.*;
 
@@ -72,10 +73,12 @@ public class GeneralMeetingService {
 
     private GeneralMeeting updateMeetingsAgenda(GeneralMeeting meeting) {
         MeetingAgenda agenda = meeting.getMeetingAgenda();
-        MeetingAgenda savedAgenda = meetingAgendaRepository.save(agenda);
-        meetingAgendaItemRepository.saveAll(savedAgenda.getItems());
+        if (Objects.nonNull(agenda)) {
+            MeetingAgenda savedAgenda = meetingAgendaRepository.save(agenda);
+            meetingAgendaItemRepository.saveAll(savedAgenda.getItems());
+            meeting.setMeetingAgenda(savedAgenda);
+        }
 
-        meeting.setMeetingAgenda(savedAgenda);
         return meeting;
     }
 
@@ -85,5 +88,9 @@ public class GeneralMeetingService {
         if (!id.equals(meeting.getId())) {
             throw new ValidationException(ErrorMessage.builder().code(MEETING_ID_MISMATCH).build());
         }
+    }
+
+    public GeneralMeeting getById(Long id) {
+        return meetingsRepository.getOne(id);
     }
 }

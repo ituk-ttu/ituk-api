@@ -37,4 +37,7 @@ public class Application implements PersonalData {
   @ManyToOne
   @JoinColumn(name = "mentor_id", referencedColumnName = "id")
   private User mentor;
+  @OneToOne
+  @JoinColumn(name = "user_id", referencedColumnName = "id")
+  private User user;
 }

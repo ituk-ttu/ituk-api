@@ -1,4 +1,9 @@
+server:
+  port: 8081
+
 spring:
+  application:
+    name: ituk-api
   jpa:
     database: POSTGRESQL
     show-sql: true
@@ -12,16 +17,16 @@ spring:
       enabled: true
       max-file-size: 2MB
   datasource:
-    url: jdbc:postgresql://127.0.0.1:5433/ituk-api
-    username: postgres
-    password: postgres
+    url: ${DS_URL}
+    username: ${DS_USER}
+    password: ${DS_PASSWORD}
     initialization-mode: never
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-    url: ${spring.datasource.url}
-    user: ${spring.datasource.username}
-    password: ${spring.datasource.password}
+    url: ${DS_URL}
+    user: ${DS_USER}
+    password: ${DS_PASSWORD}
 management:
   endpoint:
     health:
@@ -42,3 +47,8 @@ logging:
 file-storage:
   base-dir: "{CHANGE_THIS}"
   mentor-profile-dir: "mentors"
+
+logbook:
+  exclude: [ /actuator/health, /v2/**, /swagger-*/**, /webjars/** ]
+  write:
+    level: TRACE

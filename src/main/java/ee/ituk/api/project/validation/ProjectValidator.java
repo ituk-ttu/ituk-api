@@ -3,6 +3,7 @@ package ee.ituk.api.project.validation;
 import ee.ituk.api.common.validation.ValidationResult;
 import ee.ituk.api.common.validation.Validator;
 import ee.ituk.api.project.domain.Project;
+import ee.ituk.api.project.validation.rules.HasMatchingIdOnUpdate;
 import ee.ituk.api.project.validation.rules.budgetrow.TotalCostOverZero;
 import ee.ituk.api.project.validation.rules.member.HasUserXorName;
 
@@ -23,6 +24,26 @@ public class ProjectValidator extends Validator {
         project.getBudget().getRows().forEach(row -> validationResult.add(
                 applyRules(row, singletonList(new TotalCostOverZero())))
         );
+
+        return validationResult;
+    }
+
+    public ValidationResult validateUpdate(Project project, Long id) {
+
+        ValidationResult validationResult = new ValidationResult();
+
+        validationResult.add(applyRules(project, singletonList(new HasMatchingIdOnUpdate(id))));
+
+        // validate members
+        project.getMembers().forEach(member -> validationResult.add(
+                applyRules(member, singletonList(new HasUserXorName())))
+        );
+
+        // validate budgetRows
+        project.getBudget().getRows().forEach(row -> validationResult.add(
+                applyRules(row, singletonList(new TotalCostOverZero())))
+        );
+
 
         return validationResult;
     }
