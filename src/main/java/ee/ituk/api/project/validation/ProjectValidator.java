@@ -3,28 +3,25 @@ package ee.ituk.api.project.validation;
 import ee.ituk.api.common.validation.ValidationResult;
 import ee.ituk.api.common.validation.Validator;
 import ee.ituk.api.project.domain.Project;
-import ee.ituk.api.project.domain.ProjectSummary;
 import ee.ituk.api.project.validation.rules.HasMatchingIdOnUpdate;
 import ee.ituk.api.project.validation.rules.budgetrow.TotalCostOverZero;
 import ee.ituk.api.project.validation.rules.member.HasUserXorName;
-import ee.ituk.api.project.validation.rules.member.NotProjectLead;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 
 public class ProjectValidator extends Validator {
 
-    public ValidationResult validateSummaryData(ProjectSummary projectSummary) {
+    public ValidationResult validateData(Project project) {
 
         ValidationResult validationResult = new ValidationResult();
 
         // validate members
-        projectSummary.getMembers().forEach(member -> validationResult.add(
-                applyRules(member, asList(new HasUserXorName(), new NotProjectLead())))
+        project.getMembers().forEach(member -> validationResult.add(
+                applyRules(member, singletonList(new HasUserXorName())))
         );
 
         // validate budgetRows
-        projectSummary.getBudgetRows().forEach(row -> validationResult.add(
+        project.getBudget().getRows().forEach(row -> validationResult.add(
                 applyRules(row, singletonList(new TotalCostOverZero())))
         );
 
@@ -36,6 +33,17 @@ public class ProjectValidator extends Validator {
         ValidationResult validationResult = new ValidationResult();
 
         validationResult.add(applyRules(project, singletonList(new HasMatchingIdOnUpdate(id))));
+
+        // validate members
+        project.getMembers().forEach(member -> validationResult.add(
+                applyRules(member, singletonList(new HasUserXorName())))
+        );
+
+        // validate budgetRows
+        project.getBudget().getRows().forEach(row -> validationResult.add(
+                applyRules(row, singletonList(new TotalCostOverZero())))
+        );
+
 
         return validationResult;
     }
