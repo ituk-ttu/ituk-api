@@ -15,6 +15,7 @@ import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.dto.UserBirthdayDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +31,7 @@ import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -143,12 +145,16 @@ public class UserService implements UserDetailsService {
             if (Objects.nonNull(user.getPersonalCode())) {
                 int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
                 int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                LocalDate birthday = LocalDate.of(LocalDate.now().getYear(), month, day);
-                if (birthday.isAfter(yesterday) && birthday.isAfter(nextWeek)) {
-                    birthdays.add(UserBirthdayDto.builder()
-                        .fullName(user.getFullName())
-                        .birthday(birthday)
-                        .build());
+                if (day > 31) {
+                    log.error(user.getPersonalCode());
+                } else {
+                    LocalDate birthday = LocalDate.of(LocalDate.now().getYear(), month, day);
+                    if (birthday.isAfter(yesterday) && birthday.isAfter(nextWeek)) {
+                        birthdays.add(UserBirthdayDto.builder()
+                                .fullName(user.getFullName())
+                                .birthday(birthday)
+                                .build());
+                    }
                 }
             }
         });
