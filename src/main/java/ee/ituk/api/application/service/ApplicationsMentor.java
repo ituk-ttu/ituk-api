@@ -1,6 +1,6 @@
 package ee.ituk.api.application.service;
 
-import ee.ituk.api.mentor.domain.MentorProfile;
+import ee.ituk.api.mentor.dto.MentorProfileDto;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +9,5 @@ import lombok.Getter;
 public class ApplicationsMentor {
     private final String name;
     private final Long applicationId;
-    private final Long mentorId;
-    private final MentorProfile mentor;
+    private final MentorProfileDto mentor;
 }
