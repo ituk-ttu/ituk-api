@@ -11,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
@@ -82,5 +79,19 @@ public class ApplicationService {
     public List<Application> findByMentor(Long mentorUserId) {
         User mentor = userService.findUserById(mentorUserId);
         return applicationRepository.findAllByMentor(mentor);
+    }
+
+    public ApplicationsMentor apply(Long applicationId, String selectionCode) {
+        Optional<Application> maybeApplication = applicationRepository.findById(applicationId);
+
+        if (maybeApplication.isPresent()) {
+            Application application = maybeApplication.get();
+            if (application.getMentorSelectionCode().equals(selectionCode)) {
+                return ApplicationsMentor.builder()
+                        .name(application.getFirstName() + " " + application.getLastName())
+                        .build();
+            }
+        }
+        return null;
     }
 }

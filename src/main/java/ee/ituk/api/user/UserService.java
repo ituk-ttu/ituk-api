@@ -69,7 +69,7 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAll() {
-        return userRepository.findAll();
+        return userRepository.findAllByOrderByIdAsc();
     }
 
     User createUser(User user) {

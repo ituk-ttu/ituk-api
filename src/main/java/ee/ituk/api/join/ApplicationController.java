@@ -59,4 +59,9 @@ public class ApplicationController {
     public ResponseEntity findUsersMinions(@PathVariable Long id) {
         return ok(applicationMapper.applicationsToResponseDto(applicationService.findByMentor(id)));
     }
+
+    @GetMapping("apply/{applicationId}/{selectionCode}")
+    public ResponseEntity applyApplication(@PathVariable Long applicationId, @PathVariable String selectionCode) {
+        return ok(applicationService.apply(applicationId, selectionCode));
+    }
 }
