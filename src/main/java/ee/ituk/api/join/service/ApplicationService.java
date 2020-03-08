@@ -88,7 +88,8 @@ public class ApplicationService {
             Application application = maybeApplication.get();
             if (application.getMentorSelectionCode().equals(selectionCode)) {
                 return ApplicationsMentor.builder()
-                        .name(application.getFirstName() + " " + application.getLastName())
+                        .name(application.getFirstName())
+                        .applicationId(applicationId)
                         .build();
             }
         }

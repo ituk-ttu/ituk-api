@@ -8,6 +8,7 @@ import lombok.Getter;
 @Builder
 public class ApplicationsMentor {
     private final String name;
+    private final Long applicationId;
     private final Long mentorId;
     private final MentorProfile mentor;
 }
