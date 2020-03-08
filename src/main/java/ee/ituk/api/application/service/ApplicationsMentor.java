@@ -1,4 +1,4 @@
-package ee.ituk.api.join.service;
+package ee.ituk.api.application.service;
 
 import ee.ituk.api.mentor.domain.MentorProfile;
 import lombok.Builder;

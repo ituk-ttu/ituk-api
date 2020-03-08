@@ -1,4 +1,4 @@
-package ee.ituk.api.join.validation;
+package ee.ituk.api.application.validation;
 
 import ee.ituk.api.common.validation.ValidationResult;
 import ee.ituk.api.common.validation.Validator;
@@ -6,7 +6,7 @@ import ee.ituk.api.common.validation.personal.HasName;
 import ee.ituk.api.common.validation.personal.HasValidEmail;
 import ee.ituk.api.common.validation.personal.HasValidPersonalCode;
 import ee.ituk.api.common.validation.personal.HasValidStudentCode;
-import ee.ituk.api.join.domain.Application;
+import ee.ituk.api.application.domain.Application;
 
 import java.util.List;
 

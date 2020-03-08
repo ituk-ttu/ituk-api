@@ -1,4 +1,4 @@
-package ee.ituk.api.join.domain;
+package ee.ituk.api.application.domain;
 
 import ee.ituk.api.common.domain.PersonalData;
 import ee.ituk.api.user.domain.User;

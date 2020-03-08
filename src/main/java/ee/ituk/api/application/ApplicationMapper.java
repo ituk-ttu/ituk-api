@@ -1,12 +1,11 @@
-package ee.ituk.api.join;
+package ee.ituk.api.application;
 
-import ee.ituk.api.join.domain.Application;
-import ee.ituk.api.join.dto.ApplicationDto;
-import ee.ituk.api.join.dto.ApplicationResponseDto;
+import ee.ituk.api.application.domain.Application;
+import ee.ituk.api.application.dto.ApplicationDto;
+import ee.ituk.api.application.dto.ApplicationResponseDto;
 import ee.ituk.api.mentor.MentorProfileService;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 

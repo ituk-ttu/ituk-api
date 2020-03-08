@@ -3,7 +3,7 @@ package ee.ituk.api.user;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
-import ee.ituk.api.join.repository.ApplicationRepository;
+import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;

@@ -1,10 +1,12 @@
-package ee.ituk.api.join.service;
+package ee.ituk.api.application.service;
 
+import ee.ituk.api.application.domain.Application;
+import ee.ituk.api.application.repository.ApplicationRepository;
+import ee.ituk.api.application.validation.ApplicationValidator;
 import ee.ituk.api.common.exception.NotFoundException;
-import ee.ituk.api.join.domain.Application;
-import ee.ituk.api.join.repository.ApplicationRepository;
-import ee.ituk.api.join.validation.ApplicationValidator;
 import ee.ituk.api.mail.MailService;
+import ee.ituk.api.mentor.MentorProfileRepository;
+import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 public class ApplicationService {
 
     private final ApplicationRepository applicationRepository;
+    private final MentorProfileRepository mentorProfileRepository;
     private final UserService userService;
     private final MailService mailService;
 
@@ -64,7 +67,9 @@ public class ApplicationService {
     public void setMentorToApplication(Long applicationId, Long mentorId) {
         if (Objects.nonNull(applicationId) && Objects.nonNull(mentorId)) {
             Application application = findApplicationById(applicationId);
-            User mentor = userService.findUserById(mentorId);
+            MentorProfile mentorProfile = mentorProfileRepository.findById(mentorId)
+                    .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(MentorProfile.class))));
+            User mentor = mentorProfile.getUser();
             if (mentor.isMentor()) {
                 throw new NotFoundException(Collections.singletonList(getNotFoundError(User.class)));
             }
