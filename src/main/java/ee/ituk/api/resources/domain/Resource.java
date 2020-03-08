@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity(name = "Resource")
 @Table(schema = "public", name = "resource")
 @SQLDelete(sql = "UPDATE resource SET deleted_at = now() WHERE id = ?")
-@SQLDeleteAll(sql = "UPDATE resource SET deleted_at = NOW() WHERE 1 = 1")
+@SQLDeleteAll(sql = "UPDATE resource SET deleted_at = NOW() WHERE id = ?")
 @Where(clause = "deleted_at IS null")
 public class Resource {
 
