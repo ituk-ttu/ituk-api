@@ -32,7 +32,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project",
     };
     private static final String[] ALLOW_ONLY_POST = {  "/application" };
-    private static final String[] ALLOW_ONLY_GET = { "/mentor/active", "/application/{\\d+}" };
+    private static final String[] ALLOW_ONLY_GET = { "/mentor/active", "/application/{\\d+}/" };
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
 
     @Resource(name = "userService")
