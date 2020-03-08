@@ -145,7 +145,7 @@ public class UserService implements UserDetailsService {
             if (Objects.nonNull(user.getPersonalCode())) {
                 int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
                 int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                if (day > 31 && month > 12) {
+                if (day > 31 || month > 12) {
                     log.error(user.getPersonalCode());
                 } else {
                     LocalDate birthday = LocalDate.of(LocalDate.now().getYear(), month, day);
