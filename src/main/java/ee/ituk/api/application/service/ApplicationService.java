@@ -107,7 +107,7 @@ public class ApplicationService {
             return null;
         }
 
-        MentorProfile mentorProfile = mentorProfileRepository.findById(application.getMentor().getId()).orElse(null);
+        MentorProfile mentorProfile = mentorProfileRepository.findByUser(application.getMentor()).orElse(null);
         return mentorProfileMapper.mentorProfileToDto(mentorProfile);
     }
 }
