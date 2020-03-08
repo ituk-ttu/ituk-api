@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity(name = "ProjectSummary")
@@ -41,4 +42,9 @@ public class ProjectSummary {
     @JoinColumn(name = "confirmed_by")
     private User confirmedBy;
 
+    @OneToMany(mappedBy = "projectSummary", cascade = CascadeType.ALL)
+    private List<ProjectMember> members;
+
+    @OneToMany(mappedBy = "projectSummary", cascade = CascadeType.ALL)
+    private List<ProjectBudgetRow> budgetRows;
 }

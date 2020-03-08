@@ -17,25 +17,25 @@ spring:
       enabled: true
       max-file-size: 2MB
   datasource:
-    url: ${DS_URL}
-    username: ${DS_USER}
-    password: ${DS_PASSWORD}
+    url: jdbc:postgresql://localhost:5433/ituk-api
+    username: postgres
+    password: postgres
     initialization-mode: never
   flyway:
     locations: classpath:db/migration
     baseline-on-migrate: true
-    url: ${DS_URL}
-    user: ${DS_USER}
-    password: ${DS_PASSWORD}
+    url: jdbc:postgresql://localhost:5433/ituk-api
+    user: postgres
+    password: postgres
 management:
   endpoint:
     health:
       show-details: always
 email:
-  domain: ${EMAIL_DOMAIN}
-  fromName: ${EMAIL_FROMNAME}
-  fromEmail: ${EMAIL_FROMEMAIL}
-  apiKey: ${EMAIL_APIKEY}
+  domain: "ituk.ee"
+  fromName: "IT teaduskonna üliõpilaskogu"
+  fromEmail: "kontakt@ituk.ee"
+  apiKey: "I AM KEY"
 security:
   signing:
     key: "ituk"

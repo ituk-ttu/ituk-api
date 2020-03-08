@@ -11,6 +11,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Entity(name = "Project")
@@ -38,12 +39,10 @@ public class Project {
     @JoinColumn(name = "project_lead_id")
     private User projectLead;
 
-    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL)
-    private List<ProjectMember> members;
-
-    @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
-    private ProjectBudget budget;
-
     @OneToOne(mappedBy = "project", cascade = CascadeType.ALL)
     private ProjectSummary summary;
+
+    public Optional<ProjectSummary> getSummary() {
+        return Optional.ofNullable(summary);
+    }
 }
