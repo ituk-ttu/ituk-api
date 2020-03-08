@@ -7,6 +7,7 @@ import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.meeting.agenda.MeetingAgenda;
 import ee.ituk.api.meeting.agenda.MeetingAgendaItemRepository;
 import ee.ituk.api.meeting.agenda.MeetingAgendaRepository;
+import ee.ituk.api.meeting.validation.GeneralMeetingValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.*;
 
@@ -52,9 +54,10 @@ public class GeneralMeetingService {
     }
 
     List<GeneralMeeting> getAll() {
-        List<GeneralMeeting> meetings = meetingsRepository.findAll();
-        meetings.sort(Comparator.comparing(GeneralMeeting::getDate).reversed());
-        return meetings;
+        return meetingsRepository.findAll().stream()
+                .filter(meeting -> Objects.nonNull(meeting.getDate()))
+                .sorted(Comparator.comparing(GeneralMeeting::getDate).reversed())
+                .collect(Collectors.toList());
     }
 
     GeneralMeeting update(Long id, GeneralMeeting meeting) {
