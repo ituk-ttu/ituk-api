@@ -47,3 +47,8 @@ logging:
 file-storage:
   base-dir: "{CHANGE_THIS}"
   mentor-profile-dir: "mentors"
+
+logbook:
+  exclude: [ /actuator/health, /v2/**, /swagger-*/**, /webjars/** ]
+  write:
+    level: TRACE
