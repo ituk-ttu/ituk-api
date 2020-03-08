@@ -1,8 +1,8 @@
-package ee.ituk.api.join.validation.rule;
+package ee.ituk.api.application.validation.rule;
 
 import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.validation.ValidationRule;
-import ee.ituk.api.join.domain.Application;
+import ee.ituk.api.application.domain.Application;
 
 import java.util.List;
 

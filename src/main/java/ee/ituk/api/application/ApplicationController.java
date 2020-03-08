@@ -1,8 +1,8 @@
-package ee.ituk.api.join;
+package ee.ituk.api.application;
 
-import ee.ituk.api.join.dto.ApplicationDto;
-import ee.ituk.api.join.dto.ApplicationMentorRequest;
-import ee.ituk.api.join.service.ApplicationService;
+import ee.ituk.api.application.dto.ApplicationDto;
+import ee.ituk.api.application.dto.ApplicationMentorRequest;
+import ee.ituk.api.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
-package ee.ituk.api.join.repository;
+package ee.ituk.api.application.repository;
 
-import ee.ituk.api.join.domain.Application;
+import ee.ituk.api.application.domain.Application;
 import ee.ituk.api.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
