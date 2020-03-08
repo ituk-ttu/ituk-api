@@ -16,8 +16,8 @@ public class ProjectBudgetRow {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "project_budget_id")
-    private ProjectBudget projectBudget;
+    @JoinColumn(name = "project_summary_id")
+    private ProjectSummary projectSummary;
 
     @NotBlank
     private String description;

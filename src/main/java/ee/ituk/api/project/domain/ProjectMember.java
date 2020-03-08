@@ -15,8 +15,8 @@ public class ProjectMember {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "project_id", nullable = false)
-    private Project project;
+    @JoinColumn(name = "project_summary_id", nullable = false)
+    private ProjectSummary projectSummary;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

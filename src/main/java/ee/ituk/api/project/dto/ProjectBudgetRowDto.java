@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 @Data
 public class ProjectBudgetRowDto {
     private Long id;
-    private Long projectBudgetId;
+    private Long projectSummaryId;
     private String description;
     private BigDecimal itukCost;
     private BigDecimal facultyCost;
