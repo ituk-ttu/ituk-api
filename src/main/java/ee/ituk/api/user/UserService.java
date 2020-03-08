@@ -1,9 +1,10 @@
 package ee.ituk.api.user;
 
+import ee.ituk.api.application.domain.Application;
+import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
-import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -142,6 +144,10 @@ public class UserService implements UserDetailsService {
 
     public String getMentorName(Long userId) {
         User user = findUserById(userId);
-        return applicationRepository.findByUser(user).orElseThrow(NotFoundException::new).getMentor().getFullName();
+        Optional<Application> applicationOptional = applicationRepository.findByUser(user);
+        if (applicationOptional.isPresent()) {
+            return applicationOptional.get().getMentor().getFullName();
+        }
+        return "";
     }
 }
