@@ -49,7 +49,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User loadInternalUserByUsername(String email) {
-        return userRepository.findByEmail(email).orElseThrow(BadCredentialsException::new);
+        return userRepository.findByEmailIgnoreCase(email).orElseThrow(BadCredentialsException::new);
     }
 
     public User findUserById(long id) {
@@ -106,7 +106,7 @@ public class UserService implements UserDetailsService {
     }
 
     User getLoggedUser() {
-        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+        return userRepository.findByEmailIgnoreCase(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
