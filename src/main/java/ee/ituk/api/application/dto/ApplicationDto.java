@@ -18,4 +18,5 @@ public class ApplicationDto {
     private LocalDateTime updatedAt;
     private Long processedById;
     private Long mentorId;
+    private String status;
 }

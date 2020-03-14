@@ -29,6 +29,7 @@ public class Application implements PersonalData {
   private String studentCode;
   private String curriculum;
   private String mentorSelectionCode;
+  private String status;
   private LocalDateTime createdAt = LocalDateTime.now();
   private LocalDateTime updatedAt = LocalDateTime.now();
   @ManyToOne
