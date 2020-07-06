@@ -36,15 +36,12 @@ public class MeetingParticipationService {
     @Transactional
     public List<MeetingParticipation> add(List<MeetingParticipationDto> participants) {
         Optional<Long> maybeGeneralMeeting = participants.stream().map(MeetingParticipationDto::getGeneralMeetingId).findFirst();
-        if (maybeGeneralMeeting.isEmpty()) {
-            throw new NotFoundException(singletonList(getNotFoundError(GeneralMeetingDto.class)));
-        }
+        Long generalMeetingId = maybeGeneralMeeting.orElseThrow(() -> new NotFoundException(singletonList(getNotFoundError(GeneralMeetingDto.class))));
 
-        GeneralMeeting generalMeeting = generalMeetingService.findById(maybeGeneralMeeting.get());
+        GeneralMeeting generalMeeting = generalMeetingService.findById(generalMeetingId);
         List<MeetingParticipation> existingParticipants = repository.getAllByGeneralMeeting(generalMeeting).orElse(emptyList());
+
         existingParticipants.forEach(part -> repository.delete(part.getId()));
-
-
         List<MeetingParticipation> entities = participantMapper.dtosToEntities(participants);
         return repository.saveAll(entities);
     }
