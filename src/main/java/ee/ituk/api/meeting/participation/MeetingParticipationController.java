@@ -25,7 +25,7 @@ public class MeetingParticipationController {
 
     @GetMapping("/{meetingId}/all")
     public ResponseEntity<List<MeetingParticipationDto>> getAllParticipantsInAMeeting(@PathVariable Long meetingId) {
-        return ok(mapper.entitiesToDtos(service.getAllParticipantsByMeeting(meetingId)));
+        return ok(service.getAllParticipantsByMeeting(meetingId));
     }
 
     @DeleteMapping("{id}")

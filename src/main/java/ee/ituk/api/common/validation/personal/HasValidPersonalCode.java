@@ -3,6 +3,7 @@ package ee.ituk.api.common.validation.personal;
 import ee.ituk.api.common.domain.PersonalData;
 import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.validation.ValidationRule;
+import org.apache.commons.lang.StringUtils;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class HasValidPersonalCode implements ValidationRule<PersonalData> {
 
     @Override
     public List<ErrorMessage> apply(PersonalData person) {
-        if (person.getPersonalCode().length() == 11 && person.getPersonalCode().matches("\\d+")) {
+        if (StringUtils.isNotEmpty(person.getPersonalCode()) && person.getPersonalCode().length() == 11 && person.getPersonalCode().matches("\\d+")) {
             IdNumber idCode = new IdNumber(person);
             if (idCode.isValidEstonianIdNumber()) {
                 return emptyList();
