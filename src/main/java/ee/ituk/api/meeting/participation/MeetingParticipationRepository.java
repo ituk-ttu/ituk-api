@@ -12,6 +12,8 @@ public interface MeetingParticipationRepository extends JpaRepository<MeetingPar
 
     Optional<List<MeetingParticipation>> getAllByGeneralMeeting(GeneralMeeting meeting);
 
+    Optional<List<MeetingParticipation>> getAllByGeneralMeetingAndParticipated(GeneralMeeting meeting, Boolean participated);
+
     @Query(value = "UPDATE meeting_participation SET expires_at = now() WHERE id = ?",
             nativeQuery = true)
     @Modifying

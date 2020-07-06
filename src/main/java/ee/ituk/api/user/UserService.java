@@ -77,6 +77,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllByOrderByIdAsc();
     }
 
+    public List<User> findAllByArchived(Boolean archived) {
+        return userRepository.findAllByArchived(archived);
+    }
+
     User createUser(User user) {
         checkForErrors(userValidator.validateOnCreate(user));
         User savedUser = saveUser(user);

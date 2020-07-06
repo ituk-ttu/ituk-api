@@ -48,14 +48,11 @@ public class MeetingParticipationService {
 
     List<MeetingParticipationDto> getAllParticipantsByMeeting(Long id) {
         GeneralMeeting meeting = generalMeetingService.findById(id);
-        List<MeetingParticipationDto> participants = participantMapper.entitiesToDtos(repository.getAllByGeneralMeeting(meeting).orElse(emptyList()));
+        List<MeetingParticipationDto> participants = participantMapper.entitiesToDtos(repository.getAllByGeneralMeetingAndParticipated(meeting, true).orElse(emptyList()));
         List<Long> participantUserIds = participants.stream()
-                .filter(MeetingParticipationDto::isParticipated)
                 .map(p -> p.getUser().getId())
                 .collect(Collectors.toList());
-        List<UserDto> users = userMapper.usersToDto(userService.findAll().stream()
-                .filter(user -> !user.isArchived())
-                .collect(Collectors.toList()));
+        List<UserDto> users = userMapper.usersToDto(userService.findAllByArchived(false));
 
         return users.stream()
                 .map(mapAllUserParticipations(participantUserIds, id))
