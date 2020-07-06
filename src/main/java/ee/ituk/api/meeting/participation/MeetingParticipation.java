@@ -3,12 +3,15 @@ package ee.ituk.api.meeting.participation;
 import ee.ituk.api.meeting.general.GeneralMeeting;
 import ee.ituk.api.user.domain.User;
 import lombok.Data;
+import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
 @Table(name = "meeting_participation", schema = "public")
+@Where(clause = "expires_at IS null")
 public class MeetingParticipation {
 
     @Id
@@ -22,4 +25,5 @@ public class MeetingParticipation {
     private GeneralMeeting generalMeeting;
     private boolean participated;
     private boolean mandatory;
+    private LocalDateTime expiresAt;
 }

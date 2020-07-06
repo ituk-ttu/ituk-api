@@ -20,18 +20,12 @@ public class MeetingParticipationController {
 
     @PutMapping
     public ResponseEntity<List<MeetingParticipationDto>> updateParticipations(@RequestBody List<MeetingParticipationDto> dtos) {
-        return ok(mapper.entitiesToDtos(service.add(mapper.dtosToEntities(dtos))));
+        return ok(mapper.entitiesToDtos(service.add(dtos)));
     }
 
     @GetMapping("/{meetingId}/all")
     public ResponseEntity<List<MeetingParticipationDto>> getAllParticipantsInAMeeting(@PathVariable Long meetingId) {
         return ok(service.getAllParticipantsByMeeting(meetingId));
-    }
-
-    @DeleteMapping("{id}")
-    public ResponseEntity deleteParticipant(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
     }
 
 }
