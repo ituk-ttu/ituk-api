@@ -5,6 +5,7 @@ import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
+import ee.ituk.api.common.validation.personal.IdNumber;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -76,6 +77,10 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllByOrderByIdAsc();
     }
 
+    public List<User> findAllByArchived(Boolean archived) {
+        return userRepository.findAllByArchived(archived);
+    }
+
     User createUser(User user) {
         checkForErrors(userValidator.validateOnCreate(user));
         User savedUser = saveUser(user);
@@ -137,25 +142,25 @@ public class UserService implements UserDetailsService {
     }
 
     List<UserBirthdayDto> getLastWeekBirthdays() {
-        List<User> users = userRepository.findAll();
-        final LocalDate yesterday = LocalDate.now().minusDays(1);
-        final LocalDate nextWeek = LocalDate.now().plusDays(8);
+        List<User> users = userRepository.findAll().stream()
+                .filter(user -> !user.isArchived())
+                .filter(user -> !userValidator.validatePersonalCode(user).hasErrors())
+                .collect(Collectors.toList());
+        LocalDate currentDate = LocalDate.now();
+        final LocalDate yesterday = currentDate.minusDays(1);
+        final LocalDate nextWeek = currentDate.plusDays(8);
+
         List<UserBirthdayDto> birthdays = new ArrayList<>();
         users.forEach(user -> {
-            if (Objects.nonNull(user.getPersonalCode())) {
-                int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
-                int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                if (day > 31 || month > 12) {
-                    log.error(user.getPersonalCode());
-                } else {
-                    LocalDate birthday = LocalDate.of(LocalDate.now().getYear(), month, day);
-                    if (birthday.isAfter(yesterday) && birthday.isBefore(nextWeek)) {
-                        birthdays.add(UserBirthdayDto.builder()
-                                .fullName(user.getFullName())
-                                .birthday(birthday)
-                                .build());
-                    }
-                }
+            IdNumber idNumber = new IdNumber(user);
+            int month = idNumber.getMonthNumber();
+            int day = idNumber.getDayNumber();
+            LocalDate birthday = LocalDate.of(currentDate.getYear(), month, day);
+            if (birthday.isAfter(yesterday) && birthday.isBefore(nextWeek)) {
+                birthdays.add(UserBirthdayDto.builder()
+                        .fullName(user.getFullName())
+                        .birthday(birthday)
+                        .build());
             }
         });
         birthdays.sort(Comparator.comparing(UserBirthdayDto::getBirthday));

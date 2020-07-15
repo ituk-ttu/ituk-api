@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     Optional<User> findByEmailIgnoreCase(String email);
 
+    List<User> findAllByArchived(Boolean archived);
+
 }

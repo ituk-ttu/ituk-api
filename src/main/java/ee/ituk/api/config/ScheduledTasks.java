@@ -25,7 +25,6 @@ public class ScheduledTasks {
 
     @Scheduled(cron = ONE_MINUTE_CRON_JOB)
     public void checkSessions() {
-        log.info("Checking sessions");
         LocalDateTime now = LocalDateTime.now();
         List<Session> sessionsToDelete = sessionService.findAll().stream()
                 .filter(session -> Duration.between(session.getCreatedAt(), now).toMinutes() > settingsService.getSessionTimeInMinutes())
