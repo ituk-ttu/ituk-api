@@ -18,9 +18,9 @@ public class MeetingParticipationController {
 
     private final MeetingParticipationMapper mapper = Mappers.getMapper(MeetingParticipationMapper.class);
 
-    @PutMapping
-    public ResponseEntity<List<MeetingParticipationDto>> updateParticipations(@RequestBody List<MeetingParticipationDto> dtos) {
-        return ok(mapper.entitiesToDtos(service.add(dtos)));
+    @PutMapping("single")
+    public ResponseEntity<MeetingParticipationDto> updateSingleParticipation(@RequestBody MeetingParticipationDto dto) {
+        return ok(mapper.entityToDto(service.add(dto)));
     }
 
     @GetMapping("/{meetingId}/all")
