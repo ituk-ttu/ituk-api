@@ -37,4 +37,8 @@ public class UserValidator extends Validator {
                 new NewPasswordIsDifferentFromOld()
         ));
     }
+
+    public ValidationResult validatePersonalCode(User user) {
+        return applyRule(user, new HasValidPersonalCode());
+    }
 }

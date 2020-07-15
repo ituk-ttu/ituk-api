@@ -14,6 +14,7 @@ public final class ValidationUtil {
     public static final String EMAIL_INCORRECT = "email.incorrect";
 
     public static final String NAME_MISSING = "name.missing";
+    public static final String DATE_MISSING = "date.missing";
 
     public static final String PROJECT_MISSING_REQUIRED_FIELDS = "project.missing.required.fields";
     public static final String PROJECT_BUDGET_MISSING_REQUIRED_FIELDS = "project.budget.missing.required.fields";

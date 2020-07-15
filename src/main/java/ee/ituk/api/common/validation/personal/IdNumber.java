@@ -4,16 +4,17 @@ import ee.ituk.api.common.domain.PersonalData;
 
 import java.util.List;
 
-class IdNumber {
-    private String idCode;
-    private int genderNumber;
-    private int yearNumber;
-    private int monthNumber;
-    private int dayNumber;
-    private int bornUniqueNumber;
-    private int controlNumber;
+public class IdNumber {
 
-    IdNumber(PersonalData person) {
+    private final String idCode;
+    private final int genderNumber;
+    private final int yearNumber;
+    private final int monthNumber;
+    private final int dayNumber;
+    private final int bornUniqueNumber;
+    private final int controlNumber;
+
+    public IdNumber(PersonalData person) {
         this.idCode = person.getPersonalCode();
         this.genderNumber = Integer.parseInt(idCode.substring(0, 1));
         this.yearNumber = Integer.parseInt(idCode.substring(1, 3));
@@ -21,6 +22,14 @@ class IdNumber {
         this.dayNumber = Integer.parseInt(idCode.substring(5, 7));
         this.bornUniqueNumber = Integer.parseInt(idCode.substring(7, 10));
         this.controlNumber = Integer.parseInt(idCode.substring(10, 11));
+    }
+
+    public int getMonthNumber() {
+        return monthNumber;
+    }
+
+    public int getDayNumber() {
+        return dayNumber;
     }
 
     boolean isValidEstonianIdNumber() {

@@ -86,10 +86,16 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/today-birthdays")
+    public ResponseEntity getTodayBirthdayUserNames() {
+        return ok(userService.getTodayBirthdayUserNames());
+    }
+
     @GetMapping("/birthdays")
     public ResponseEntity getBirthdayUsers() {
-        return ok(userService.getBirthdayUserNames());
+        return ok(userService.getLastWeekBirthdays());
     }
+
 
     @GetMapping("/{userId}/mentor-name")
     public ResponseEntity getMentorName(@PathVariable Long userId) {

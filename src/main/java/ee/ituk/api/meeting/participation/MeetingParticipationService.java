@@ -1,46 +1,64 @@
 package ee.ituk.api.meeting.participation;
 
-import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.meeting.general.GeneralMeeting;
 import ee.ituk.api.meeting.general.GeneralMeetingService;
+import ee.ituk.api.user.UserMapper;
+import ee.ituk.api.user.UserService;
+import ee.ituk.api.user.dto.UserDto;
 import lombok.RequiredArgsConstructor;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
-import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
-import static java.util.Collections.singletonList;
+import static java.util.Collections.emptyList;
 
 @Service
 @RequiredArgsConstructor
 public class MeetingParticipationService {
 
     private final GeneralMeetingService generalMeetingService;
+    private final UserService userService;
     private final MeetingParticipationRepository repository;
 
-    private final MeetingParticipantValidator validator = new MeetingParticipantValidator();
+    private final UserMapper userMapper = Mappers.getMapper(UserMapper.class);
+    private final MeetingParticipationMapper participantMapper = Mappers.getMapper(MeetingParticipationMapper.class);
 
-    public List<MeetingParticipation> add(List<MeetingParticipation> participants) {
-        participants.forEach(participant -> checkForErrors(validator.validateOnCreate(participant)));
-        return repository.saveAll(participants);
+    public MeetingParticipation add(MeetingParticipationDto dto) {
+        return repository.save(participantMapper.dtoToEntity(dto));
     }
 
-    public void delete(Long id) {
-        MeetingParticipation participation = repository.findById(id).orElseThrow(
-                () -> new NotFoundException(singletonList(getNotFoundError(this.getClass()))));
-        repository.delete(participation);
-    }
-
-    List<MeetingParticipation> getAllParticipantsByMeeting(Long id) {
+    List<MeetingParticipationDto> getAllParticipantsByMeeting(Long id) {
         GeneralMeeting meeting = generalMeetingService.findById(id);
-        return repository.getAllByGeneralMeeting(meeting).orElseThrow(
-                () -> new NotFoundException(singletonList(getNotFoundError(this.getClass())))
-        );
+        List<MeetingParticipationDto> participants = participantMapper.entitiesToDtos(repository.getAllByGeneralMeetingAndParticipatedAndExpiresAtIsNull(meeting, true).orElse(emptyList()));
+        List<UserDto> users = userMapper.usersToDto(userService.findAllByArchived(false));
+
+        return users.stream()
+                .map(mapParticipationToUser(participants, id))
+                .sorted(Comparator.comparing(MeetingParticipationDto::isParticipated).reversed()) // first true then false
+                .collect(Collectors.toList());
     }
 
-    void update(MeetingParticipation participant) {
-        generalMeetingService.findById(participant.getGeneralMeeting().getId());
-        repository.save(participant);
+    private Function<UserDto, MeetingParticipationDto> mapParticipationToUser(List<MeetingParticipationDto> participants, Long meetingId) {
+        return user -> {
+            MeetingParticipationDto.MeetingParticipationDtoBuilder participationDtoBuilder = MeetingParticipationDto.builder()
+                    .generalMeetingId(meetingId)
+                    .participated(false)
+                    .user(user);
+
+            if (participants.isEmpty()) return participationDtoBuilder.build();
+
+            Optional<MeetingParticipationDto> maybeParticipant = participants.stream().filter(participant -> participant.getUser().equals(user))
+                    .findFirst();
+            if (maybeParticipant.isEmpty()) return participationDtoBuilder.build();
+            MeetingParticipationDto participant = maybeParticipant.get();
+
+            return participationDtoBuilder
+                    .id(participant.getId())
+                    .participated(participant.isParticipated())
+                    .build();
+        };
     }
 }

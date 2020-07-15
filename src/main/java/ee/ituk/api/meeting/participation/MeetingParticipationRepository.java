@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface MeetingParticipationRepository extends JpaRepository<MeetingParticipation, Long> {
 
-    Optional<List<MeetingParticipation>> getAllByGeneralMeeting(GeneralMeeting meeting);
+    Optional<List<MeetingParticipation>> getAllByGeneralMeetingAndParticipatedAndExpiresAtIsNull(GeneralMeeting meeting, Boolean participated);
 }

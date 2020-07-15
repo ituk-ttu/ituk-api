@@ -5,6 +5,7 @@ import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.common.exception.BadCredentialsException;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
+import ee.ituk.api.common.validation.personal.IdNumber;
 import ee.ituk.api.login.SessionService;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.MentorProfileService;
@@ -12,8 +13,10 @@ import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.user.dto.MentorNameDto;
 import ee.ituk.api.user.dto.PasswordChangeDto;
+import ee.ituk.api.user.dto.UserBirthdayDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,9 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -31,6 +32,7 @@ import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
@@ -48,7 +50,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User loadInternalUserByUsername(String email) {
-        return userRepository.findByEmail(email).orElseThrow(BadCredentialsException::new);
+        return userRepository.findByEmailIgnoreCase(email).orElseThrow(BadCredentialsException::new);
     }
 
     public User findUserById(long id) {
@@ -73,6 +75,10 @@ public class UserService implements UserDetailsService {
 
     public List<User> findAll() {
         return userRepository.findAllByOrderByIdAsc();
+    }
+
+    public List<User> findAllByArchived(Boolean archived) {
+        return userRepository.findAllByArchived(archived);
     }
 
     User createUser(User user) {
@@ -105,7 +111,7 @@ public class UserService implements UserDetailsService {
     }
 
     User getLoggedUser() {
-        return userRepository.findByEmail(SecurityContextHolder.getContext().getAuthentication().getName())
+        return userRepository.findByEmailIgnoreCase(SecurityContextHolder.getContext().getAuthentication().getName())
                 .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
@@ -118,19 +124,47 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    List<String> getBirthdayUserNames() {
+    MentorNameDto getMentorName(Long userId) {
+        User user = findUserById(userId);
+        Optional<Application> applicationOptional = applicationRepository.findByUser(user);
+        if (applicationOptional.isPresent()) {
+            return MentorNameDto.builder().name(applicationOptional.get().getMentor().getFullName()).build();
+        }
+        return MentorNameDto.builder().name("").build();
+    }
+
+    List<String> getTodayBirthdayUserNames() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .filter(user -> {
-                    if (user.getPersonalCode() != null) {
-                        int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
-                        int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
-                        return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
-                    }
-                    return false;
-                })
+                .filter(this::isBirthdayToday)
                 .map(User::getFullName)
                 .collect(Collectors.toList());
+    }
+
+    List<UserBirthdayDto> getLastWeekBirthdays() {
+        List<User> users = userRepository.findAll().stream()
+                .filter(user -> !user.isArchived())
+                .filter(user -> !userValidator.validatePersonalCode(user).hasErrors())
+                .collect(Collectors.toList());
+        LocalDate currentDate = LocalDate.now();
+        final LocalDate yesterday = currentDate.minusDays(1);
+        final LocalDate nextWeek = currentDate.plusDays(8);
+
+        List<UserBirthdayDto> birthdays = new ArrayList<>();
+        users.forEach(user -> {
+            IdNumber idNumber = new IdNumber(user);
+            int month = idNumber.getMonthNumber();
+            int day = idNumber.getDayNumber();
+            LocalDate birthday = LocalDate.of(currentDate.getYear(), month, day);
+            if (birthday.isAfter(yesterday) && birthday.isBefore(nextWeek)) {
+                birthdays.add(UserBirthdayDto.builder()
+                        .fullName(user.getFullName())
+                        .birthday(birthday)
+                        .build());
+            }
+        });
+        birthdays.sort(Comparator.comparing(UserBirthdayDto::getBirthday));
+        return birthdays;
     }
 
     void archive(Long id, boolean isArchived) {
@@ -143,12 +177,13 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public MentorNameDto getMentorName(Long userId) {
-        User user = findUserById(userId);
-        Optional<Application> applicationOptional = applicationRepository.findByUser(user);
-        if (applicationOptional.isPresent()) {
-            return MentorNameDto.builder().name(applicationOptional.get().getMentor().getFullName()).build();
+
+    private boolean isBirthdayToday(User user) {
+        if (user.getPersonalCode() != null) {
+            int month = Integer.parseInt(user.getPersonalCode().substring(3, 5));
+            int day = Integer.parseInt(user.getPersonalCode().substring(5, 7));
+            return LocalDate.now().getMonthValue() == month && LocalDate.now().getDayOfMonth() == day;
         }
-        return MentorNameDto.builder().name("").build();
+        return false;
     }
 }
