@@ -28,8 +28,8 @@ public class UserController {
 
     @GetMapping
     @ResponseBody
-    public ResponseEntity findAll() {
-        return ok(mapper.usersToDto(userService.findAll()));
+    public ResponseEntity findAll(@RequestParam(required = false, defaultValue = "false") Boolean showArchived) {
+        return ok(mapper.usersToDto(userService.findAll(showArchived)));
     }
 
     @PostMapping

@@ -15,6 +15,8 @@ public interface UserRepository extends JpaRepository<User, Long>{
 
     List<User> findAllByOrderByIdAsc();
 
+    List<User> findAllByArchivedOrderByIdAsc(Boolean archived);
+
     Optional<User> findByEmailIgnoreCase(String email);
 
     List<User> findAllByArchived(Boolean archived);

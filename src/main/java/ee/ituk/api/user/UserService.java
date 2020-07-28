@@ -73,8 +73,15 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public List<User> findAll() {
-        return userRepository.findAllByOrderByIdAsc();
+    public List<User> findAll(Boolean showArchived) {
+        if (showArchived == null) {
+            showArchived = false;
+        }
+
+        if (showArchived) {
+            return userRepository.findAllByOrderByIdAsc();
+        }
+        return userRepository.findAllByArchivedOrderByIdAsc(showArchived);
     }
 
     public List<User> findAllByArchived(Boolean archived) {
