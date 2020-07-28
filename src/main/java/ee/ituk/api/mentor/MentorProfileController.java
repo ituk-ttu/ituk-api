@@ -47,11 +47,11 @@ public class MentorProfileController {
         return ResponseEntity.noContent().build();
     }
 
-    @ApiOperation(value = "Find mentor by user id")
-    @GetMapping("/{id}")
+    @ApiOperation(value = "Find mentor by id")
+    @GetMapping("{id}")
     @ResponseBody
-    public MentorProfileDto getMentorProfileByUserId(@PathVariable long id) {
-        return mapper.mentorProfileToDto(mentorProfileService.getByUserId(id));
+    public MentorProfileDto getMentorProfileById(@PathVariable long id) {
+        return mapper.mentorProfileToDto(mentorProfileService.getByMentorId(id));
     }
 
     @ApiOperation(value = "Get all mentor profiles for user with isMentor true")

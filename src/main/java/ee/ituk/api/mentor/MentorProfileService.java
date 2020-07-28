@@ -26,9 +26,8 @@ public class MentorProfileService {
         mentorProfileRepository.save(profile);
     }
 
-    MentorProfile getByUserId(long id) {
-        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
-        return mentorProfileRepository.findByUser(user).orElseThrow(NotFoundException::new);
+    MentorProfile getByMentorId(long id) {
+        return mentorProfileRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
     MentorProfile updateMentor(MentorProfile mentorprofile) {
