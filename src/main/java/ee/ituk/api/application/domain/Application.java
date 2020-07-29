@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Entity(name = "Application")
 @Table(name = "application", schema = "public")
 @SQLDelete(sql = "UPDATE application SET deleted_at = now() WHERE id = ?")
-@SQLDeleteAll(sql = "UPDATE application SET deleted_at = NOW() WHERE 1 = 1")
+@SQLDeleteAll(sql = "UPDATE application SET deleted_at = NOW() WHERE id = ?")
 @Where(clause = "deleted_at IS null")
 
 public class Application implements PersonalData {
