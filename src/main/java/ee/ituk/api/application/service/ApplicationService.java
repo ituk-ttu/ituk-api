@@ -42,7 +42,7 @@ public class ApplicationService {
     }
 
     public List<Application> findAll() {
-        return applicationRepository.findAll();
+        return applicationRepository.findAllByOrderByCreatedAtDesc();
     }
 
     public Application updateProfile(Application application) {

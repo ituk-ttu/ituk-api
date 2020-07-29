@@ -19,5 +19,5 @@ public class ApplicationResponseDto {
     private LocalDateTime updatedAt;
     private Long processedById;
     private User mentor;
-    private String status;
+   // private String status;
 }

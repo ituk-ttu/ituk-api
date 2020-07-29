@@ -11,4 +11,5 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
 
     List<Application> findAllByMentor(User user);
     Optional<Application> findByUser(User user);
+    List<Application> findAllByOrderByCreatedAtDesc();
 }
