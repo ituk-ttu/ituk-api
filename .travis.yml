@@ -27,7 +27,3 @@ deploy:
     script: bash scripts/deploy-master.sh
     on:
       branch: master
-  - provider: script
-    script: bash scripts/deploy-staging.sh
-    on:
-      branch: develop
