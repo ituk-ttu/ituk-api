@@ -2,12 +2,14 @@ package ee.ituk.api.application;
 
 import ee.ituk.api.application.dto.ApplicationDto;
 import ee.ituk.api.application.dto.ApplicationMentorRequest;
+import ee.ituk.api.application.dto.ChangeApplicationStatusRequest;
 import ee.ituk.api.application.service.ApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -63,5 +65,11 @@ public class ApplicationController {
     @GetMapping("apply/{applicationId}/{selectionCode}")
     public ResponseEntity applyApplication(@PathVariable Long applicationId, @PathVariable String selectionCode) {
         return ok(applicationService.apply(applicationId, selectionCode));
+    }
+
+    @PutMapping("{applicationId}/status")
+    public ResponseEntity changeApplicationStatus(@PathVariable Long applicationId, @RequestBody ChangeApplicationStatusRequest request) {
+        applicationService.changeApplicationStatus(applicationId, request);
+        return noContent().build();
     }
 }

@@ -1,6 +1,7 @@
 package ee.ituk.api.application.service;
 
 import ee.ituk.api.application.domain.Application;
+import ee.ituk.api.application.dto.ChangeApplicationStatusRequest;
 import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.application.validation.ApplicationValidator;
 import ee.ituk.api.common.exception.NotFoundException;
@@ -14,6 +15,7 @@ import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -54,20 +56,6 @@ public class ApplicationService {
         applicationRepository.delete(application);
     }
 
-    private Application saveApplication(Application application) {
-        checkForErrors(validator.validateOnCreate(application));
-        application.setCreatedAt(LocalDateTime.now());
-        application.setUpdatedAt(LocalDateTime.now());
-        application.setMentorSelectionCode(UUID.randomUUID().toString().replace("-", ""));
-        if (application.getMentor() == null || application.getMentor().getId() == null) {
-            application.setMentor(null);
-        }
-        if (application.getProcessedBy() == null || application.getProcessedBy().getId() == null) {
-            application.setProcessedBy(null);
-        }
-        return applicationRepository.save(application);
-    }
-
     public void setMentorToApplication(Long applicationId, Long mentorId) {
         Application application = findApplicationById(applicationId);
         MentorProfile mentorProfile = mentorProfileRepository.findById(mentorId)
@@ -100,6 +88,26 @@ public class ApplicationService {
             }
         }
         return null;
+    }
+
+    @Transactional
+    public void changeApplicationStatus(Long applicationId, ChangeApplicationStatusRequest request) {
+        applicationRepository.findById(applicationId).orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(Application.class))));
+        applicationRepository.changeApplicationStatus(request.getStatus().name(), applicationId);
+    }
+
+    private Application saveApplication(Application application) {
+        checkForErrors(validator.validateOnCreate(application));
+        application.setCreatedAt(LocalDateTime.now());
+        application.setUpdatedAt(LocalDateTime.now());
+        application.setMentorSelectionCode(UUID.randomUUID().toString().replace("-", ""));
+        if (application.getMentor() == null || application.getMentor().getId() == null) {
+            application.setMentor(null);
+        }
+        if (application.getProcessedBy() == null || application.getProcessedBy().getId() == null) {
+            application.setProcessedBy(null);
+        }
+        return applicationRepository.save(application);
     }
 
     private MentorProfileDto getMentorProfileByApplication(Application application) {
