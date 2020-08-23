@@ -44,6 +44,7 @@ public class MentorProfileService {
     List<MentorProfile> getAllActive() {
         return mentorProfileRepository.findAll().stream()
                 .filter(profile -> profile.getUser().isMentor())
+                .filter(MentorProfile::isEnabled)
                 .collect(Collectors.toList());
     }
 
