@@ -47,7 +47,7 @@ public class MailService {
         Mail mail = Mail.using(mailgunConfig)
                 .to(to)
                 .subject(subject)
-                .text(renderTemplate("html/" + templateName, context))
+                .html(renderTemplate("html/" + templateName, context))
                 .build();
         CompletableFuture<Response> result = sendAsync(mail);
         result.whenComplete((response, ex) -> {
