@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,5 +63,10 @@ public class MentorProfileService {
 
     public Resource loadPicture(String id) {
        return this.fileStorageService.loadMentorPicture(id);
+    }
+
+    public String loadPicture(Long id) {
+        final Optional<MentorProfile> byId = mentorProfileRepository.findById(id);
+        return byId.map(MentorProfile::getPicture).orElse(null);
     }
 }
