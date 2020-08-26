@@ -34,6 +34,15 @@ public class MentorProfileController {
         );
     }
 
+    /**
+     * @param id of mentor
+     * @return base64 string(mentors pic) that will be fed to ng-hub's ng-img-cropper
+     */
+    @GetMapping(value = "{id}/base64")
+    public String getMentorImage(@PathVariable("id") Long id) {
+        return this.mentorProfileService.loadPicture(id);
+    }
+
     @GetMapping(value = "{id}/picture")
     public void getMentorImage(@PathVariable("id") Long id,
                                HttpServletResponse response) throws IOException {
