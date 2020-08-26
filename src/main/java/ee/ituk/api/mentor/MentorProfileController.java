@@ -3,11 +3,17 @@ package ee.ituk.api.mentor;
 import ee.ituk.api.mentor.dto.MentorProfileDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -15,6 +21,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MentorProfileController {
 
+    public static final String BASE64_SEPARATOR = ",";
+    public static final int BASE64_ENCODED_DATA = 1;
     private final MentorProfileService mentorProfileService;
     private final MentorProfileMapper mapper = Mappers.getMapper(MentorProfileMapper.class);
 
@@ -27,8 +35,19 @@ public class MentorProfileController {
     }
 
     @GetMapping(value = "{id}/picture")
-    public String getMentorImage(@PathVariable("id") Long id) {
-        return this.mentorProfileService.loadPicture(id);
+    public void getMentorImage(@PathVariable("id") Long id,
+                               HttpServletResponse response) throws IOException {
+        final String pic = this.mentorProfileService.loadPicture(id);
+        String[] parts = pic.split(BASE64_SEPARATOR);
+        String imageString = parts[BASE64_ENCODED_DATA];
+        byte[] imageByte = Base64.getMimeDecoder().decode(imageString);
+        response.setContentType("application/octet-stream");
+        response.setHeader("Content-Disposition", "attachment; filename=" + "mentor.png");
+        /* Convert bytes to stream of objects*/
+        InputStream is = new ByteArrayInputStream(imageByte);
+        /* Download copying the content to destination file*/
+        IOUtils.copy(is, response.getOutputStream());
+        response.flushBuffer();
     }
 
     @PutMapping("{id}/picture")
