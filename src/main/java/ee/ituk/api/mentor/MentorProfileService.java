@@ -39,6 +39,8 @@ public class MentorProfileService {
     MentorProfile updateMentor(MentorProfile mentorprofile) {
         User userById = userRepository.findById(mentorprofile.getUser().getId()).orElseThrow(NotFoundException::new);
         mentorprofile.setUser(userById);
+        mentorprofile.setPicture(mentorProfileRepository.findById(mentorprofile.getId())
+                .map(MentorProfile::getPicture).orElseThrow(NotFoundException::new));
         return mentorProfileRepository.save(mentorprofile);
     }
 
