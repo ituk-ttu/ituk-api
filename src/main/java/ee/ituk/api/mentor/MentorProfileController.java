@@ -40,23 +40,8 @@ public class MentorProfileController {
      * @return base64 string(mentors pic) that will be fed to ng-hub's ng-img-cropper
      */
     @GetMapping(value = "{id}/base64")
-    public String getMentorImage(@PathVariable("id") Long id) {
+    public String getMentorImageBase64(@PathVariable("id") Long id) {
         return this.mentorProfileService.loadPicture(id);
-
-    @GetMapping(value = "{id}/picture")
-    public void getMentorImage(@PathVariable("id") Long id,
-                               HttpServletResponse response) throws IOException {
-        final String pic = this.mentorProfileService.loadPicture(id);
-        String[] parts = pic.split(BASE64_SEPARATOR);
-        String imageString = parts[BASE64_ENCODED_DATA];
-        byte[] imageByte = Base64.getMimeDecoder().decode(imageString);
-        response.setContentType("application/octet-stream");
-        response.setHeader("Content-Disposition", "attachment; filename=" + "mentor.png");
-        /* Convert bytes to stream of objects*/
-        InputStream is = new ByteArrayInputStream(imageByte);
-        /* Download copying the content to destination file*/
-        IOUtils.copy(is, response.getOutputStream());
-        response.flushBuffer();
     }
 
     @GetMapping(value = "{id}/picture")
