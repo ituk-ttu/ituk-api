@@ -1,5 +1,6 @@
 package ee.ituk.api.mentor.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import ee.ituk.api.user.dto.UserDto;
 import lombok.Data;
 
@@ -13,6 +14,7 @@ public class MentorProfileDto {
     private String gif;
     private String quote;
     private boolean enabled;
+    @JsonIgnore
     private String picture;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

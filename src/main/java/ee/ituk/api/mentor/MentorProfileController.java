@@ -4,8 +4,6 @@ import ee.ituk.api.mentor.dto.MentorProfileDto;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
-import org.springframework.core.io.Resource;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,11 +26,9 @@ public class MentorProfileController {
         );
     }
 
-    @GetMapping("{id}/picture")
-    public ResponseEntity<Resource> downloadPicture(@PathVariable("id") String id) {
-        return ResponseEntity.ok()
-                .contentType(MediaType.valueOf("application/png"))
-                .body(this.mentorProfileService.loadPicture(id));
+    @GetMapping(value = "{id}/picture")
+    public String getMentorImage(@PathVariable("id") Long id) {
+        return this.mentorProfileService.loadPicture(id);
     }
 
     @PutMapping("{id}/picture")
