@@ -41,6 +41,13 @@ public class MailService {
                 context, "Uus minion");
     }
 
+    public CompletableFuture<Response> sendJoinedEmail(Application application) {
+        VelocityContext context = createContext();
+        context.put("url", String.format("liitu.ituk.ee/#/%s/$s/application", application.getId(), application.getMentorSelectionCode()));
+        return sendAsync(application.getEmail(), "joined", context, "Tere tulemast ITÜKi!");
+
+    }
+
     private CompletableFuture<Response> sendAsync(String to, String templateName, VelocityContext context,
                                                   String subject) {
         log.info("Sending " + templateName + " to " + to);

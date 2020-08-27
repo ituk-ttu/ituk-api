@@ -36,7 +36,9 @@ public class ApplicationService {
     private final MentorProfileMapper mentorProfileMapper = Mappers.getMapper(MentorProfileMapper.class);
 
     public Application createApplication(Application application) {
-        return saveApplication(application);
+        final Application saved = saveApplication(application);
+        this.mailService.sendJoinedEmail(application);
+        return saved;
     }
 
     public Application findApplicationById(long id) {
