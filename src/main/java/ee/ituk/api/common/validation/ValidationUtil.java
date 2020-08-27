@@ -31,6 +31,8 @@ public final class ValidationUtil {
 
     public static final String PARTICIPANT_ID_MISMATCH = "participant.id.mismatch";
 
+    public static final String INVALID_ROLE = "invalid.role";
+
     private ValidationUtil() {
         //not instance
     }

@@ -1,18 +1,26 @@
 package ee.ituk.api.mentor;
 
+import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
+import ee.ituk.api.common.exception.ValidationException;
 import ee.ituk.api.common.filestorage.FileStorageService;
+import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.user.UserRepository;
+import ee.ituk.api.user.domain.Role;
 import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static ee.ituk.api.common.validation.ValidationUtil.INVALID_ROLE;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +46,13 @@ public class MentorProfileService {
 
     MentorProfile updateMentor(MentorProfile mentorprofile) {
         User userById = userRepository.findById(mentorprofile.getUser().getId()).orElseThrow(NotFoundException::new);
+        User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (loggedInUser.getRole() == Role.MEMBER && !loggedInUser.getId().equals(userById.getId())) {
+            throw new ValidationException(ErrorMessage.builder()
+                    .code(INVALID_ROLE)
+                    .build());
+        }
         mentorprofile.setUser(userById);
         mentorprofile.setPicture(mentorProfileRepository.findById(mentorprofile.getId())
                 .map(MentorProfile::getPicture).orElseThrow(NotFoundException::new));
