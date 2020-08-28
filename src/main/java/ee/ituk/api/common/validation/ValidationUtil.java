@@ -33,6 +33,8 @@ public final class ValidationUtil {
 
     public static final String INVALID_ROLE = "invalid.role";
 
+    public static final String MENTOR_NOT_ACTIVE = "mentor.not.active";
+
     private ValidationUtil() {
         //not instance
     }

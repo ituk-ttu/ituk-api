@@ -4,7 +4,10 @@ import ee.ituk.api.application.domain.Application;
 import ee.ituk.api.application.dto.ChangeApplicationStatusRequest;
 import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.application.validation.ApplicationValidator;
+import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
+import ee.ituk.api.common.exception.ValidationException;
+import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.mail.MailService;
 import ee.ituk.api.mentor.MentorProfileMapper;
 import ee.ituk.api.mentor.MentorProfileRepository;
@@ -20,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static ee.ituk.api.common.validation.ValidationUtil.MENTOR_NOT_ACTIVE;
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 
@@ -65,6 +69,9 @@ public class ApplicationService {
         User mentor = mentorProfile.getUser();
         if (!mentor.isMentor()) {
             throw new NotFoundException(Collections.singletonList(getNotFoundError(User.class)));
+        }
+        if (!mentorProfile.isEnabled()) {
+            throw new ValidationException(new ErrorMessage(MENTOR_NOT_ACTIVE, "Mentor not active anymore, choose different one"));
         }
         application.setMentor(mentor);
         Application saved = applicationRepository.save(application);
