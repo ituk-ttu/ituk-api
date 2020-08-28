@@ -120,6 +120,7 @@ public class ApplicationService {
                     .lastName(application.getLastName())
                     .password(encoder.encode(rawPassword))
                     .personalCode(application.getPersonalCode())
+                    .studentCode(application.getStudentCode())
                     .status(userStatusRepository.getByStatusName("Uusliige"))
                     .build();
 
