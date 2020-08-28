@@ -33,6 +33,13 @@ public class MailService {
                 context, "Uus salasõna");
     }
 
+    public CompletableFuture<Response> sendNewUserPasswordEmail(String email, String newRawPassword) {
+        VelocityContext context = createContext();
+        context.put("password", newRawPassword);
+        return sendAsync(email, "newUserPassword",
+                context, "ITÜKi liitumisavaldus on vastu võetud");
+    }
+
     public CompletableFuture<Response> sendNewMinionEmail(Application application) {
         VelocityContext context = createContext();
         context.put("name", application.getFirstName() + " " + application.getLastName());

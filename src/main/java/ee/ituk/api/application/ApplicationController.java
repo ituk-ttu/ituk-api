@@ -31,7 +31,7 @@ public class ApplicationController {
     @PutMapping
     @ResponseBody
     public ResponseEntity updateApplication(ApplicationDto applicationDto) {
-        return ok(applicationMapper.applicationToDto(applicationService.updateProfile(applicationMapper.applicationToEntity(applicationDto))));
+        return ok(applicationMapper.applicationToDto(applicationService.updateApplication(applicationMapper.applicationToEntity(applicationDto))));
     }
 
     @GetMapping("/{id}")

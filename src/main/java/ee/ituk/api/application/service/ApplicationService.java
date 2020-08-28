@@ -16,9 +16,11 @@ import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.mentor.dto.MentorProfileDto;
 import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.UserService;
+import ee.ituk.api.user.UserStatusRepository;
 import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,8 @@ public class ApplicationService {
     private final UserService userService;
     private final MailService mailService;
     private final RecoveryService recoveryService;
+    private final UserStatusRepository userStatusRepository;
+    private final BCryptPasswordEncoder encoder;
 
     private final ApplicationValidator validator = new ApplicationValidator();
     private final MentorProfileMapper mentorProfileMapper = Mappers.getMapper(MentorProfileMapper.class);
@@ -56,7 +60,7 @@ public class ApplicationService {
         return applicationRepository.findAllByOrderByCreatedAtDesc();
     }
 
-    public Application updateProfile(Application application) {
+    public Application updateApplication(Application application) {
         return applicationRepository.save(application);
     }
 
@@ -102,14 +106,31 @@ public class ApplicationService {
         return null;
     }
 
-    @Transactional
     public void changeApplicationStatus(Long applicationId, ChangeApplicationStatusRequest request) {
-        final Application application = applicationRepository.findById(applicationId)
+        Application application = applicationRepository.findById(applicationId)
                 .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(Application.class))));
-        applicationRepository.changeApplicationStatus(request.getStatus().name(), applicationId);
+        application.setStatus(request.getStatus().name());
+
         if (request.getStatus() == ApplicationStatus.ACCEPTED) {
-            recoveryService.sendNewRecoveryPassword(application.getEmail());
+            final String rawPassword = UUID.randomUUID().toString().replace("-", "");
+            User user = User.builder()
+                    .email(application.getEmail())
+                    .curriculum(application.getCurriculum())
+                    .firstName(application.getFirstName())
+                    .lastName(application.getLastName())
+                    .password(encoder.encode(rawPassword))
+                    .personalCode(application.getPersonalCode())
+                    .status(userStatusRepository.getByStatusName("Uusliige"))
+                    .build();
+
+            final User savedUser = userService.createUser(user);
+
+            mailService.sendNewUserPasswordEmail(savedUser.getEmail(), rawPassword);
+
+            application.setUser(savedUser);
         }
+        applicationRepository.save(application);
+
     }
 
     private Application saveApplication(Application application) {
