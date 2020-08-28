@@ -1,6 +1,7 @@
 package ee.ituk.api.application.service;
 
 import ee.ituk.api.application.domain.Application;
+import ee.ituk.api.application.dto.ApplicationStatus;
 import ee.ituk.api.application.dto.ChangeApplicationStatusRequest;
 import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.application.validation.ApplicationValidator;
@@ -13,6 +14,7 @@ import ee.ituk.api.mentor.MentorProfileMapper;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.mentor.dto.MentorProfileDto;
+import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
 import lombok.RequiredArgsConstructor;
@@ -35,6 +37,7 @@ public class ApplicationService {
     private final MentorProfileRepository mentorProfileRepository;
     private final UserService userService;
     private final MailService mailService;
+    private final RecoveryService recoveryService;
 
     private final ApplicationValidator validator = new ApplicationValidator();
     private final MentorProfileMapper mentorProfileMapper = Mappers.getMapper(MentorProfileMapper.class);
@@ -101,8 +104,12 @@ public class ApplicationService {
 
     @Transactional
     public void changeApplicationStatus(Long applicationId, ChangeApplicationStatusRequest request) {
-        applicationRepository.findById(applicationId).orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(Application.class))));
+        final Application application = applicationRepository.findById(applicationId)
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(Application.class))));
         applicationRepository.changeApplicationStatus(request.getStatus().name(), applicationId);
+        if (request.getStatus() == ApplicationStatus.ACCEPTED) {
+            recoveryService.sendNewRecoveryPassword(application.getEmail());
+        }
     }
 
     private Application saveApplication(Application application) {
