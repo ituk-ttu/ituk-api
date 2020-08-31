@@ -3,6 +3,7 @@ package ee.ituk.api.mail;
 
 import ee.ituk.api.application.domain.Application;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import net.sargue.mailgun.Mail;
 import net.sargue.mailgun.MailRequestCallback;
@@ -17,7 +18,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Log4j2
 public class MailService {
 
     public static final DateTimeFormatter DATE_PATTERN = DateTimeFormatter.ofPattern("dd.MM.yyyy");

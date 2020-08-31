@@ -16,6 +16,7 @@ import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.dto.UserBirthdayDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +33,7 @@ import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
 
 @Service
 @RequiredArgsConstructor
-@Slf4j
+@Log4j2
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;

@@ -2,6 +2,7 @@ package ee.ituk.api.common.filestorage;
 
 import ee.ituk.api.common.exception.FileStorageException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -16,7 +17,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 
 @Service
-@Slf4j
+@Log4j2
 @RequiredArgsConstructor
 public class FileStorageService {
 

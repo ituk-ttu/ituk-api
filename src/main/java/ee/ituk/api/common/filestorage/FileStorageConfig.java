@@ -1,6 +1,7 @@
 package ee.ituk.api.common.filestorage;
 
 import lombok.Getter;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -10,7 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-@Slf4j
+@Log4j2
 @Getter
 @Configuration
 public class FileStorageConfig {

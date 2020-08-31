@@ -4,6 +4,7 @@ import ee.ituk.api.login.SessionService;
 import ee.ituk.api.login.domain.Session;
 import ee.ituk.api.settings.GlobalSettingsService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-@Slf4j
+@Log4j2
 @RequiredArgsConstructor
 public class ScheduledTasks {
 
