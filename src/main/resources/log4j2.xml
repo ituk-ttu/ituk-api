@@ -21,8 +21,8 @@
             <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
         </Console>
         <RollingFile name="RollingFile"
-                     fileName="./logs/hub.log"
-                     filePattern="./logs/$${date:yyyy-MM}/hub-%d{-dd-MMMM-yyyy}-%i.log.gz">
+                     fileName="logs/hub.log"
+                     filePattern="logs/$${date:yyyy-MM}/hub-%d{-dd-MMMM-yyyy}-%i.log.gz">
             <PatternLayout pattern="${sys:CONSOLE_LOG_PATTERN}"/>
             <Policies>
                 <!-- rollover on startup, daily and when the file reaches
