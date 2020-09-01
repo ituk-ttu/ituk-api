@@ -121,7 +121,7 @@ public class ApplicationService {
                     .password(encoder.encode(rawPassword))
                     .personalCode(application.getPersonalCode())
                     .studentCode(application.getStudentCode())
-                    .status(userStatusRepository.getByStatusName("Uusliige"))
+                    .status(userStatusRepository.getByStatusName("Noorliige"))
                     .build();
 
             final User savedUser = userService.createUser(user);
