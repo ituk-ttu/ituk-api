@@ -15,7 +15,7 @@ fi
 cd ./build/libs || exit
 
 # copy generated jar file to server
-rsync -chavzP --rsh="ssh -i deploy_rsa $SSH_USERNAME" * $SSH_USERNAME@ituk.ee:/home/deploy/newHub/master
+rsync -chavzP --rsh="ssh -l $SSH_USERNAME" * $SSH_USERNAME@ituk.ee:/home/deploy/newHub/master
 
 # restart service with new jar
 ssh $SSH_USERNAME@ituk.ee sudo systemctl restart newHubMaster.service
