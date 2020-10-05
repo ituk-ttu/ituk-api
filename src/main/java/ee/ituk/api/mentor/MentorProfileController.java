@@ -34,7 +34,6 @@ public class MentorProfileController {
         );
     }
 
-
     /**
      * @param id of mentor
      * @return base64 string(mentors pic) that will be fed to ng-hub's ng-img-cropper
