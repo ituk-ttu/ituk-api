@@ -1,0 +1,9 @@
+email:
+  domain: test
+  fromName: test
+  fromEmail: test
+  apiKey: test
+
+security:
+  signing:
+    key: test
