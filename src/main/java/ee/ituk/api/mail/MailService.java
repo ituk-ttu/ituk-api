@@ -4,7 +4,6 @@ package ee.ituk.api.mail;
 import ee.ituk.api.application.domain.Application;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import net.sargue.mailgun.Mail;
 import net.sargue.mailgun.MailRequestCallback;
 import net.sargue.mailgun.Response;
@@ -25,7 +24,6 @@ public class MailService {
 
     private final MailgunConfiguration mailgunConfig;
     private final VelocityEngine velocityEngine;
-
 
     public CompletableFuture<Response> sendNewPasswordEmail(String email, String newRawPassword) {
         VelocityContext context = createContext();
@@ -104,7 +102,7 @@ public class MailService {
         }
     }
 
-    private VelocityContext createContext() {
+    private static VelocityContext createContext() {
         VelocityContext context = new VelocityContext();
         context.put("datePattern", DATE_PATTERN);
         return context;

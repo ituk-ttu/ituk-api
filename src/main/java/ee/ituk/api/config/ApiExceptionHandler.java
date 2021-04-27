@@ -26,9 +26,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Getter
     private static class ApiExceptionDto {
-        private HttpStatus status;
-        private String error;
-        private List<ErrorMessage> messages;
+        private final HttpStatus status;
+        private final String error;
+        private final List<ErrorMessage> messages;
 
         private ApiExceptionDto(ApiException ex) {
             this.error = ex.getError();

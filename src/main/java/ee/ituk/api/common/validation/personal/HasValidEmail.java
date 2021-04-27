@@ -7,7 +7,7 @@ import org.apache.commons.validator.routines.EmailValidator;
 
 import java.util.List;
 
-import static ee.ituk.api.common.validation.ValidationUtil.PERSONAL_CODE_INCORRECT;
+import static ee.ituk.api.common.validation.ValidationUtil.EMAIL_INCORRECT;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 
@@ -18,6 +18,6 @@ public class HasValidEmail implements ValidationRule<PersonalData> {
         if (EmailValidator.getInstance(true).isValid(person.getEmail())) {
             return emptyList();
         }
-        return singletonList(ErrorMessage.builder().code(PERSONAL_CODE_INCORRECT).build());
+        return singletonList(ErrorMessage.builder().code(EMAIL_INCORRECT).build());
     }
 }

@@ -8,13 +8,11 @@ import ee.ituk.api.application.validation.ApplicationValidator;
 import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
-import ee.ituk.api.common.validation.ValidationUtil;
 import ee.ituk.api.mail.MailService;
 import ee.ituk.api.mentor.MentorProfileMapper;
 import ee.ituk.api.mentor.MentorProfileRepository;
 import ee.ituk.api.mentor.domain.MentorProfile;
 import ee.ituk.api.mentor.dto.MentorProfileDto;
-import ee.ituk.api.recovery.RecoveryService;
 import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.UserStatusRepository;
 import ee.ituk.api.user.domain.User;
@@ -22,10 +20,12 @@ import lombok.RequiredArgsConstructor;
 import org.mapstruct.factory.Mappers;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static ee.ituk.api.common.validation.ValidationUtil.MENTOR_NOT_ACTIVE;
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -39,7 +39,6 @@ public class ApplicationService {
     private final MentorProfileRepository mentorProfileRepository;
     private final UserService userService;
     private final MailService mailService;
-    private final RecoveryService recoveryService;
     private final UserStatusRepository userStatusRepository;
     private final BCryptPasswordEncoder encoder;
 
@@ -48,7 +47,7 @@ public class ApplicationService {
 
     public Application createApplication(Application application) {
         final Application saved = saveApplication(application);
-        this.mailService.sendJoinedEmail(application);
+        mailService.sendJoinedEmail(application);
         return saved;
     }
 
@@ -99,7 +98,7 @@ public class ApplicationService {
                 return ApplicationsMentor.builder()
                         .name(application.getFirstName())
                         .applicationId(applicationId)
-                        .mentor(getMentorProfileByApplication(application))
+                        .mentor(getMentorProfileByApplication(application).orElse(null))
                         .build();
             }
         }
@@ -145,15 +144,16 @@ public class ApplicationService {
         if (application.getProcessedBy() == null || application.getProcessedBy().getId() == null) {
             application.setProcessedBy(null);
         }
+        application.setStudentCode(application.getStudentCode().toUpperCase());
         return applicationRepository.save(application);
     }
 
-    private MentorProfileDto getMentorProfileByApplication(Application application) {
+    private Optional<MentorProfileDto> getMentorProfileByApplication(Application application) {
         if (application.getMentor() == null || application.getMentor().getId() == null) {
-            return null;
+            return Optional.empty();
         }
 
         MentorProfile mentorProfile = mentorProfileRepository.findByUser(application.getMentor()).orElse(null);
-        return mentorProfileMapper.mentorProfileToDto(mentorProfile);
+        return Optional.of(mentorProfileMapper.mentorProfileToDto(mentorProfile));
     }
 }

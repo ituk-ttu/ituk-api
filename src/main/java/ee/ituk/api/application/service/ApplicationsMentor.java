@@ -2,12 +2,13 @@ package ee.ituk.api.application.service;
 
 import ee.ituk.api.mentor.dto.MentorProfileDto;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.NonNull;
+import lombok.Value;
 
-@Getter
 @Builder
+@Value
 public class ApplicationsMentor {
-    private final String name;
-    private final Long applicationId;
-    private final MentorProfileDto mentor;
+    @NonNull String name;
+    @NonNull Long applicationId;
+    MentorProfileDto mentor;
 }
