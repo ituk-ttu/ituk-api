@@ -1,5 +1,6 @@
 package ee.ituk.api.mentor;
 
+import com.google.common.annotations.VisibleForTesting;
 import ee.ituk.api.common.exception.ErrorMessage;
 import ee.ituk.api.common.exception.NotFoundException;
 import ee.ituk.api.common.exception.ValidationException;
@@ -37,12 +38,14 @@ public class MentorProfileService {
         return mentorProfileRepository.findById(id).orElseThrow(NotFoundException::new);
     }
 
-    MentorProfile getByUserId(long id) {
+    @VisibleForTesting
+    public MentorProfile getByUserId(long id) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         return mentorProfileRepository.findByUser(user).orElseThrow(NotFoundException::new);
     }
 
-    MentorProfile updateMentor(MentorProfile mentorprofile) {
+    @VisibleForTesting
+    public MentorProfile updateMentor(MentorProfile mentorprofile) {
         User userById = userRepository.findById(mentorprofile.getUser().getId()).orElseThrow(NotFoundException::new);
         User loggedInUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 

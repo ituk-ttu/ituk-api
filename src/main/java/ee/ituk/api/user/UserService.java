@@ -17,7 +17,6 @@ import ee.ituk.api.user.dto.UserBirthdayDto;
 import ee.ituk.api.user.validation.UserValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +24,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
@@ -75,14 +78,10 @@ public class UserService implements UserDetailsService {
     }
 
     public List<User> findAll(Boolean showArchived) {
-        if (showArchived == null) {
-            showArchived = false;
-        }
-
         if (showArchived) {
             return userRepository.findAllByOrderByIdAsc();
         }
-        return userRepository.findAllByArchivedOrderByIdAsc(showArchived);
+        return userRepository.findAllByArchivedOrderByIdAsc(false);
     }
 
     public List<User> findAllByArchived(Boolean archived) {

@@ -3,6 +3,7 @@ package ee.ituk.api;
 import org.junit.jupiter.api.Tag;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -29,5 +30,6 @@ import java.lang.annotation.Target;
 @AutoConfigureMockMvc
 @Commit
 @ClearDbBeforeTestMethod
+@WithMockUser
 public @interface IntegrationTest {
 }
