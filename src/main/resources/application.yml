@@ -26,15 +26,23 @@ spring:
     url: ${DS_URL}
     user: ${DS_USER}
     password: ${DS_PASSWORD}
+  cache:
+    cache-names:
+      - ${rate-limiter.cache-name}
+    caffeine:
+      spec: maximumSize=10000,expireAfterAccess=60s
+
 management:
   endpoint:
     health:
       show-details: always
+
 email:
   domain: ${EMAIL_DOMAIN}
   fromName: ${EMAIL_FROMNAME}
   fromEmail: ${EMAIL_FROMEMAIL}
   apiKey: ${EMAIL_APIKEY}
+
 security:
   signing:
     key: "ituk"
@@ -51,3 +59,19 @@ logbook:
   exclude: [ /actuator/health, /v2/**, /swagger-*/**, /webjars/** ]
   write:
     level: TRACE
+
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: ${rate-limiter.cache-name}
+      url: .*
+      rate-limits:
+        - bandwidths:
+            - capacity: 100
+              time: 1
+              unit: minutes
+              fixed-refill-interval: 1
+              fixed-refill-interval-unit: minutes
+
+rate-limiter:
+  cache-name: rate-limit-bucket

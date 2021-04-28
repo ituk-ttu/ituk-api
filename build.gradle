@@ -30,6 +30,7 @@ ext {
 	set('springBootAdminVersion', "2.1.5")
 	set('mapstructVersion', "1.4.2.Final")
 	set('swaggerVersion', "2.9.2")
+	set('caffeineVersion', '3.0.1')
 }
 
 dependencies {
@@ -59,6 +60,10 @@ dependencies {
 	implementation 'org.zalando:logbook-spring-boot-starter:1.11.0'
 	implementation 'javax.validation:validation-api:2.0.1.Final'
 	implementation 'org.mapstruct.extensions.spring:mapstruct-spring-annotations:0.0.2'
+	implementation 'com.giffing.bucket4j.spring.boot.starter:bucket4j-spring-boot-starter:0.2.0'
+	implementation 'javax.cache:cache-api'
+	implementation "com.github.ben-manes.caffeine:caffeine:${caffeineVersion}"
+	implementation "com.github.ben-manes.caffeine:jcache:${caffeineVersion}"
 
 	// ====== TEST =======
 
