@@ -1,6 +1,5 @@
 package ee.ituk.api.config;
 
-import com.google.common.collect.Lists;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -11,12 +10,10 @@ import springfox.documentation.service.SecurityReference;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.List;
 
 @Configuration
-@EnableSwagger2
 public class SwaggerConfig {
 
     @Bean
@@ -26,10 +23,9 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("ee.ituk"))
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Lists.newArrayList(apiKey()))
-                .securityContexts(Lists.newArrayList(securityContext()));
+                .securitySchemes(List.of(apiKey()))
+                .securityContexts(List.of(securityContext()));
     }
-
 
     @Bean
     SecurityContext securityContext() {
@@ -44,8 +40,7 @@ public class SwaggerConfig {
                 = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(
-                new SecurityReference("JWT", authorizationScopes));
+        return List.of(new SecurityReference("JWT", authorizationScopes));
     }
 
     private ApiKey apiKey() {

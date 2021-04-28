@@ -29,7 +29,7 @@ repositories {
 ext {
 	set('springBootAdminVersion', "2.1.5")
 	set('mapstructVersion', "1.4.2.Final")
-	set('swaggerVersion', "2.9.2")
+	set('swaggerVersion', "3.0.0")
 	set('caffeineVersion', '3.0.1')
 }
 
@@ -47,8 +47,7 @@ dependencies {
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	annotationProcessor 'org.projectlombok:lombok'
-	implementation "io.springfox:springfox-swagger2:${swaggerVersion}"
-	implementation "io.springfox:springfox-swagger-ui:${swaggerVersion}"
+	implementation "io.springfox:springfox-boot-starter:${swaggerVersion}"
 	implementation "org.mapstruct:mapstruct:${mapstructVersion}"
 	annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 	implementation 'net.sargue:mailgun:1.9.0'

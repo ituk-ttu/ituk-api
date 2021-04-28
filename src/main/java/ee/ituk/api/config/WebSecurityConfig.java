@@ -28,7 +28,7 @@ import javax.annotation.Resource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] LET_THEM_THROUGH = {
-            "/login/**", "/actuator/**", "/swagger-ui.html", "/swagger-resources/**",
+            "/login/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**",
             "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project",
             "/application/**"
     };
