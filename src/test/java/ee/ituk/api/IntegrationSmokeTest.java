@@ -1,5 +1,6 @@
 package ee.ituk.api;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -7,10 +8,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class IntegrationSmokeTest {
 
-    @Autowired
-    JdbcTemplate jdbcTemplate;
+    final JdbcTemplate jdbcTemplate;
 
     @Test
     void testFlywaySetup() {

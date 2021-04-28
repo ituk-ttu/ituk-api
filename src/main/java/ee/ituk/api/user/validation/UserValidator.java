@@ -11,18 +11,17 @@ import ee.ituk.api.user.dto.PasswordChangeDto;
 import ee.ituk.api.user.validation.rules.NewPasswordIsDifferentFromOld;
 import ee.ituk.api.user.validation.rules.PasswordIsSecure;
 
-import java.util.Arrays;
+import java.util.List;
 
 import static java.util.Collections.singletonList;
 
 public class UserValidator extends Validator {
 
-    public ValidationResult validateOnCreate(User user) {
-        // TODO: add missing validation rules
+    public ValidationResult validate(User user) {
         ValidationResult validationResult = applyRules(singletonList(
                 new PasswordIsSecure(user.getPassword())
         ));
-        validationResult.add(applyRules(user, Arrays.asList(
+        validationResult.add(applyRules(user, List.of(
                 new HasName(),
                 new HasValidStudentCode(),
                 new HasValidPersonalCode(),

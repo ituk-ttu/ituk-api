@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -88,8 +89,9 @@ public class UserService implements UserDetailsService {
         return userRepository.findAllByArchived(archived);
     }
 
+    @Transactional
     public User createUser(User user) {
-        checkForErrors(userValidator.validateOnCreate(user));
+        checkForErrors(userValidator.validate(user));
         User savedUser = saveUser(user);
         if (savedUser.isMentor() && mentorProfileRepository.findByUser(savedUser).isEmpty()) {
             mentorProfileService.create(savedUser);
@@ -107,8 +109,9 @@ public class UserService implements UserDetailsService {
         return userRepository.count();
     }
 
+    @Transactional
     User updateUser(User user) {
-        //TODO validation
+        checkForErrors(userValidator.validate(user));
         User fromBase = userRepository.getOne(user.getId());
         user.setPassword(fromBase.getPassword());
         if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {

@@ -1,7 +1,5 @@
 package ee.ituk.api.project.dto;
 
-import ee.ituk.api.user.dto.UserDto;
-
 import lombok.Data;
 
 import java.time.LocalDate;
