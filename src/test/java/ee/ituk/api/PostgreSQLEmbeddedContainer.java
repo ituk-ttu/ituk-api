@@ -19,11 +19,7 @@ public class PostgreSQLEmbeddedContainer extends PostgreSQLContainer<PostgreSQLE
             TestPropertyValues.of(
                     "spring.datasource.url=" + DB_CONTAINER.getJdbcUrl(),
                     "spring.datasource.username=" + DB_CONTAINER.getUsername(),
-                    "spring.datasource.password=" + DB_CONTAINER.getPassword(),
-
-                    "spring.flyway.url=" + DB_CONTAINER.getJdbcUrl(),
-                    "spring.flyway.username=" + DB_CONTAINER.getUsername(),
-                    "spring.flyway.password=" + DB_CONTAINER.getPassword()
+                    "spring.datasource.password=" + DB_CONTAINER.getPassword()
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
     }
