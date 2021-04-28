@@ -21,11 +21,8 @@ spring:
     password: ${DS_PASSWORD}
     initialization-mode: never
   flyway:
-    locations: classpath:db/migration
+    enabled: true
     baseline-on-migrate: true
-    url: ${DS_URL}
-    user: ${DS_USER}
-    password: ${DS_PASSWORD}
   cache:
     cache-names:
       - ${rate-limiter.cache-name}
