@@ -30,7 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] LET_THEM_THROUGH = {
             "/login/**", "/actuator/**", "/swagger-ui/**", "/swagger-resources/**",
             "/webjars/**", "/v2/**", "/user/birthdays", "/user/count", "/project",
-            "/application/**"
+            "/application/**", "/user/recovery/**"
     };
     private static final String[] ALLOW_ONLY_GET = { "/mentor/active", "/mentor/{\\d+}", "/mentor/{\\d+}/picture" };
     private static final String[] DONT_LET_THEM_IN = {"/**", "/resources/**"};
