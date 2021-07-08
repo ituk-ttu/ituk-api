@@ -15,6 +15,7 @@ import ee.ituk.api.mentor.dto.MentorProfileDto;
 import ee.ituk.api.user.UserService;
 import ee.ituk.api.user.domain.User;
 import ee.ituk.api.utils.ObjectMapperUtils;
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @IntegrationTest
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 class ApplicationControllerTest {
 
     static final String APPLICATION_API_BASE = "/application/";
@@ -47,20 +49,11 @@ class ApplicationControllerTest {
     static final TypeReference<List<MentorProfileDto>> MENTOR_PROFILE_LIST_TYPEREF = new TypeReference<>() {
     };
 
-    @Autowired
-    MockMvc mvc;
-
-    @Autowired
-    ApplicationService applicationService;
-
-    @Autowired
-    UserService userService;
-
-    @Autowired
-    MentorProfileService mentorProfileService;
-
-    @Autowired
-    MentorProfileRepository mentorProfileRepository;
+    final MockMvc mvc;
+    final ApplicationService applicationService;
+    final UserService userService;
+    final MentorProfileService mentorProfileService;
+    final MentorProfileRepository mentorProfileRepository;
 
     ApplicationDto application;
 
