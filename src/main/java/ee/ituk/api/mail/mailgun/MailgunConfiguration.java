@@ -1,4 +1,4 @@
-package ee.ituk.api.mail;
+package ee.ituk.api.mail.mailgun;
 
 import net.sargue.mailgun.Configuration;
 

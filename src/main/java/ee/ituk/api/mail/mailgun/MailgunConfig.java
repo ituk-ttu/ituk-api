@@ -1,4 +1,4 @@
-package ee.ituk.api.mail;
+package ee.ituk.api.mail.mailgun;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -10,14 +10,14 @@ import org.springframework.context.annotation.Bean;
 
 @ConfigurationProperties("email")
 @ConstructorBinding
-public class EmailConfig {
+public class MailgunConfig {
 
     private final String domain;
     private final String apiKey;
     private final String fromName;
     private final String fromEmail;
 
-    public EmailConfig(String domain, String apiKey, String fromName, String fromEmail) {
+    public MailgunConfig(String domain, String apiKey, String fromName, String fromEmail) {
         this.domain = domain;
         this.apiKey = apiKey;
         this.fromName = fromName;

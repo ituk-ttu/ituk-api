@@ -1,6 +1,7 @@
 package ee.ituk.api;
 
-import ee.ituk.api.mail.MailService;
+import ee.ituk.api.mail.mailgun.MailgunConfiguration;
+import ee.ituk.api.mail.mailgun.MailgunService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -8,6 +9,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class ApiApplicationTests {
 
     @MockBean
-    private MailService mailService;
+    private MailgunService mailgunService;
 }
 

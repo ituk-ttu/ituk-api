@@ -72,3 +72,5 @@ bucket4j:
 
 rate-limiter:
   cache-name: rate-limit-bucket
+
+email.provider: mailgun

@@ -16,29 +16,28 @@ import java.time.LocalDateTime;
 @SQLDelete(sql = "UPDATE application SET deleted_at = now() WHERE id = ?")
 @SQLDeleteAll(sql = "UPDATE application SET deleted_at = NOW() WHERE id = ?")
 @Where(clause = "deleted_at IS null")
-
 public class Application implements PersonalData {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
-  private String firstName;
-  private String lastName;
-  private String personalCode;
-  private String email;
-  private String studentCode;
-  private String curriculum;
-  private String mentorSelectionCode;
-  private String status;
-  private LocalDateTime createdAt = LocalDateTime.now();
-  private LocalDateTime updatedAt = LocalDateTime.now();
-  @ManyToOne
-  @JoinColumn(name = "processedById")
-  private User processedBy;
-  @ManyToOne
-  @JoinColumn(name = "mentor_id", referencedColumnName = "id")
-  private User mentor;
-  @OneToOne
-  @JoinColumn(name = "user_id", referencedColumnName = "id")
-  private User user;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String personalCode;
+    private String email;
+    private String studentCode;
+    private String curriculum;
+    private String mentorSelectionCode;
+    private String status;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
+    @ManyToOne
+    @JoinColumn(name = "processedById")
+    private User processedBy;
+    @ManyToOne
+    @JoinColumn(name = "mentor_id", referencedColumnName = "id")
+    private User mentor;
+    @OneToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
