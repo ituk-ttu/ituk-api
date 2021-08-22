@@ -49,7 +49,7 @@ public class MailService {
 
     public CompletableFuture<Response> sendJoinedEmail(Application application) {
         VelocityContext context = createContext();
-        context.put("url", String.format("liitu.ituk.ee/#/%s/$s/application", application.getId(), application.getMentorSelectionCode()));
+        context.put("url", String.format("liitu.ituk.ee/#/%s/%s/application", application.getId(), application.getMentorSelectionCode()));
         return sendAsync(application.getEmail(), "joined", context, "Tere tulemast ITÜKi!");
 
     }
