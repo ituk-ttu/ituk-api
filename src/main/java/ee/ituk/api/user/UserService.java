@@ -109,6 +109,8 @@ public class UserService implements UserDetailsService {
 
     User updateUser(User user) {
         User fromBase = userRepository.getOne(user.getId());
+        log.info("{} got user to update", user.getRole());
+        log.info("in base {}", fromBase.getRole());
         if ((fromBase.getRole() != user.getRole()) ||
                 !fromBase.getStatus().getStatusName().equals(user.getStatus().getStatusName())) {
             final User contextUser = this.getLoggedUser();
