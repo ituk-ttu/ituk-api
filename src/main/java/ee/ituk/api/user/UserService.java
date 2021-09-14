@@ -111,7 +111,7 @@ public class UserService implements UserDetailsService {
         User fromBase = userRepository.getOne(user.getId());
         if ((fromBase.getRole() != user.getRole()) ||
                 !fromBase.getStatus().getStatusName().equals(user.getStatus().getStatusName())) {
-            final User contextUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            final User contextUser = this.getLoggedUser();
             if (!contextUser.getRole().isAdmin()) {
                 user.setRole(fromBase.getRole());
                 user.setStatus(fromBase.getStatus());
