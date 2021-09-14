@@ -1,5 +1,13 @@
 package ee.ituk.api.user;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import ee.ituk.api.application.domain.Application;
 import ee.ituk.api.application.repository.ApplicationRepository;
 import ee.ituk.api.common.exception.BadCredentialsException;
@@ -22,14 +30,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static ee.ituk.api.common.validation.ValidationUtil.checkForErrors;
 import static ee.ituk.api.common.validation.ValidationUtil.getNotFoundError;
@@ -58,8 +58,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User findUserById(long id) {
-        return userRepository.findById(id).orElseThrow(()
-                -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
+        return userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException(Collections.singletonList(getNotFoundError(this.getClass()))));
     }
 
     public List<User> findByIds(List<Long> ids) {
@@ -108,8 +108,15 @@ public class UserService implements UserDetailsService {
     }
 
     User updateUser(User user) {
-        //TODO validation
         User fromBase = userRepository.getOne(user.getId());
+        if ((fromBase.getRole() != user.getRole()) ||
+                !fromBase.getStatus().getStatusName().equals(user.getStatus().getStatusName())) {
+            final User contextUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if ((contextUser.getRole() != Role.ADMIN) || (contextUser.getRole() != Role.BOARD)) {
+                user.setRole(fromBase.getRole());
+                user.setStatus(fromBase.getStatus());
+            }
+        }
         user.setPassword(fromBase.getPassword());
         if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
             mentorProfileService.create(user);
@@ -142,14 +149,12 @@ public class UserService implements UserDetailsService {
 
     List<String> getTodayBirthdayUserNames() {
         List<User> users = userRepository.findAll();
-        return users.stream()
-                .filter(this::isBirthdayToday)
-                .map(User::getFullName)
-                .collect(Collectors.toList());
+        return users.stream().filter(this::isBirthdayToday).map(User::getFullName).collect(Collectors.toList());
     }
 
     List<UserBirthdayDto> getLastWeekBirthdays() {
-        List<User> users = userRepository.findAll().stream()
+        List<User> users = userRepository.findAll()
+                .stream()
                 .filter(user -> !user.isArchived())
                 .filter(user -> !userValidator.validatePersonalCode(user).hasErrors())
                 .collect(Collectors.toList());
@@ -164,10 +169,7 @@ public class UserService implements UserDetailsService {
             int day = idNumber.getDayNumber();
             LocalDate birthday = LocalDate.of(currentDate.getYear(), month, day);
             if (birthday.isAfter(yesterday) && birthday.isBefore(nextWeek)) {
-                birthdays.add(UserBirthdayDto.builder()
-                        .fullName(user.getFullName())
-                        .birthday(birthday)
-                        .build());
+                birthdays.add(UserBirthdayDto.builder().fullName(user.getFullName()).birthday(birthday).build());
             }
         });
         birthdays.sort(Comparator.comparing(UserBirthdayDto::getBirthday));
@@ -175,7 +177,8 @@ public class UserService implements UserDetailsService {
     }
 
     void archive(Long id, boolean isArchived) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ValidationException(getNotFoundError(User.class)));
+        User user =
+                userRepository.findById(id).orElseThrow(() -> new ValidationException(getNotFoundError(User.class)));
         user.setArchived(isArchived);
         userRepository.save(user);
     }
@@ -183,7 +186,6 @@ public class UserService implements UserDetailsService {
     private User saveUser(User user) {
         return userRepository.save(user);
     }
-
 
     private boolean isBirthdayToday(User user) {
         if (user.getPersonalCode() != null) {
