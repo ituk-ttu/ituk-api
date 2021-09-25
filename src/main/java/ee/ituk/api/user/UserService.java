@@ -109,8 +109,6 @@ public class UserService implements UserDetailsService {
 
     User updateUser(User user) {
         User fromBase = userRepository.getOne(user.getId());
-        log.info("{} got user to update", user.getRole());
-        log.info("in base {}", fromBase.getRole());
         if ((fromBase.getRole() != user.getRole()) ||
                 !fromBase.getStatus().getStatusName().equals(user.getStatus().getStatusName())) {
             final User contextUser = this.getLoggedUser();
@@ -133,6 +131,9 @@ public class UserService implements UserDetailsService {
 
     void changeRole(Long id, Role role) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        if (user.getRole() == Role.BOARD) {
+            return;
+        }
         user.setRole(role);
         userRepository.save(user);
         if (user.isMentor() && mentorProfileRepository.findByUser(user).isEmpty()) {
